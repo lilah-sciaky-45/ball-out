@@ -259,17 +259,17 @@
     const p = Math.min(Math.max(raw, 0), 1);
 
     const sceneW = scene.offsetWidth;
-    const moonW = moon.offsetWidth;
     const sceneH = scene.offsetHeight;
+    const moonW = moon.offsetWidth;
     const moonH = moon.offsetHeight;
 
-    // x: starts off left edge, ends off right edge
+    // x: left edge to right edge
     const xPx = -moonW + (p * (sceneW + moonW * 2));
 
-    // y: low arc — peaks at 40% of scene height above the bottom
-    // starts and ends buried at the bottom
-    const peakRise = sceneH * 0.5; // only rises 50% of scene height
-    const yPx = (sceneH - moonH * 0.3) - (Math.sin(p * Math.PI) * peakRise);
+    // y: sits near bottom of scene, arcs up by 40% of scene height at peak
+    const baseY = sceneH - moonH;           // resting position at bottom
+    const peakRise = sceneH * 0.4;          // rises 40% of scene height
+    const yPx = baseY - (Math.sin(p * Math.PI) * peakRise);
 
     const op = p < 0.04 ? p / 0.04 : p > 0.96 ? (1 - p) / 0.04 : 1;
 
