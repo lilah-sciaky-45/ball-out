@@ -66,16 +66,33 @@
   .footer-col a:hover{color:var(--cream);}
   .footer-bottom{border-top:1px solid #1a1a1a;padding-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;}
   .footer-bottom p{color:#3a3a3a;font-size:.78rem;}
-  @media(max-width:700px){.nav-links{display:none;}.hero-meta{flex-direction:column;align-items:flex-start;padding-left:10%;}.game-card{grid-template-columns:1fr;}}
+  .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px;}
+  .hamburger span{display:block;width:24px;height:2px;background:var(--cream);border-radius:2px;transition:.3s;}
+  .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .hamburger.open span:nth-child(2){opacity:0;}
+  .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+  @media(max-width:700px){
+    .hamburger{display:flex;}
+    .nav-links{display:none;flex-direction:column;position:absolute;top:100%;left:0;width:100%;background:rgba(12,12,12,0.98);border-bottom:2px solid var(--green2);padding:20px 5%;gap:18px;}
+    .nav-links.open{display:flex;}
+    .nav-links li{width:100%;}
+    .nav-links a{font-size:.9rem;}
+    .nav-links .nav-main{display:inline-block;}
+    .hero-meta{flex-direction:column;align-items:flex-start;padding-left:10%;}
+    .game-card{grid-template-columns:1fr;}
+  }
 </style>
 </head>
 <body>
 
 <nav>
   <div class="logo">BALL OUT-SIDE</div>
-  <ul class="nav-links">
-    <li><a href="#schedule">Schedule</a></li>
-    <li><a href="#how">How It Works</a></li>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#schedule" onclick="closeMenu()">Schedule</a></li>
+    <li><a href="#how" onclick="closeMenu()">How It Works</a></li>
     <li><a href="index.html" class="nav-main">Ball Out Warehouse</a></li>
   </ul>
 </nav>
@@ -197,6 +214,15 @@
     <p>Outside. Always.</p>
   </div>
 </footer>
-
+<script>
+  function toggleMenu(){
+    document.getElementById('nav-links').classList.toggle('open');
+    document.getElementById('hamburger').classList.toggle('open');
+  }
+  function closeMenu(){
+    document.getElementById('nav-links').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('open');
+  }
+</script>
 </body>
 </html>
