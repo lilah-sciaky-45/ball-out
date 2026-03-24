@@ -19,8 +19,9 @@
   .nav-links .nav-outside:hover{background:var(--green2);}
   .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:120px 5% 80px;position:relative;overflow:hidden;background:linear-gradient(160deg,#1a2e1a 0%,#0f0f0f 40%,#1a0a0a 100%);}
   .hero-bg-text{position:absolute;font-family:'Bebas Neue',sans-serif;font-size:clamp(120px,28vw,260px);color:rgba(74,124,63,0.08);top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;letter-spacing:10px;line-height:1;}
-  .hero-scroll-ball{position:absolute;width:clamp(280px,50vw,600px);opacity:0.13;pointer-events:none;top:50%;left:50%;transform:translate(-50%,-50%);z-index:0;will-change:transform,opacity;}
   .hero-content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;}
+  .hero-ball-row{display:flex;justify-content:center;padding:0 0 0 0;overflow:hidden;background:linear-gradient(160deg,#1a2e1a 0%,#0f0f0f 40%,#1a0a0a 100%);}
+  .hero-scroll-ball{width:clamp(200px,35vw,440px);display:block;will-change:transform,opacity;transform:translateX(-60px);opacity:0;transition:transform 0.15s linear,opacity 0.15s linear;}
   .hero-logo-wrap{margin-bottom:30px;}
   .hero-logo-wrap img{width:clamp(180px,35vw,320px);filter:drop-shadow(0 8px 32px rgba(192,57,43,0.4));}
   .badge{background:var(--red);color:var(--cream);font-size:.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:6px 18px;border-radius:2px;margin-bottom:22px;display:inline-block;}
@@ -108,15 +109,7 @@
 
 <section class="hero" id="home">
   <div class="hero-bg-text">BALL OUT</div>
-  <!-- Scroll-animated basketball -->
-  <img class="hero-scroll-ball" id="scroll-ball"
-    src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/Moon.png"
-    alt=""/>
-  <!-- All hero content wrapped so it stays above the ball -->
   <div class="hero-content">
-    <div class="hero-logo-wrap">
-      <img src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/Moon_logo.png" alt="Ball Out Logo" style="height:72px;width:auto;filter:drop-shadow(0 2px 6px rgba(192,57,43,0.4));"/>
-    </div>
     <div class="badge">3v3 Basketball Party — Portland, OR</div>
     <h1>BALL OUT<br><span>WAREHOUSE</span></h1>
     <h2>May 2nd, 2026, 3-6PM</h2>
@@ -131,6 +124,13 @@
     </div>
   </div>
 </section>
+
+<!-- Ball animates between hero and divider -->
+<div class="hero-ball-row">
+  <img class="hero-scroll-ball" id="scroll-ball"
+    src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/Moon_logo.png"
+    alt="Ball Out basketball"/>
+</div>
 
 <div class="divider"></div>
 
@@ -181,4 +181,86 @@
 
 <div class="divider"></div>
 
-<section class="other-s
+<section class="other-signups" id="other">
+  <div class="section-label">Get Involved</div>
+  <div class="section-title">More Ways To<br><span>Be Part Of It</span></div>
+  <div class="signups-grid">
+    <div class="signup-card">
+      <div class="signup-card-header"><h4>Vendors</h4><p>Sell food, merch, or products at the event</p></div>
+      <div class="signup-form-area"><p>Want to set up a booth? Fill out our vendor application.</p><a href="#" target="_blank" class="btn-green" style="font-size:.8rem;padding:12px 26px;border-radius:2px;text-decoration:none;font-weight:700;letter-spacing:2px;text-transform:uppercase;">Vendor Sign-Up</a></div>
+    </div>
+    <div class="signup-card">
+      <div class="signup-card-header"><h4>Partnerships</h4><p>Sponsor or partner with Ball Out 2026</p></div>
+      <div class="signup-form-area"><p>Want to sponsor the event or explore a partnership?</p><a href="#" target="_blank" class="btn-green" style="font-size:.8rem;padding:12px 26px;border-radius:2px;text-decoration:none;font-weight:700;letter-spacing:2px;text-transform:uppercase;">Partner With Us</a></div>
+    </div>
+    <div class="signup-card">
+      <div class="signup-card-header"><h4>Referees</h4><p>Officiate games on the day</p></div>
+      <div class="signup-form-area"><p>Experienced refs wanted. Apply to officiate at Ball Out 2026.</p><a href="#" target="_blank" class="btn-green" style="font-size:.8rem;padding:12px 26px;border-radius:2px;text-decoration:none;font-weight:700;letter-spacing:2px;text-transform:uppercase;">Referee Sign-Up</a></div>
+    </div>
+    <div class="signup-card">
+      <div class="signup-card-header"><h4>Servers / Staff</h4><p>Help run the event as part of our crew</p></div>
+      <div class="signup-form-area"><p>Looking for event-day staff to help keep things running smooth.</p><a href="#" target="_blank" class="btn-green" style="font-size:.8rem;padding:12px 26px;border-radius:2px;text-decoration:none;font-weight:700;letter-spacing:2px;text-transform:uppercase;">Staff Sign-Up</a></div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo">BALL OUT</div>
+      <p>A 3v3 basketball party in the heart of Portland. May 2nd, 2026.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Quick Links</h5>
+      <a href="#about">The Event</a>
+      <a href="#registration">Team Sign-Up</a>
+      <a href="#experience">The Vibe</a>
+      <a href="#other">Vendors & Partners</a>
+      <a href="outside.html">Ball Out-side</a>
+    </div>
+    <div class="footer-col">
+      <h5>Contact</h5>
+      <p>[your@email.com]</p>
+      <p>[Phone Number]</p>
+      <p>Portland, Oregon</p>
+    </div>
+    <div class="footer-col">
+      <h5>Follow Us</h5>
+      <a href="#">Instagram</a>
+      <a href="#">Twitter / X</a>
+      <a href="#">Facebook</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Ball Out. All rights reserved.</p>
+    <p>3v3. No excuses.</p>
+  </div>
+</footer>
+
+<script>
+  // Scroll animation — ball drifts left to right as user scrolls past it
+  const ball = document.getElementById('scroll-ball');
+  const ballRow = ball.parentElement;
+  window.addEventListener('scroll', () => {
+    const rect = ballRow.getBoundingClientRect();
+    const winH = window.innerHeight;
+    // progress: 0 when element enters bottom of screen, 1 when it leaves top
+    const progress = Math.min(Math.max((winH - rect.top) / (winH + rect.height), 0), 1);
+    const x = -80 + (progress * 160); // moves from -80px to +80px
+    const rot = -10 + (progress * 20);
+    const op = Math.min(progress * 2, 1);
+    ball.style.transform = `translateX(${x}px) rotate(${rot}deg)`;
+    ball.style.opacity = op;
+  });
+
+  function toggleMenu(){
+    document.getElementById('nav-links').classList.toggle('open');
+    document.getElementById('hamburger').classList.toggle('open');
+  }
+  function closeMenu(){
+    document.getElementById('nav-links').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('open');
+  }
+</script>
+</body>
+</html>
