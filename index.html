@@ -36,10 +36,10 @@
   .btn-row{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;}
 
   /* Cloud animation scene */
-  .cloud-scene{position:relative;width:100%;height:50vh;overflow:hidden;background:transparent;margin:0;}
+  .cloud-scene{position:relative;width:100%;height:50vh;overflow:visible;background:transparent;margin:0;}
   .cloud-scene img{position:absolute;pointer-events:none;}
   .cloud-bg{width:140%;left:-20%;top:0;z-index:1;}
-  .cloud-moon{z-index:2;width:clamp(400px,80vw,900px);left:50%;opacity:0;will-change:transform,opacity;position:absolute;bottom:0;top:auto;transform:translateX(-50%) translateY(100%);}
+  .cloud-moon{z-index:2;width:clamp(180px,25vw,380px);left:0;opacity:0;will-change:transform,opacity;position:absolute;bottom:0;top:auto;}
   .cloud-fg{width:140%;left:-20%;bottom:0;top:auto;z-index:3;}
 
   .divider{height:4px;background:linear-gradient(90deg,var(--red2),var(--green2),var(--red2));opacity:.6;}
@@ -90,10 +90,10 @@
     .nav-links .nav-outside{display:inline-block;}
     .hero-meta{flex-direction:column;align-items:flex-start;padding-left:10%;}
     .btn-outline{margin:14px 0 0 0;display:block;text-align:center;}
-    .cloud-scene{height:33vh;}
+    .cloud-scene{height:33vh;overflow:visible;}
     .cloud-bg{width:220%;left:-60%;}
     .cloud-fg{width:220%;left:-60%;}
-    .cloud-moon{width:clamp(300px,90vw,500px);}
+    .cloud-moon{width:clamp(120px,28vw,240px);}
   }
 </style>
 </head>
@@ -255,18 +255,23 @@
     const raw = (winH - rect.top) / (winH + rect.height);
     const p = Math.min(Math.max(raw, 0), 1);
 
+    const sceneW = scene.offsetWidth;
+    const moonW = moon.offsetWidth;
     const sceneH = scene.offsetHeight;
     const moonH = moon.offsetHeight;
 
-    // x: travels from far left to far right across full section width
-    const xVw = -60 + (p * 120); // -60vw to +60vw
-    // y: sine arc — rises from buried, peaks at center, sets back down
-    const riseAmount = sceneH + moonH * 0.5;
-    const yPx = riseAmount - (Math.sin(p * Math.PI) * riseAmount);
+    // x: starts off screen left, ends off screen right
+    const startX = -moonW;                        // fully off left edge
+    const endX = sceneW;                          // fully off right edge
+    const xPx = startX + (p * (endX - startX));  // linear left to right
 
-    const op = p < 0.05 ? p / 0.05 : p > 0.95 ? (1 - p) / 0.05 : 1;
+    // y: sine arc — buried below at start and end, rises high above clouds at peak
+    const riseAmount = sceneH * 1.8 + moonH;     // rises 1.8x scene height above bottom
+    const yPx = moonH - (Math.sin(p * Math.PI) * riseAmount);
 
-    moon.style.transform = `translateX(calc(-50% + ${xVw}vw)) translateY(${yPx}px)`;
+    const op = p < 0.04 ? p / 0.04 : p > 0.96 ? (1 - p) / 0.04 : 1;
+
+    moon.style.transform = `translateX(${xPx}px) translateY(${yPx}px)`;
     moon.style.opacity = op;
   }
 
