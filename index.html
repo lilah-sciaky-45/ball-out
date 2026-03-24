@@ -255,20 +255,15 @@
     const raw = (winH - rect.top) / (winH * 2.5);
     const p = Math.min(Math.max(raw, 0), 1);
 
-    // Arc path: moon travels in a half circle from left bottom → top center → right bottom
-    const angle = Math.PI * p; // 0 = left, PI = right
-    const arcW = 35; // horizontal radius in vw
-    const arcH = 120; // vertical rise in % of scene height
-    const sceneH = scene.offsetHeight;
+    // True half-circle arc: left → up → right
+    // x: moves linearly from -35vw to +35vw
+    // y: sine curve peaks at center, starts and ends at bottom
+    const xVw = -35 + (p * 70);                          // -35vw to +35vw
+    const yPx = -(Math.sin(p * Math.PI) * scene.offsetHeight * 1.1); // 0 → peak → 0
 
-    const x = -arcW + (Math.sin(angle) * arcW * 2 - arcW) + arcW;
-    // x goes: starts at -arcW, peaks at 0 (center), ends at +arcW
-    const xPos = -arcW + (p * arcW * 2); // linear left to right
-    const yPos = -(Math.sin(angle) * sceneH * 0.9); // arc up and back down
+    const op = p < 0.04 ? p / 0.04 : p > 0.96 ? (1 - p) / 0.04 : 1;
 
-    const op = p < 0.05 ? p / 0.05 : p > 0.95 ? (1 - p) / 0.05 : 1;
-
-    moon.style.transform = `translateX(calc(-50% + ${xPos}vw)) translateY(${yPos}px)`;
+    moon.style.transform = `translateX(calc(-50% + ${xVw}vw)) translateY(${yPx}px)`;
     moon.style.opacity = op;
   }
 
