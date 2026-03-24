@@ -263,14 +263,13 @@
     const sceneH = scene.offsetHeight;
     const moonH = moon.offsetHeight;
 
-    // x: starts off screen left, ends off screen right
-    const startX = -moonW;                        // fully off left edge
-    const endX = sceneW;                          // fully off right edge
-    const xPx = startX + (p * (endX - startX));  // linear left to right
+    // x: starts off left edge, ends off right edge
+    const xPx = -moonW + (p * (sceneW + moonW * 2));
 
-    // y: sine arc — buried below at start and end, rises high above clouds at peak
-    const riseAmount = sceneH * 1.8 + moonH;     // rises 1.8x scene height above bottom
-    const yPx = moonH - (Math.sin(p * Math.PI) * riseAmount);
+    // y: low arc — peaks at 40% of scene height above the bottom
+    // starts and ends buried at the bottom
+    const peakRise = sceneH * 0.5; // only rises 50% of scene height
+    const yPx = (sceneH - moonH * 0.3) - (Math.sin(p * Math.PI) * peakRise);
 
     const op = p < 0.04 ? p / 0.04 : p > 0.96 ? (1 - p) / 0.04 : 1;
 
