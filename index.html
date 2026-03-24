@@ -20,8 +20,12 @@
   .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:120px 5% 80px;position:relative;overflow:hidden;background:linear-gradient(160deg,#1a2e1a 0%,#0f0f0f 40%,#1a0a0a 100%);}
   .hero-bg-text{position:absolute;font-family:'Bebas Neue',sans-serif;font-size:clamp(120px,28vw,260px);color:rgba(74,124,63,0.08);top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;letter-spacing:10px;line-height:1;}
   .hero-content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;}
-  .hero-ball-row{display:flex;justify-content:center;padding:0 0 0 0;overflow:hidden;background:linear-gradient(160deg,#1a2e1a 0%,#0f0f0f 40%,#1a0a0a 100%);}
-  .hero-scroll-ball{width:clamp(200px,35vw,440px);display:block;will-change:transform,opacity;transform:translateX(-60px);opacity:0;transition:transform 0.15s linear,opacity 0.15s linear;}
+  /* Cloud animation scene */
+  .cloud-scene{position:relative;width:100%;height:320px;overflow:hidden;background:transparent;margin:0;}
+  .cloud-scene img{position:absolute;width:100%;left:0;pointer-events:none;}
+  .cloud-bg{top:40px;z-index:1;}
+  .cloud-moon{z-index:2;width:clamp(120px,18vw,260px);left:50%;transform:translateX(-50%) translateY(140px);opacity:0;will-change:transform,opacity;}
+  .cloud-fg{bottom:0;top:auto;z-index:3;}
   .hero-logo-wrap{margin-bottom:30px;}
   .hero-logo-wrap img{width:clamp(180px,35vw,320px);filter:drop-shadow(0 8px 32px rgba(192,57,43,0.4));}
   .badge{background:var(--red);color:var(--cream);font-size:.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:6px 18px;border-radius:2px;margin-bottom:22px;display:inline-block;}
@@ -125,11 +129,14 @@
   </div>
 </section>
 
-<!-- Ball animates between hero and divider -->
-<div class="hero-ball-row">
-  <img class="hero-scroll-ball" id="scroll-ball"
-    src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/Moon_logo.png"
-    alt="Ball Out basketball"/>
+<!-- Layered cloud + moon animation scene -->
+<div class="cloud-scene" id="cloud-scene">
+  <!-- Layer 1: background clouds (behind ball) -->
+  <img class="cloud-bg" src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/background_clouds.png" alt=""/>
+  <!-- Layer 2: the moon/ball (animates on scroll) -->
+  <img class="cloud-moon" id="anim-moon" src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/animated_moon.png" alt=""/>
+  <!-- Layer 3: foreground clouds (in front of ball) -->
+  <img class="cloud-fg" src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/foreground_clouds.png" alt=""/>
 </div>
 
 <div class="divider"></div>
@@ -238,19 +245,45 @@
 </footer>
 
 <script>
-  // Scroll animation — ball drifts left to right as user scrolls past it
-  const ball = document.getElementById('scroll-ball');
-  const ballRow = ball.parentElement;
+  // Moon rise, travel, and set animation tied to scroll
+  const moon = document.getElementById('anim-moon');
+  const scene = document.getElementById('cloud-scene');
+
   window.addEventListener('scroll', () => {
-    const rect = ballRow.getBoundingClientRect();
+    const rect = scene.getBoundingClientRect();
     const winH = window.innerHeight;
-    // progress: 0 when element enters bottom of screen, 1 when it leaves top
-    const progress = Math.min(Math.max((winH - rect.top) / (winH + rect.height), 0), 1);
-    const x = -80 + (progress * 160); // moves from -80px to +80px
-    const rot = -10 + (progress * 20);
-    const op = Math.min(progress * 2, 1);
-    ball.style.transform = `translateX(${x}px) rotate(${rot}deg)`;
-    ball.style.opacity = op;
+    // progress: 0 = scene just entered viewport bottom, 1 = scene leaving top
+    const raw = (winH - rect.top) / (winH + rect.height);
+    const p = Math.min(Math.max(raw, 0), 1);
+
+    // Phase 1 (0 - 0.3): rise up from below clouds
+    // Phase 2 (0.3 - 0.7): travel left to right
+    // Phase 3 (0.7 - 1.0): set back down
+
+    let x, y, op;
+
+    if (p < 0.3) {
+      // Rising: start below center, move up
+      const t = p / 0.3;
+      x = 0;
+      y = 160 - (t * 160); // drops from +160px to 0
+      op = t;
+    } else if (p < 0.7) {
+      // Traveling: move from left to right
+      const t = (p - 0.3) / 0.4;
+      x = -45 + (t * 90); // vw units, -45vw to +45vw
+      y = 0;
+      op = 1;
+    } else {
+      // Setting: move back down
+      const t = (p - 0.7) / 0.3;
+      x = 45;
+      y = t * 160;
+      op = 1 - t;
+    }
+
+    moon.style.transform = `translateX(calc(-50% + ${x}vw)) translateY(${y}px)`;
+    moon.style.opacity = op;
   });
 
   function toggleMenu(){
