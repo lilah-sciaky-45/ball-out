@@ -35,13 +35,12 @@
   .btn-green:hover{background:var(--green2);transform:translateY(-2px);}
   .btn-row{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;}
 
-  /* Cloud animation scene */
-  .cloud-scene-wrapper{overflow:hidden;width:100%;position:relative;}
-  .cloud-scene{position:relative;width:100%;height:50vh;overflow:visible;background:transparent;margin:0;}
-  .cloud-scene img{position:absolute;pointer-events:none;}
-  .cloud-bg{width:140%;left:-20%;top:0;z-index:1;}
-  .cloud-moon{z-index:2;width:clamp(180px,25vw,380px);left:0;opacity:0;will-change:transform,opacity;position:absolute;bottom:0;top:auto;}
-  .cloud-fg{width:140%;left:-20%;bottom:0;top:auto;z-index:3;}
+  /* Cloud scene */
+  .cloud-scene-wrapper{width:100%;overflow:hidden;position:relative;height:50vh;}
+  .cloud-layer{position:absolute;width:140%;left:-20%;pointer-events:none;}
+  .cloud-bg{top:0;z-index:1;}
+  .cloud-fg{bottom:0;z-index:3;}
+  .cloud-moon{position:absolute;z-index:2;width:220px;bottom:0;left:0;opacity:1;will-change:transform;}
 
   .divider{height:4px;background:linear-gradient(90deg,var(--red2),var(--green2),var(--red2));opacity:.6;}
   section{padding:90px 5%;}
@@ -91,10 +90,9 @@
     .nav-links .nav-outside{display:inline-block;}
     .hero-meta{flex-direction:column;align-items:flex-start;padding-left:10%;}
     .btn-outline{margin:14px 0 0 0;display:block;text-align:center;}
-    .cloud-scene{height:33vh;overflow:visible;}
-    .cloud-bg{width:220%;left:-60%;}
-    .cloud-fg{width:220%;left:-60%;}
-    .cloud-moon{width:clamp(120px,28vw,240px);}
+    .cloud-scene-wrapper{height:33vh;}
+    .cloud-layer{width:220%;left:-60%;}
+    .cloud-moon{width:140px;}
   }
 </style>
 </head>
@@ -134,13 +132,11 @@
   </div>
 </section>
 
-<!-- Layered cloud + moon animation scene -->
-<div class="cloud-scene-wrapper">
-  <div class="cloud-scene" id="cloud-scene">
-    <img class="cloud-bg" src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/Background_clouds.png" alt=""/>
-    <img class="cloud-moon" id="anim-moon" src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/animated_moon.png" alt=""/>
-    <img class="cloud-fg" src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/Foreground_clouds.png" alt=""/>
-  </div>
+<!-- Cloud scene -->
+<div class="cloud-scene-wrapper" id="cloud-wrapper">
+  <img class="cloud-layer cloud-bg" src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/Background_clouds.png" alt=""/>
+  <img class="cloud-moon" id="anim-moon" src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/animated_moon.png" alt=""/>
+  <img class="cloud-layer cloud-fg" src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/Foreground_clouds.png" alt=""/>
 </div>
 
 <div class="divider"></div>
@@ -250,31 +246,34 @@
 
 <script>
   const moon = document.getElementById('anim-moon');
-  const scene = document.getElementById('cloud-scene');
+  const wrapper = document.getElementById('cloud-wrapper');
 
   function animateMoon() {
-    const rect = scene.getBoundingClientRect();
+    const rect = wrapper.getBoundingClientRect();
     const winH = window.innerHeight;
+    // p goes 0 to 1 as the section scrolls through the viewport
     const raw = (winH - rect.top) / (winH + rect.height);
     const p = Math.min(Math.max(raw, 0), 1);
 
-    const sceneW = scene.offsetWidth;
-    const sceneH = scene.offsetHeight;
-    const moonW = moon.offsetWidth;
-    const moonH = moon.offsetHeight;
+    const W = wrapper.offsetWidth;   // scene width
+    const H = wrapper.offsetHeight;  // scene height
+    const mW = moon.offsetWidth;     // moon width
+    const mH = moon.offsetHeight;    // moon height
 
-    // x: left edge to right edge
-    const xPx = -moonW + (p * (sceneW + moonW * 2));
+    // x: starts fully off left (-mW), ends fully off right (W)
+    const x = -mW + p * (W + mW * 2);
 
-    // y: sits near bottom of scene, arcs up by 40% of scene height at peak
-    const baseY = sceneH - moonH;           // resting position at bottom
-    const peakRise = sceneH * 0.4;          // rises 40% of scene height
-    const yPx = baseY - (Math.sin(p * Math.PI) * peakRise);
+    // y: arc using sine — bottom at start/end, peaks at center
+    // peak is 70% up from bottom of wrapper
+    const bottomY = H - mH;
+    const peakY = H * 0.1;  // 10% from top = 90% up
+    const y = bottomY - Math.sin(p * Math.PI) * (bottomY - peakY);
 
-    const op = p < 0.04 ? p / 0.04 : p > 0.96 ? (1 - p) / 0.04 : 1;
-
-    moon.style.transform = `translateX(${xPx}px) translateY(${yPx}px)`;
-    moon.style.opacity = op;
+    moon.style.left = '0';
+    moon.style.bottom = 'auto';
+    moon.style.top = '0';
+    moon.style.transform = `translate(${x}px, ${y}px)`;
+    moon.style.opacity = '1';
   }
 
   window.addEventListener('scroll', animateMoon);
