@@ -252,18 +252,16 @@
   function animateMoon() {
     const rect = scene.getBoundingClientRect();
     const winH = window.innerHeight;
-    // Progress tied to how far we've scrolled PAST the scene
     const raw = (winH - rect.top) / (winH + rect.height);
     const p = Math.min(Math.max(raw, 0), 1);
 
     const sceneH = scene.offsetHeight;
     const moonH = moon.offsetHeight;
 
-    // x: moves from left (-35vw) to right (+35vw)
-    const xVw = -35 + (p * 70);
-    // y: starts buried below (100%), rises to peek above clouds, returns to buried
-    // sin(p*PI) = 0→1→0, so moon rises and falls within scene
-    const riseAmount = sceneH + moonH * 0.3; // how far it travels up
+    // x: travels from far left to far right across full section width
+    const xVw = -60 + (p * 120); // -60vw to +60vw
+    // y: sine arc — rises from buried, peaks at center, sets back down
+    const riseAmount = sceneH + moonH * 0.5;
     const yPx = riseAmount - (Math.sin(p * Math.PI) * riseAmount);
 
     const op = p < 0.05 ? p / 0.05 : p > 0.95 ? (1 - p) / 0.05 : 1;
