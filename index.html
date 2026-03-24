@@ -27,24 +27,28 @@
   .nav-links a{color:var(--cream);text-decoration:none;font-size:.82rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;transition:.2s;}
   .nav-links a:hover{color:var(--red);}
 
-  /* HERO */
-  .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:120px 5% 80px;position:relative;overflow:hidden;
-    background: linear-gradient(160deg, #1a2e1a 0%, #0f0f0f 40%, #1a0a0a 100%);
-  }
-  .hero-bg-text{position:absolute;font-family:'Bebas Neue',sans-serif;font-size:clamp(120px,28vw,260px);color:rgba(74,124,63,0.08);top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;letter-spacing:10px;line-height:1;}
-  .hero-logo-wrap{margin-bottom:30px;}
-  .hero-logo-wrap img{width:clamp(180px,35vw,320px);filter:drop-shadow(0 8px 32px rgba(192,57,43,0.4));}
-  .badge{background:var(--red);color:var(--cream);font-size:.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:6px 18px;border-radius:2px;margin-bottom:22px;display:inline-block;}
-  .hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,12vw,9rem);color:var(--cream);line-height:.9;letter-spacing:6px;text-shadow:4px 4px 0 var(--red2);}
-  .hero h1 span{color:var(--red);}
-  .hero h2{font-family:'Anton',sans-serif;font-size:clamp(1rem,2.5vw,1.6rem);color:var(--sky);letter-spacing:8px;margin:14px 0 36px;text-transform:uppercase;}
-  .hero-meta{display:flex;gap:36px;justify-content:center;flex-wrap:wrap;margin-bottom:46px;}
-  .hero-meta span{font-size:.9rem;color:var(--cream);font-weight:600;letter-spacing:1px;border-left:3px solid var(--red);padding-left:12px;}
-  .hero-meta span em{color:var(--sky);font-style:normal;display:block;font-size:.78rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:2px;}
-  .btn{display:inline-block;background:var(--red);color:var(--cream);font-weight:700;font-size:.9rem;letter-spacing:2px;padding:16px 42px;border-radius:2px;text-decoration:none;text-transform:uppercase;transition:.2s;cursor:pointer;border:none;font-family:'Inter',sans-serif;}
-  .btn:hover{background:var(--red2);transform:translateY(-2px);}
-  .btn-outline{background:transparent;color:var(--green);border:2px solid var(--green);margin-left:14px;}
-  .btn-outline:hover{background:var(--green);color:var(--cream);}
+  
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg-text">BALL OUT</div>
+  <div class="hero-logo-wrap">
+    <img src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/BallOut.png" alt="Ball Out Logo"/>
+  </div>
+  <div class="badge">3v3 Basketball Tournament</div>
+  <h1>SHOW UP.<br><span>SHOW OUT.</span></h1>
+  <h2>May 2nd, 2026</h2>
+  <div class="hero-meta">
+    <span><em>Date</em>Saturday, May 2nd 2026</span>
+    <span><em>Format</em>3-on-3 Basketball</span>
+    <span><em>Location</em>[Venue — TBA]</span>
+  </div>
+  <div>
+    <a href="#registration" class="btn">Register Your Team</a>
+    <a href="#about" class="btn btn-outline">Learn More</a>
+  </div>
+</section>
+
+<div class="divider"></div>
 
   /* DIVIDER */
   .divider{height:4px;background:linear-gradient(90deg,var(--red2),var(--green2),var(--red2));opacity:.6;}
