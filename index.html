@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Ball Out | May 2nd 2026</title>
-<link rel="icon" type="image/png" href="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/CherryFavicon.png">
+<link rel="icon" type="image/png" href="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/animated_moon.png">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Anton&family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
@@ -40,7 +40,7 @@
   .cloud-layer{position:absolute;width:140%;left:-20%;pointer-events:none;}
   .cloud-bg{top:0;z-index:1;}
   .cloud-fg{bottom:0;z-index:3;}
-  .cloud-moon{position:absolute;z-index:2;width:300px;bottom:0;left:0;opacity:1;will-change:transform;}
+  .cloud-moon{position:absolute;z-index:2;width:220px;bottom:0;left:0;opacity:1;will-change:transform;}
 
   .divider{height:4px;background:linear-gradient(90deg,var(--red2),var(--green2),var(--red2));opacity:.6;}
   section{padding:90px 5%;}
@@ -92,7 +92,7 @@
     .btn-outline{margin:14px 0 0 0;display:block;text-align:center;}
     .cloud-scene-wrapper{height:33vh;}
     .cloud-layer{width:220%;left:-60%;}
-    .cloud-moon{width:250px;}
+    .cloud-moon{width:140px;}
   }
 </style>
 </head>
@@ -118,7 +118,7 @@
   <div class="hero-bg-text">BALL OUT</div>
   <div class="hero-content">
     <div class="badge">3v3 Basketball Party — Portland, OR</div>
-    <h1>BALLER<br><span>PARTY</span></h1>
+    <h1>BALL OUT<br><span>WAREHOUSE</span></h1>
     <h2>May 2nd, 2026, 3-6PM</h2>
     <div class="hero-meta">
       <span><em>Date</em>Saturday, May 2nd 2026</span>
@@ -251,27 +251,25 @@
   function animateMoon() {
     const rect = wrapper.getBoundingClientRect();
     const winH = window.innerHeight;
-    // p goes 0 to 1 as the section scrolls through the viewport
     const raw = (winH - rect.top) / (winH + rect.height);
     const p = Math.min(Math.max(raw, 0), 1);
 
-    const W = wrapper.offsetWidth;   // scene width
-    const H = wrapper.offsetHeight;  // scene height
-    const mW = moon.offsetWidth;     // moon width
-    const mH = moon.offsetHeight;    // moon height
+    const W = wrapper.offsetWidth;
+    const H = wrapper.offsetHeight;
+    const mW = moon.offsetWidth;
+    const mH = moon.offsetHeight;
 
-    // x: starts fully off left (-mW), ends fully off right (W)
+    // x: fully off left → fully off right
     const x = -mW + p * (W + mW * 2);
 
-    // y: arc using sine — bottom at start/end, peaks at center
-    // peak is 70% up from bottom of wrapper
-    const bottomY = H - mH;
-    const peakY = H * 0.1;  // 10% from top = 90% up
-    const y = bottomY - Math.sin(p * Math.PI) * (bottomY - peakY);
+    // y: starts at bottom, arcs up to 50% of scene height, returns to bottom
+    const bottomY = H - mH;          // sitting at the bottom
+    const arcHeight = H * 0.5;       // peak is 50% of scene height above bottom
+    const y = bottomY - (Math.sin(p * Math.PI) * arcHeight);
 
     moon.style.left = '0';
-    moon.style.bottom = 'auto';
     moon.style.top = '0';
+    moon.style.bottom = 'auto';
     moon.style.transform = `translate(${x}px, ${y}px)`;
     moon.style.opacity = '1';
   }
