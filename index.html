@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Ball Out | May 2nd 2026</title>
-<link rel="icon" type="image/png" href="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/animated_moon.png">
+<link rel="icon" type="image/png" href="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/CherryFavicon.png">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Anton&family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
@@ -40,7 +40,7 @@
   .cloud-layer{position:absolute;width:140%;left:-20%;pointer-events:none;}
   .cloud-bg{top:0;z-index:1;}
   .cloud-fg{bottom:0;z-index:3;}
-  .cloud-moon{position:absolute;z-index:2;width:350px;bottom:0;left:0;opacity:1;will-change:transform;}
+  .cloud-moon{position:absolute;z-index:2;width:220px;bottom:0;left:0;opacity:1;will-change:transform;}
 
   .divider{height:4px;background:linear-gradient(90deg,var(--red2),var(--green2),var(--red2));opacity:.6;}
   section{padding:90px 5%;}
@@ -92,7 +92,7 @@
     .btn-outline{margin:14px 0 0 0;display:block;text-align:center;}
     .cloud-scene-wrapper{height:33vh;}
     .cloud-layer{width:220%;left:-60%;}
-    .cloud-moon{width:220px;}
+    .cloud-moon{width:140px;}
   }
 </style>
 </head>
@@ -259,18 +259,21 @@
     const mW = moon.offsetWidth;
     const mH = moon.offsetHeight;
 
-    // x: fully off left → fully off right
+    // x: starts fully off left, ends fully off right
     const x = -mW + p * (W + mW * 2);
 
-    // y: starts at bottom, arcs up to 50% of scene height, returns to bottom
-    const bottomY = H - mH;          // sitting at the bottom
-    const arcHeight = H * 0.5;       // peak is 50% of scene height above bottom
+    // y: bottomY at p=0 and p=1, peaks at p=0.5
+    // clamp y so it never goes above the scene top
+    const bottomY = H - mH;
+    const arcHeight = Math.min(H * 0.55, bottomY); // never exceeds scene bounds
     const y = bottomY - (Math.sin(p * Math.PI) * arcHeight);
+
+    const rot = p * 360;
 
     moon.style.left = '0';
     moon.style.top = '0';
     moon.style.bottom = 'auto';
-    moon.style.transform = `translate(${x}px, ${y}px)`;
+    moon.style.transform = `translate(${x}px, ${y}px) rotate(${rot}deg)`;
     moon.style.opacity = '1';
   }
 
