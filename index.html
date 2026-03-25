@@ -57,14 +57,25 @@
   .form-header p{font-size:.85rem;color:var(--muted);margin-top:4px;}
   .form-placeholder{min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:40px;text-align:center;}
   .form-placeholder p{color:var(--muted);font-size:.88rem;max-width:400px;line-height:1.6;}
+
+  /* Contact form */
   .other-signups{background:#111;}
-  .signups-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;}
-  .signup-card{background:var(--card);border:1px solid #222;border-radius:2px;overflow:hidden;}
-  .signup-card-header{padding:20px 24px;border-bottom:2px solid var(--green2);background:linear-gradient(135deg,#0e1a0e,#0f0f0f);}
-  .signup-card-header h4{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--green);letter-spacing:1px;}
-  .signup-card-header p{font-size:.78rem;color:var(--muted);margin-top:3px;}
-  .signup-form-area{min-height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:28px;text-align:center;}
-  .signup-form-area p{color:var(--muted);font-size:.83rem;max-width:240px;line-height:1.6;}
+  .contact-form-wrap{background:var(--card);border:1px solid #222;border-radius:2px;overflow:hidden;max-width:680px;}
+  .contact-form-header{background:linear-gradient(135deg,#0e0a1a,#0f0f0f);padding:26px 32px;border-bottom:3px solid var(--green2);}
+  .contact-form-header h3{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--green);letter-spacing:1px;}
+  .contact-form-header p{font-size:.85rem;color:var(--muted);margin-top:4px;}
+  .contact-form-body{padding:32px;}
+  .field{margin-bottom:20px;}
+  .field label{display:block;font-size:.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+  .field input,.field select,.field textarea{width:100%;background:#0f0e0c;border:1px solid #333;color:var(--cream);padding:12px 16px;border-radius:2px;font-family:'Inter',sans-serif;font-size:.9rem;outline:none;transition:.2s;-webkit-appearance:none;}
+  .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--green);}
+  .field select{cursor:pointer;}
+  .field select option{background:#0f0e0c;}
+  .field textarea{min-height:120px;resize:vertical;}
+  .form-success{display:none;text-align:center;padding:30px 0;}
+  .form-success h4{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--green);margin-bottom:8px;}
+  .form-success p{color:var(--muted);font-size:.9rem;}
+
   footer{background:#080808;border-top:3px solid var(--red2);padding:54px 5% 30px;}
   .footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:40px;margin-bottom:40px;}
   .footer-brand .logo{font-size:2.4rem;}
@@ -187,25 +198,44 @@
 
 <div class="divider"></div>
 
+<!-- GET INVOLVED -->
 <section class="other-signups" id="other">
   <div class="section-label">Get Involved</div>
   <div class="section-title">More Ways To<br><span>Be Part Of It</span></div>
-  <div class="signups-grid">
-    <div class="signup-card">
-      <div class="signup-card-header"><h4>Vendors</h4><p>Sell food, merch, or products at the event</p></div>
-      <div class="signup-form-area"><p>Want to set up a booth? Fill out our vendor application.</p><a href="#" target="_blank" class="btn-green" style="font-size:.8rem;padding:12px 26px;border-radius:2px;text-decoration:none;font-weight:700;letter-spacing:2px;text-transform:uppercase;">Vendor Sign-Up</a></div>
+  <div class="contact-form-wrap">
+    <div class="contact-form-header">
+      <h3>Get In Touch</h3>
+      <p>Vendors, sponsors, refs, and staff — fill this out and we'll get back to you.</p>
     </div>
-    <div class="signup-card">
-      <div class="signup-card-header"><h4>Partnerships</h4><p>Sponsor or partner with Ball Out 2026</p></div>
-      <div class="signup-form-area"><p>Want to sponsor the event or explore a partnership?</p><a href="#" target="_blank" class="btn-green" style="font-size:.8rem;padding:12px 26px;border-radius:2px;text-decoration:none;font-weight:700;letter-spacing:2px;text-transform:uppercase;">Partner With Us</a></div>
+    <div class="contact-form-body" id="contact-form-body">
+      <div class="field">
+        <label>I'm interested in</label>
+        <select id="inquiry-type">
+          <option value="" disabled selected>Select one...</option>
+          <option value="Vendor">Vendor — selling food, merch, or products</option>
+          <option value="Partnership">Partnership — sponsoring or partnering</option>
+          <option value="Referee">Referee — officiating games</option>
+          <option value="Staff">Staff / Server — helping run the event</option>
+          <option value="Other">Something else</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Your Name</label>
+        <input type="text" id="contact-name" placeholder="First and last name"/>
+      </div>
+      <div class="field">
+        <label>Your Email</label>
+        <input type="email" id="contact-email" placeholder="So we can get back to you"/>
+      </div>
+      <div class="field">
+        <label>Message</label>
+        <textarea id="contact-message" placeholder="Tell us a little about what you're thinking..."></textarea>
+      </div>
+      <button class="btn-green" style="width:100%;font-size:.9rem;" onclick="submitContact()">Send It</button>
     </div>
-    <div class="signup-card">
-      <div class="signup-card-header"><h4>Referees</h4><p>Officiate games on the day</p></div>
-      <div class="signup-form-area"><p>Experienced refs wanted. Apply to officiate at Ball Out 2026.</p><a href="#" target="_blank" class="btn-green" style="font-size:.8rem;padding:12px 26px;border-radius:2px;text-decoration:none;font-weight:700;letter-spacing:2px;text-transform:uppercase;">Referee Sign-Up</a></div>
-    </div>
-    <div class="signup-card">
-      <div class="signup-card-header"><h4>Servers / Staff</h4><p>Help run the event as part of our crew</p></div>
-      <div class="signup-form-area"><p>Looking for event-day staff to help keep things running smoothly.</p><a href="#" target="_blank" class="btn-green" style="font-size:.8rem;padding:12px 26px;border-radius:2px;text-decoration:none;font-weight:700;letter-spacing:2px;text-transform:uppercase;">Staff Sign-Up</a></div>
+    <div class="form-success" id="contact-success">
+      <h4>We Got You.</h4>
+      <p>Thanks for reaching out — we'll be in touch soon.</p>
     </div>
   </div>
 </section>
@@ -221,13 +251,11 @@
       <a href="#about">The Event</a>
       <a href="#registration">Team Sign-Up</a>
       <a href="#experience">The Vibe</a>
-      <a href="#other">Vendors & Partners</a>
+      <a href="#other">Get Involved</a>
       <a href="outside.html">Ball Out-side</a>
     </div>
     <div class="footer-col">
       <h5>Contact</h5>
-      <p>[your@email.com]</p>
-      <p>[Phone Number]</p>
       <p>Portland, Oregon</p>
     </div>
     <div class="footer-col">
@@ -242,6 +270,25 @@
 </footer>
 
 <script>
+  function submitContact(){
+    const type = document.getElementById('inquiry-type').value;
+    const name = document.getElementById('contact-name').value.trim();
+    const email = document.getElementById('contact-email').value.trim();
+    const msg = document.getElementById('contact-message').value.trim();
+
+    if(!type || !name || !email){
+      alert('Please fill out all required fields.');
+      return;
+    }
+
+    const subject = encodeURIComponent(`Ball Out 2026 — ${type} Inquiry from ${name}`);
+    const body = encodeURIComponent(`Inquiry Type: ${type}\nName: ${name}\nEmail: ${email}\n\nMessage:\n${msg}`);
+    window.location.href = `mailto:Lrsciaky@gmail.com?subject=${subject}&body=${body}`;
+
+    document.getElementById('contact-form-body').style.display = 'none';
+    document.getElementById('contact-success').style.display = 'block';
+  }
+
   const moon = document.getElementById('anim-moon');
   const wrapper = document.getElementById('cloud-wrapper');
 
@@ -250,22 +297,15 @@
     const winH = window.innerHeight;
     const raw = (winH - rect.top) / (winH + rect.height);
     const p = Math.min(Math.max(raw, 0), 1);
-
     const W = wrapper.offsetWidth;
     const H = wrapper.offsetHeight;
     const mW = moon.offsetWidth;
     const mH = moon.offsetHeight;
-
-    const startX = -mW;
-    const endX = W - mW;
-    const x = startX + p * (endX - startX);
-
+    const x = -mW + p * (W - mW + mW * 2);
     const bottomY = H - mH;
     const arcHeight = Math.min(H * 0.55, bottomY);
     const y = bottomY - (Math.sin(p * Math.PI) * arcHeight);
-
     const rot = p * 360;
-
     moon.style.left = '0';
     moon.style.top = '0';
     moon.style.bottom = 'auto';
