@@ -57,8 +57,6 @@
   .form-header p{font-size:.85rem;color:var(--muted);margin-top:4px;}
   .form-placeholder{min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:40px;text-align:center;}
   .form-placeholder p{color:var(--muted);font-size:.88rem;max-width:400px;line-height:1.6;}
-
-  /* Contact form */
   .other-signups{background:#111;}
   .contact-form-wrap{background:var(--card);border:1px solid #222;border-radius:2px;overflow:hidden;max-width:680px;}
   .contact-form-header{background:linear-gradient(135deg,#0e0a1a,#0f0f0f);padding:26px 32px;border-bottom:3px solid var(--green2);}
@@ -75,7 +73,6 @@
   .form-success{display:none;text-align:center;padding:30px 0;}
   .form-success h4{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--green);margin-bottom:8px;}
   .form-success p{color:var(--muted);font-size:.9rem;}
-
   footer{background:#080808;border-top:3px solid var(--red2);padding:54px 5% 30px;}
   .footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:40px;margin-bottom:40px;}
   .footer-brand .logo{font-size:2.4rem;}
@@ -127,7 +124,7 @@
   <div class="hero-bg-text">BALL OUT</div>
   <div class="hero-content">
     <img class="hero-logo" src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/Moon.png" alt="Ball Out Logo"/>
-    <div class="badge"> Queer 3v3 Basketball Party — Portland, OR</div>
+    <div class="badge">Queer 3v3 Basketball Party — Portland, OR</div>
     <h1>BALLER<br><span>PARTY</span></h1>
     <h2>May 2nd, 2026, 3-6PM</h2>
     <div class="hero-meta">
@@ -142,7 +139,7 @@
   </div>
 </section>
 
-<!-- Cloud scene -->
+<!-- Cloud scene 1 — ball moves LEFT to RIGHT -->
 <div class="cloud-scene-wrapper" id="cloud-wrapper">
   <img class="cloud-layer cloud-bg" src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/Background_clouds.png" alt=""/>
   <img class="cloud-moon" id="anim-moon" src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/animated_moon.png" alt=""/>
@@ -172,8 +169,8 @@
   <div class="form-container">
     <div class="form-header">
       <h3>Team Sign-Up — Ball Out 2026</h3>
-     <p>Fill out the form and lock in your team. Spots are limited.<br>
-<span style="color:var(--sky);">Who Can Play?</span> Queer, gay, trans, NB & ally ballers. This is a queer event for Size 6 Ballers.</p>
+      <p>Fill out the form and lock in your team. Spots are limited.<br>
+      <span style="color:var(--sky);">Who Can Play?</span> Queer, gay, trans, NB & ally ballers. This is a queer event for Size 6 Ballers.</p>
     </div>
     <div class="form-placeholder">
       <p>Ready to run? Sign up your squad and pay your entry fee below.</p>
@@ -184,6 +181,15 @@
     </div>
   </div>
 </section>
+
+<div class="divider"></div>
+
+<!-- Cloud scene 2 — ball moves RIGHT to LEFT -->
+<div class="cloud-scene-wrapper" id="cloud-wrapper-2">
+  <img class="cloud-layer cloud-bg" src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/Background_clouds.png" alt=""/>
+  <img class="cloud-moon" id="anim-moon-2" src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/animated_moon.png" alt=""/>
+  <img class="cloud-layer cloud-fg" src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/Foreground_clouds.png" alt=""/>
+</div>
 
 <div class="divider"></div>
 
@@ -276,20 +282,15 @@
     const name = document.getElementById('contact-name').value.trim();
     const email = document.getElementById('contact-email').value.trim();
     const msg = document.getElementById('contact-message').value.trim();
-
-    if(!type || !name || !email){
-      alert('Please fill out all required fields.');
-      return;
-    }
-
+    if(!type || !name || !email){alert('Please fill out all required fields.');return;}
     const subject = encodeURIComponent(`Ball Out 2026 — ${type} Inquiry from ${name}`);
     const body = encodeURIComponent(`Inquiry Type: ${type}\nName: ${name}\nEmail: ${email}\n\nMessage:\n${msg}`);
     window.location.href = `mailto:Lrsciaky@gmail.com?subject=${subject}&body=${body}`;
-
     document.getElementById('contact-form-body').style.display = 'none';
     document.getElementById('contact-success').style.display = 'block';
   }
 
+  // Cloud scene 1 — LEFT to RIGHT
   const moon = document.getElementById('anim-moon');
   const wrapper = document.getElementById('cloud-wrapper');
 
@@ -314,8 +315,35 @@
     moon.style.opacity = '1';
   }
 
-  window.addEventListener('scroll', animateMoon);
+  // Cloud scene 2 — RIGHT to LEFT
+  const moon2 = document.getElementById('anim-moon-2');
+  const wrapper2 = document.getElementById('cloud-wrapper-2');
+
+  function animateMoon2() {
+    const rect = wrapper2.getBoundingClientRect();
+    const winH = window.innerHeight;
+    const raw = (winH - rect.top) / (winH + rect.height);
+    const p = Math.min(Math.max(raw, 0), 1);
+    const W = wrapper2.offsetWidth;
+    const H = wrapper2.offsetHeight;
+    const mW = moon2.offsetWidth;
+    const mH = moon2.offsetHeight;
+    // Reverse x direction: starts at right, ends at left
+    const x = W + mW - p * (W - mW + mW * 2) - mW * 2;
+    const bottomY = H - mH;
+    const arcHeight = Math.min(H * 0.55, bottomY);
+    const y = bottomY - (Math.sin(p * Math.PI) * arcHeight);
+    const rot = -(p * 720); // reverse rotation too
+    moon2.style.left = '0';
+    moon2.style.top = '0';
+    moon2.style.bottom = 'auto';
+    moon2.style.transform = `translate(${x}px, ${y}px) rotate(${rot}deg)`;
+    moon2.style.opacity = '1';
+  }
+
+  window.addEventListener('scroll', () => { animateMoon(); animateMoon2(); });
   animateMoon();
+  animateMoon2();
 
   function toggleMenu(){
     document.getElementById('nav-links').classList.toggle('open');
