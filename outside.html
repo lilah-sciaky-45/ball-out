@@ -53,6 +53,7 @@
   .game-meta{display:flex;flex-wrap:wrap;gap:16px;margin-top:8px;}
   .game-meta span{font-size:.8rem;color:var(--muted);font-weight:600;letter-spacing:1px;text-transform:uppercase;}
   .game-meta span strong{color:var(--sky);}
+  .game-extra{font-size:.8rem;color:var(--green);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-top:8px;}
   .cal-links{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
   .cal-btn{font-size:.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--sky);border:1px solid var(--sky);padding:5px 12px;border-radius:2px;text-decoration:none;transition:.2s;}
   .cal-btn:hover{background:var(--sky);color:var(--dark);}
@@ -120,51 +121,54 @@
   <div class="section-title">The <span>Schedule</span></div>
   <div class="calendar-grid">
 
+    <!-- THIS SATURDAY — featured -->
     <div class="game-card game-card-featured">
-      <div class="next-up-label">Next Up</div>
+      <div class="next-up-label">This Saturday</div>
       <div class="game-info">
-        <h4 style="font-size:2.2rem;">Ball Out-side #1</h4>
+        <h4 style="font-size:2.2rem;">Irving Park</h4>
         <div class="game-meta" style="margin-top:12px;gap:20px;">
-          <span><strong>Date</strong> Saturday, April 5</span>
-          <span><strong>Time</strong> 2:00 PM</span>
-          <span><strong>Location</strong> Irving Park </span>
+          <span><strong>Date</strong> Saturday, March 28</span>
+          <span><strong>Time</strong> 1:30 PM – 4:00 PM</span>
+          <span><strong>Location</strong> Irving Park, Portland OR</span>
         </div>
+        <div class="game-extra">+ Live DJ</div>
         <div class="cal-links">
-          <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Ball+Out-side+%231&dates=20260405T140000/20260405T160000&details=Queer,+trans,+women,+NB+%26+ally+pickup+basketball.+Size+6+ball.&location=Irving+Park,+Portland+OR" target="_blank" class="cal-btn">+ Google Calendar</a>
-          <a href="data:text/calendar;charset=utf8,BEGIN:VCALENDAR%0AVERSION:2.0%0ABEGIN:VEVENT%0ADTSTART:20260405T140000%0ADTEND:20260405T160000%0ASUMMARY:Ball+Out-side+%231%0ADESCRIPTION:Queer%2C+trans%2C+women%2C+NB+%26+ally+pickup+basketball.+Size+6+ball.%0ALOCATION:Irving+Park%2C+Portland+OR%0AEND:VEVENT%0AEND:VCALENDAR" download="balloutside1.ics" class="cal-btn">+ Apple Calendar</a>
+          <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Ball+Out-side&dates=20260328T133000/20260328T160000&details=Queer,+trans,+women,+NB+%26+ally+pickup+basketball.+Size+6+ball.+Live+DJ!&location=Irving+Park,+Portland+OR" target="_blank" class="cal-btn">+ Google Calendar</a>
+          <a href="data:text/calendar;charset=utf8,BEGIN:VCALENDAR%0AVERSION:2.0%0ABEGIN:VEVENT%0ADTSTART:20260328T133000%0ADTEND:20260328T160000%0ASUMMARY:Ball+Out-side%0ADESCRIPTION:Queer%2C+trans%2C+women%2C+NB+%26+ally+pickup+basketball.+Size+6+ball.+Live+DJ!%0ALOCATION:Irving+Park%2C+Portland+OR%0AEND:VEVENT%0AEND:VCALENDAR" download="balloutside-mar28.ics" class="cal-btn">+ Apple Calendar</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- UPCOMING — smaller cards -->
+    <div class="game-card game-card-small">
+      <div class="game-info">
+        <h4>Irving Park</h4>
+        <div class="game-meta"><span><strong>Apr 4</strong> · 2:00 PM · Irving Park, Portland OR</span></div>
+        <div class="cal-links">
+          <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Ball+Out-side&dates=20260404T140000/20260404T160000&details=Queer,+trans,+women,+NB+%26+ally+pickup+basketball.+Size+6+ball.&location=Irving+Park,+Portland+OR" target="_blank" class="cal-btn cal-btn-sm">+ Google</a>
+          <a href="data:text/calendar;charset=utf8,BEGIN:VCALENDAR%0AVERSION:2.0%0ABEGIN:VEVENT%0ADTSTART:20260404T140000%0ADTEND:20260404T160000%0ASUMMARY:Ball+Out-side%0ADESCRIPTION:Queer%2C+trans%2C+women%2C+NB+%26+ally+pickup+basketball.%0ALOCATION:Irving+Park%2C+Portland+OR%0AEND:VEVENT%0AEND:VCALENDAR" download="balloutside-apr4.ics" class="cal-btn cal-btn-sm">+ Apple</a>
         </div>
       </div>
     </div>
 
     <div class="game-card game-card-small">
       <div class="game-info">
-        <h4>Ball Out-side #2</h4>
-        <div class="game-meta"><span><strong>Apr 12</strong> · 2:00 PM · Irving Park</span></div>
+        <h4>Irving Park</h4>
+        <div class="game-meta"><span><strong>Apr 11</strong> · 2:00 PM · Irving Park, Portland OR</span></div>
         <div class="cal-links">
-          <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Ball+Out-side+%232&dates=20260412T140000/20260412T160000&details=Queer,+trans,+women,+NB+%26+ally+pickup+basketball.+Size+6+ball.&location=Irving+Park,+Portland+OR" target="_blank" class="cal-btn cal-btn-sm">+ Google</a>
-          <a href="data:text/calendar;charset=utf8,BEGIN:VCALENDAR%0AVERSION:2.0%0ABEGIN:VEVENT%0ADTSTART:20260412T140000%0ADTEND:20260412T160000%0ASUMMARY:Ball+Out-side+%232%0ADESCRIPTION:Queer%2C+trans%2C+women%2C+NB+%26+ally+pickup+basketball.%0ALOCATION:Irving+Park%2C+Portland+OR%0AEND:VEVENT%0AEND:VCALENDAR" download="balloutside2.ics" class="cal-btn cal-btn-sm">+ Apple</a>
+          <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Ball+Out-side&dates=20260411T140000/20260411T160000&details=Queer,+trans,+women,+NB+%26+ally+pickup+basketball.+Size+6+ball.&location=Irving+Park,+Portland+OR" target="_blank" class="cal-btn cal-btn-sm">+ Google</a>
+          <a href="data:text/calendar;charset=utf8,BEGIN:VCALENDAR%0AVERSION:2.0%0ABEGIN:VEVENT%0ADTSTART:20260411T140000%0ADTEND:20260411T160000%0ASUMMARY:Ball+Out-side%0ADESCRIPTION:Queer%2C+trans%2C+women%2C+NB+%26+ally+pickup+basketball.%0ALOCATION:Irving+Park%2C+Portland+OR%0AEND:VEVENT%0AEND:VCALENDAR" download="balloutside-apr11.ics" class="cal-btn cal-btn-sm">+ Apple</a>
         </div>
       </div>
     </div>
 
     <div class="game-card game-card-small">
       <div class="game-info">
-        <h4>Ball Out-side #3</h4>
-        <div class="game-meta"><span><strong>Apr 19</strong> · 2:00 PM · Irving Park</span></div>
+        <h4>Irving Park</h4>
+        <div class="game-meta"><span><strong>Apr 18</strong> · 2:00 PM · Irving Park, Portland OR</span></div>
         <div class="cal-links">
-          <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Ball+Out-side+%233&dates=20260419T140000/20260419T160000&details=Queer,+trans,+women,+NB+%26+ally+pickup+basketball.+Size+6+ball.&location=Irving+Park,+Portland+OR" target="_blank" class="cal-btn cal-btn-sm">+ Google</a>
-          <a href="data:text/calendar;charset=utf8,BEGIN:VCALENDAR%0AVERSION:2.0%0ABEGIN:VEVENT%0ADTSTART:20260419T140000%0ADTEND:20260419T160000%0ASUMMARY:Ball+Out-side+%233%0ADESCRIPTION:Queer%2C+trans%2C+women%2C+NB+%26+ally+pickup+basketball.%0ALOCATION:Irving+Park%2C+Portland+OR%0AEND:VEVENT%0AEND:VCALENDAR" download="balloutside3.ics" class="cal-btn cal-btn-sm">+ Apple</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="game-card game-card-small">
-      <div class="game-info">
-        <h4>Ball Out-side #4</h4>
-        <div class="game-meta"><span><strong>Apr 26</strong> · 2:00 PM · Location TBA</span></div>
-        <div class="cal-links">
-          <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Ball+Out-side+%234&dates=20260426T140000/20260426T160000&details=Queer,+trans,+women,+NB+%26+ally+pickup+basketball.+Size+6+ball.&location=Portland+OR" target="_blank" class="cal-btn cal-btn-sm">+ Google</a>
-          <a href="data:text/calendar;charset=utf8,BEGIN:VCALENDAR%0AVERSION:2.0%0ABEGIN:VEVENT%0ADTSTART:20260426T140000%0ADTEND:20260426T160000%0ASUMMARY:Ball+Out-side+%234%0ADESCRIPTION:Queer%2C+trans%2C+women%2C+NB+%26+ally+pickup+basketball.%0ALOCATION:Portland+OR%0AEND:VEVENT%0AEND:VCALENDAR" download="balloutside4.ics" class="cal-btn cal-btn-sm">+ Apple</a>
+          <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Ball+Out-side&dates=20260418T140000/20260418T160000&details=Queer,+trans,+women,+NB+%26+ally+pickup+basketball.+Size+6+ball.&location=Irving+Park,+Portland+OR" target="_blank" class="cal-btn cal-btn-sm">+ Google</a>
+          <a href="data:text/calendar;charset=utf8,BEGIN:VCALENDAR%0AVERSION:2.0%0ABEGIN:VEVENT%0ADTSTART:20260418T140000%0ADTEND:20260418T160000%0ASUMMARY:Ball+Out-side%0ADESCRIPTION:Queer%2C+trans%2C+women%2C+NB+%26+ally+pickup+basketball.%0ALOCATION:Irving+Park%2C+Portland+OR%0AEND:VEVENT%0AEND:VCALENDAR" download="balloutside-apr18.ics" class="cal-btn cal-btn-sm">+ Apple</a>
         </div>
       </div>
     </div>
@@ -179,7 +183,7 @@
   <div class="section-title">Show Up &<br><span>Run</span></div>
   <div class="about-grid">
     <div class="info-card"><h3>Who Can Play</h3><p>Pickup for queer, trans, women, non-binary, and ally ballers. Skill level: Intermediate (think intermural or high school). Show up solo or with friends.</p></div>
-    <div class="info-card"><h3>What To Bring</h3><p>Yourself, water, and size 6 ball if you have one.</p></div>
+    <div class="info-card"><h3>What To Bring</h3><p>Yourself, water, and a size 6 ball if you have one.</p></div>
     <div class="info-card"><h3>Cost</h3><p>Free when outdoors.</p></div>
   </div>
 </section>
@@ -188,7 +192,7 @@
   <div class="footer-grid">
     <div class="footer-brand">
       <div class="logo">BALL OUT-SIDE</div>
-      <p>Outdoor pickup for the Portland queer community and friends. Every Saturday, weather permitting.</p>
+      <p>Outdoor pickup for the Portland queer community and friends. Every Saturday.</p>
     </div>
     <div class="footer-col">
       <h5>Quick Links</h5>
