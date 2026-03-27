@@ -288,7 +288,7 @@
     if(!type || !name || !email){alert('Please fill out all required fields.');return;}
     const subject = encodeURIComponent(`Ball Out 2026 — ${type} Inquiry from ${name}`);
     const body = encodeURIComponent(`Inquiry Type: ${type}\nName: ${name}\nEmail: ${email}\n\nMessage:\n${msg}`);
-    window.location.href = `mailto:Lrsciaky@gmail.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:balloutportland@gmail.com?subject=${subject}&body=${body}`;
     document.getElementById('contact-form-body').style.display = 'none';
     document.getElementById('contact-success').style.display = 'block';
   }
