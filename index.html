@@ -175,6 +175,15 @@
         <p style="color:var(--cream);font-size:.87rem;margin-top:4px;line-height:1.6;">Queer, gay, lesbian, trans, NB & ally ballers. This is a queer event for Size 6 Ballers.</p>
       </div>
     </div>
+    <div class="form-placeholder">
+      <p>Ready to run? Sign up your squad and pay your entry fee below.</p>
+      <div class="btn-row">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeF6RXN5WxlCyn1ANIKsRx1UaP7pkL6ufdDQRNxjemhLaP_dw/viewform" target="_blank" class="btn">Sign Up Your Team</a>
+        <a href="https://venmo.com/u/Lilah-Sciaky" target="_blank" class="btn-green" style="font-size:.9rem;padding:16px 42px;border-radius:2px;text-decoration:none;font-weight:700;letter-spacing:2px;text-transform:uppercase;display:inline-block;">Pay on Venmo</a>
+      </div>
+    </div>
+  </div>
+</section>
 
 <div class="divider"></div>
 
@@ -318,12 +327,11 @@
     const H = wrapper2.offsetHeight;
     const mW = moon2.offsetWidth;
     const mH = moon2.offsetHeight;
-    // Reverse x direction: starts at right, ends at left
     const x = W + mW - p * (W - mW + mW * 2) - mW * 2;
     const bottomY = H - mH;
     const arcHeight = Math.min(H * 0.55, bottomY);
     const y = bottomY - (Math.sin(p * Math.PI) * arcHeight);
-    const rot = -(p * 720); // reverse rotation too
+    const rot = -(p * 720);
     moon2.style.left = '0';
     moon2.style.top = '0';
     moon2.style.bottom = 'auto';
