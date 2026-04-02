@@ -57,7 +57,7 @@
   .cal-btn{font-size:.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--sky);border:1px solid var(--sky);padding:5px 12px;border-radius:2px;text-decoration:none;transition:.2s;}
   .cal-btn:hover{background:var(--sky);color:var(--dark);}
   .cal-btn-sm{font-size:.68rem;padding:4px 10px;}
-  .loading-msg{color:var(--muted);font-size:.9rem;padding:40px 0;text-align:center;}
+  .skill-tag{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;border-radius:2px;margin-top:10px;background:rgba(123,94,167,0.15);border:1px solid var(--green);color:var(--green);}
   .about{background:var(--dark);}
   .about-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;}
   .info-card{background:var(--card);border:1px solid #2a2030;border-top:3px solid var(--green);padding:28px;border-radius:2px;}
@@ -95,7 +95,7 @@
   <ul class="nav-links" id="nav-links">
     <li><a href="#schedule" onclick="closeMenu()">Schedule</a></li>
     <li><a href="#how" onclick="closeMenu()">How It Works</a></li>
-    <li><a href="index.html" class="nav-main">RUN IT BACK</a></li>
+    <li><a href="index.html" class="nav-main">Baller Party</a></li>
   </ul>
 </nav>
 
@@ -219,6 +219,7 @@
     grid.innerHTML = upcoming.map((g, i) => {
       const isFeatured = i === 0;
       const extraHTML = g.notes ? `<div class="game-extra">+ ${g.notes}</div>` : '';
+      const skillHTML = g.skill ? `<div><span class="skill-tag">${g.skill}</span></div>` : '';
       const calLink = makeCalLink(g);
 
       if(isFeatured) return `
@@ -232,6 +233,7 @@
               <span><strong>Location</strong> ${g.location || 'TBA'}</span>
             </div>
             ${extraHTML}
+            ${skillHTML}
             <div class="cal-links">
               <a href="${calLink}" target="_blank" class="cal-btn">+ Google Calendar</a>
             </div>
@@ -244,6 +246,7 @@
             <h4>${g.location || 'TBA'}</h4>
             <div class="game-meta"><span><strong>${g.date}</strong> · ${g.time || 'TBA'} · ${g.location || 'TBA'}</span></div>
             ${extraHTML}
+            ${skillHTML}
             <div class="cal-links">
               <a href="${calLink}" target="_blank" class="cal-btn cal-btn-sm">+ Google</a>
             </div>
