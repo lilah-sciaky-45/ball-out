@@ -23,7 +23,7 @@
   .hamburger.open span:nth-child(2){opacity:0;}
   .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
   .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:120px 5% 80px;position:relative;overflow:hidden;background:linear-gradient(160deg,#0f0a1a 0%,#0a0a0a 50%,#1a0a0f 100%);}
-  .hero-bg-text{position:absolute;font-family:'Bebas Neue',sans-serif;font-size:clamp(120px,28vw,260px);color:rgba(123,94,167,0.07);top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;letter-spacing:10px;line-height:1;}
+  .hero-bg-img{position:absolute;inset:0;background:url('https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/Background_clouds.png') center center/cover no-repeat;opacity:0.08;pointer-events:none;}
   .hero-logo-wrap{margin-bottom:30px;}
   .hero-logo-wrap img{width:clamp(180px,35vw,320px);filter:drop-shadow(0 8px 32px rgba(123,94,167,0.4));}
   .badge{background:var(--green);color:var(--cream);font-size:.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:6px 18px;border-radius:2px;margin-bottom:22px;display:inline-block;}
@@ -42,12 +42,11 @@
   .section-title span{color:var(--green);}
   .calendar-section{background:#0e0c12;}
   .calendar-grid{display:flex;flex-direction:column;gap:16px;}
-  .game-card{background:var(--card);border:1px solid #2a2030;border-left:4px solid var(--green);border-radius:2px;padding:24px 28px;display:grid;grid-template-columns:1fr auto;align-items:start;gap:20px;transition:.2s;}
+  .game-card{background:var(--card);border:1px solid #2a2030;border-left:4px solid var(--green);border-radius:2px;padding:24px 28px;transition:.2s;}
   .game-card:hover{border-left-color:var(--red);background:#1c1620;}
   .game-card-featured{border-left-width:6px;padding:32px 28px;background:#1a1520;}
   .game-card-small{padding:16px 22px;opacity:.75;}
   .game-card-small:hover{opacity:1;}
-  .game-card-small h4{font-size:1.1rem;}
   .next-up-label{font-size:.68rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--sky);margin-bottom:14px;}
   .game-info h4{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--cream);letter-spacing:1px;margin-bottom:6px;}
   .game-meta{display:flex;flex-wrap:wrap;gap:16px;margin-top:8px;}
@@ -58,6 +57,7 @@
   .cal-btn{font-size:.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--sky);border:1px solid var(--sky);padding:5px 12px;border-radius:2px;text-decoration:none;transition:.2s;}
   .cal-btn:hover{background:var(--sky);color:var(--dark);}
   .cal-btn-sm{font-size:.68rem;padding:4px 10px;}
+  .loading-msg{color:var(--muted);font-size:.9rem;padding:40px 0;text-align:center;}
   .about{background:var(--dark);}
   .about-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;}
   .info-card{background:var(--card);border:1px solid #2a2030;border-top:3px solid var(--green);padding:28px;border-radius:2px;}
@@ -81,6 +81,7 @@
     .nav-links .nav-main{display:inline-block;}
     .hero-meta{flex-direction:column;align-items:flex-start;padding-left:10%;}
     .game-card{grid-template-columns:1fr;}
+    .footer-grid{grid-template-columns:1fr;}
   }
 </style>
 </head>
@@ -99,14 +100,14 @@
 </nav>
 
 <section class="hero">
-  <div class="hero-bg-text">OUTSIDE</div>
+  <div class="hero-bg-img"></div>
   <div class="hero-logo-wrap">
     <img src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/balloutside" alt="Ball Out-side Logo" onerror="this.style.display='none'"/>
   </div>
   <div class="badge">Recurring Pickup — Portland, OR</div>
   <h1>BALL OUT<br><span>-SIDE</span></h1>
   <h2>Queer Pickup. No Refs. Fun Runs.</h2>
-  <div class="hero-meta"> 
+  <div class="hero-meta">
     <span><em>Format</em>Half & Full Court</span>
     <span><em>Community</em>Queer & Friends</span>
     <span><em>Ball Size</em>Size 6</span>
@@ -119,60 +120,8 @@
 <section class="calendar-section" id="schedule">
   <div class="section-label">Upcoming Games</div>
   <div class="section-title">The <span>Schedule</span></div>
-  <div class="calendar-grid">
-
-    <!-- THIS SATURDAY — featured -->
-    <div class="game-card game-card-featured">
-      <div class="next-up-label">This Saturday</div>
-      <div class="game-info">
-        <h4 style="font-size:2.2rem;">Irving Park</h4>
-        <div class="game-meta" style="margin-top:12px;gap:20px;">
-          <span><strong>Date</strong> Saturday, March 28</span>
-          <span><strong>Time</strong> 1:30 PM – 4:00 PM</span>
-          <span><strong>Location</strong> Irving Park, Portland OR</span>
-        </div>
-        <div class="game-extra">+ Live DJ</div>
-        <div class="cal-links">
-          <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Ball+Out-side&dates=20260328T133000/20260328T160000&details=Queer,+trans,+women,+NB+%26+ally+pickup+basketball.+Size+6+ball.+Live+DJ!&location=Irving+Park,+Portland+OR" target="_blank" class="cal-btn">+ Google Calendar</a>
-          <a href="data:text/calendar;charset=utf8,BEGIN:VCALENDAR%0AVERSION:2.0%0ABEGIN:VEVENT%0ADTSTART:20260328T133000%0ADTEND:20260328T160000%0ASUMMARY:Ball+Out-side%0ADESCRIPTION:Queer%2C+trans%2C+women%2C+NB+%26+ally+pickup+basketball.+Size+6+ball.+Live+DJ!%0ALOCATION:Irving+Park%2C+Portland+OR%0AEND:VEVENT%0AEND:VCALENDAR" download="balloutside-mar28.ics" class="cal-btn">+ Apple Calendar</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- UPCOMING — smaller cards -->
-    <div class="game-card game-card-small">
-      <div class="game-info">
-        <h4>Irving Park</h4>
-        <div class="game-meta"><span><strong>Apr 4</strong> · 2:00 PM · Irving Park, Portland OR</span></div>
-        <div class="cal-links">
-          <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Ball+Out-side&dates=20260404T140000/20260404T160000&details=Queer,+trans,+women,+NB+%26+ally+pickup+basketball.+Size+6+ball.&location=Irving+Park,+Portland+OR" target="_blank" class="cal-btn cal-btn-sm">+ Google</a>
-          <a href="data:text/calendar;charset=utf8,BEGIN:VCALENDAR%0AVERSION:2.0%0ABEGIN:VEVENT%0ADTSTART:20260404T140000%0ADTEND:20260404T160000%0ASUMMARY:Ball+Out-side%0ADESCRIPTION:Queer%2C+trans%2C+women%2C+NB+%26+ally+pickup+basketball.%0ALOCATION:Irving+Park%2C+Portland+OR%0AEND:VEVENT%0AEND:VCALENDAR" download="balloutside-apr4.ics" class="cal-btn cal-btn-sm">+ Apple</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="game-card game-card-small">
-      <div class="game-info">
-        <h4>Irving Park</h4>
-        <div class="game-meta"><span><strong>Apr 11</strong> · 2:00 PM · Irving Park, Portland OR</span></div>
-        <div class="cal-links">
-          <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Ball+Out-side&dates=20260411T140000/20260411T160000&details=Queer,+trans,+women,+NB+%26+ally+pickup+basketball.+Size+6+ball.&location=Irving+Park,+Portland+OR" target="_blank" class="cal-btn cal-btn-sm">+ Google</a>
-          <a href="data:text/calendar;charset=utf8,BEGIN:VCALENDAR%0AVERSION:2.0%0ABEGIN:VEVENT%0ADTSTART:20260411T140000%0ADTEND:20260411T160000%0ASUMMARY:Ball+Out-side%0ADESCRIPTION:Queer%2C+trans%2C+women%2C+NB+%26+ally+pickup+basketball.%0ALOCATION:Irving+Park%2C+Portland+OR%0AEND:VEVENT%0AEND:VCALENDAR" download="balloutside-apr11.ics" class="cal-btn cal-btn-sm">+ Apple</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="game-card game-card-small">
-      <div class="game-info">
-        <h4>Irving Park</h4>
-        <div class="game-meta"><span><strong>Apr 18</strong> · 2:00 PM · Irving Park, Portland OR</span></div>
-        <div class="cal-links">
-          <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Ball+Out-side&dates=20260418T140000/20260418T160000&details=Queer,+trans,+women,+NB+%26+ally+pickup+basketball.+Size+6+ball.&location=Irving+Park,+Portland+OR" target="_blank" class="cal-btn cal-btn-sm">+ Google</a>
-          <a href="data:text/calendar;charset=utf8,BEGIN:VCALENDAR%0AVERSION:2.0%0ABEGIN:VEVENT%0ADTSTART:20260418T140000%0ADTEND:20260418T160000%0ASUMMARY:Ball+Out-side%0ADESCRIPTION:Queer%2C+trans%2C+women%2C+NB+%26+ally+pickup+basketball.%0ALOCATION:Irving+Park%2C+Portland+OR%0AEND:VEVENT%0AEND:VCALENDAR" download="balloutside-apr18.ics" class="cal-btn cal-btn-sm">+ Apple</a>
-        </div>
-      </div>
-    </div>
-
+  <div class="calendar-grid" id="calendar-grid">
+    <p class="loading-msg">Loading schedule...</p>
   </div>
 </section>
 
@@ -212,6 +161,79 @@
 </footer>
 
 <script>
+  const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQj5i7eWYKUWmR0ld3rL0BD_Joi4aWwxNwdwepxRZIGqGgqxNzjq-NoNIAbMCNmVd-BHyysnBXd5MSJ/pub?gid=0&single=true&output=csv';
+
+  function parseCSV(text) {
+    const lines = text.trim().split('\n');
+    const headers = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/"/g, ''));
+    return lines.slice(1).map(line => {
+      // handle commas inside quoted fields
+      const cols = [];
+      let cur = '', inQ = false;
+      for(let c of line){
+        if(c === '"') inQ = !inQ;
+        else if(c === ',' && !inQ){ cols.push(cur.trim()); cur = ''; }
+        else cur += c;
+      }
+      cols.push(cur.trim());
+      const obj = {};
+      headers.forEach((h, i) => obj[h] = (cols[i] || '').replace(/"/g, '').trim());
+      return obj;
+    }).filter(r => r.date);
+  }
+
+  function makeCalLink(row) {
+    // Try to build a Google Calendar link from date/time if parseable
+    return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=Ball+Out-side&details=Queer,+trans,+women,+NB+%26+ally+pickup+basketball.+Size+6+ball.&location=${encodeURIComponent(row.location || 'Portland, OR')}`;
+  }
+
+  function renderSchedule(games) {
+    const grid = document.getElementById('calendar-grid');
+    if(!games.length){ grid.innerHTML = '<p class="loading-msg">No upcoming games scheduled. Check back soon!</p>'; return; }
+
+    grid.innerHTML = games.map((g, i) => {
+      const isFeatured = i === 0;
+      const extraHTML = g.notes ? `<div class="game-extra">+ ${g.notes}</div>` : '';
+      const calLink = makeCalLink(g);
+
+      if(isFeatured) return `
+        <div class="game-card game-card-featured">
+          <div class="next-up-label">This Saturday</div>
+          <div class="game-info">
+            <h4 style="font-size:2.2rem;">${g.location || 'TBA'}</h4>
+            <div class="game-meta" style="margin-top:12px;gap:20px;">
+              <span><strong>Date</strong> ${g.date}</span>
+              <span><strong>Time</strong> ${g.time || 'TBA'}</span>
+              <span><strong>Location</strong> ${g.location || 'TBA'}</span>
+            </div>
+            ${extraHTML}
+            <div class="cal-links">
+              <a href="${calLink}" target="_blank" class="cal-btn">+ Google Calendar</a>
+            </div>
+          </div>
+        </div>`;
+
+      return `
+        <div class="game-card game-card-small">
+          <div class="game-info">
+            <h4>${g.location || 'TBA'}</h4>
+            <div class="game-meta"><span><strong>${g.date}</strong> · ${g.time || 'TBA'} · ${g.location || 'TBA'}</span></div>
+            ${extraHTML}
+            <div class="cal-links">
+              <a href="${calLink}" target="_blank" class="cal-btn cal-btn-sm">+ Google</a>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  fetch(SHEET_URL)
+    .then(r => r.text())
+    .then(text => renderSchedule(parseCSV(text)))
+    .catch(() => {
+      document.getElementById('calendar-grid').innerHTML = '<p class="loading-msg">Could not load schedule. Check back soon!</p>';
+    });
+
   function toggleMenu(){
     document.getElementById('nav-links').classList.toggle('open');
     document.getElementById('hamburger').classList.toggle('open');
