@@ -182,16 +182,41 @@
     }).filter(r => r.date);
   }
 
+  function parseDateTime(dateStr, timeStr) {
+    // dateStr like "April 4", timeStr like "2:00 PM"
+    const year = new Date().getFullYear();
+    const dt = new Date(`${dateStr} ${year} ${timeStr}`);
+    if(isNaN(dt)) return null;
+    // end time = 2 hours later
+    const end = new Date(dt.getTime() + 2 * 60 * 60 * 1000);
+    const fmt = d => d.toISOString().replace(/[-:]/g,'').split('.')[0];
+    return { start: fmt(dt), end: fmt(end) };
+  }
+
   function makeCalLink(row) {
-    // Try to build a Google Calendar link from date/time if parseable
-    return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=Ball+Out-side&details=Queer,+trans,+women,+NB+%26+ally+pickup+basketball.+Size+6+ball.&location=${encodeURIComponent(row.location || 'Portland, OR')}`;
+    const dt = parseDateTime(row.date, row.time);
+    const loc = encodeURIComponent(row.location || 'Portland, OR');
+    const details = encodeURIComponent('Queer, trans, women, NB & ally pickup basketball. Size 6 ball.' + (row.notes ? ' ' + row.notes : ''));
+    if(dt) {
+      return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=Ball+Out-side&dates=${dt.start}/${dt.end}&details=${details}&location=${loc}`;
+    }
+    return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=Ball+Out-side&details=${details}&location=${loc}`;
   }
 
   function renderSchedule(games) {
     const grid = document.getElementById('calendar-grid');
-    if(!games.length){ grid.innerHTML = '<p class="loading-msg">No upcoming games scheduled. Check back soon!</p>'; return; }
+    const today = new Date();
+    today.setHours(0,0,0,0);
 
-    grid.innerHTML = games.map((g, i) => {
+    // Filter out past dates
+    const upcoming = games.filter(g => {
+      const dt = new Date(`${g.date} ${new Date().getFullYear()}`);
+      return !isNaN(dt) && dt >= today;
+    });
+
+    if(!upcoming.length){ grid.innerHTML = '<p class="loading-msg">No upcoming games scheduled. Check back soon!</p>'; return; }
+
+    grid.innerHTML = upcoming.map((g, i) => {
       const isFeatured = i === 0;
       const extraHTML = g.notes ? `<div class="game-extra">+ ${g.notes}</div>` : '';
       const calLink = makeCalLink(g);
