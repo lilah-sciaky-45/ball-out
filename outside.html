@@ -58,6 +58,7 @@
   .cal-btn:hover{background:var(--sky);color:var(--dark);}
   .cal-btn-sm{font-size:.68rem;padding:4px 10px;}
   .skill-tag{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;border-radius:2px;margin-top:10px;background:rgba(123,94,167,0.15);border:1px solid var(--green);color:var(--green);}
+  .skill-label{font-size:.68rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-right:6px;vertical-align:middle;}
   .about{background:var(--dark);}
   .about-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;}
   .info-card{background:var(--card);border:1px solid #2a2030;border-top:3px solid var(--green);padding:28px;border-radius:2px;}
@@ -183,13 +184,24 @@
   }
 
   function parseDateTime(dateStr, timeStr) {
-    // dateStr like "April 4", timeStr like "2:00 PM"
     const year = new Date().getFullYear();
-    const dt = new Date(`${dateStr} ${year} ${timeStr}`);
+    // Parse time manually to avoid timezone issues
+    const timeParts = timeStr.match(/(\d+):(\d+)\s*(AM|PM)/i);
+    if(!timeParts) return null;
+    let hours = parseInt(timeParts[1]);
+    const mins = parseInt(timeParts[2]);
+    const ampm = timeParts[3].toUpperCase();
+    if(ampm === 'PM' && hours !== 12) hours += 12;
+    if(ampm === 'AM' && hours === 12) hours = 0;
+    const dt = new Date(`${dateStr} ${year}`);
     if(isNaN(dt)) return null;
-    // end time = 2 hours later
+    dt.setHours(hours, mins, 0, 0);
     const end = new Date(dt.getTime() + 2 * 60 * 60 * 1000);
-    const fmt = d => d.toISOString().replace(/[-:]/g,'').split('.')[0];
+    // Format as local time YYYYMMDDTHHMMSS (no Z — tells Google to use user's timezone)
+    const fmt = d => {
+      const pad = n => String(n).padStart(2,'0');
+      return `${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}T${pad(d.getHours())}${pad(d.getMinutes())}00`;
+    };
     return { start: fmt(dt), end: fmt(end) };
   }
 
@@ -219,7 +231,7 @@
     grid.innerHTML = upcoming.map((g, i) => {
       const isFeatured = i === 0;
       const extraHTML = g.notes ? `<div class="game-extra">+ ${g.notes}</div>` : '';
-      const skillHTML = g.skill ? `<div><span class="skill-tag">${g.skill}</span></div>` : '';
+      const skillHTML = g.skill ? `<div style="margin-top:10px;"><span class="skill-label">Skill Level</span><span class="skill-tag">${g.skill}</span></div>` : '';
       const calLink = makeCalLink(g);
 
       if(isFeatured) return `
