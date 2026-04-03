@@ -18,7 +18,7 @@
   .nav-links .nav-outside{color:var(--cream);background:var(--green);padding:7px 16px;border-radius:2px;transition:.2s;white-space:nowrap;}
   .nav-links .nav-outside:hover{background:var(--green2);}
   .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:120px 5% 80px;position:relative;overflow:hidden;background:linear-gradient(160deg,#1a2e1a 0%,#0f0f0f 40%,#1a0a0a 100%);}
-  .hero-bg-img{position:absolute;inset:0;background:url('https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/Foreground_clouds.png') center center/cover no-repeat;opacity:0.08;pointer-events:none;}
+  .hero-bg-img{position:absolute;inset:0;background:url('https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/Background_clouds.png') center center/cover no-repeat;opacity:0.08;pointer-events:none;}
   .hero-content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;}
   .hero-logo{width:clamp(180px,35vw,320px);margin-bottom:28px;filter:drop-shadow(0 8px 32px rgba(192,57,43,0.4));}
   .badge{background:var(--red);color:var(--cream);font-size:.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:6px 18px;border-radius:2px;margin-bottom:22px;display:inline-block;}
@@ -35,11 +35,7 @@
   .btn-green{display:inline-block;background:var(--green);color:var(--cream);font-weight:700;font-size:.9rem;letter-spacing:2px;padding:16px 42px;border-radius:2px;text-decoration:none;text-transform:uppercase;transition:.2s;cursor:pointer;border:none;font-family:'Inter',sans-serif;}
   .btn-green:hover{background:var(--green2);transform:translateY(-2px);}
   .btn-row{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;}
-  .about-intro{background:var(--dark);padding:60px 5%;}
-  .about-intro-inner{max-width:700px;}
-  .about-intro-inner p{font-size:1.05rem;color:var(--cream);line-height:1.9;}
-  .about-intro-inner p strong{color:var(--red);}
-  .about-intro-inner p em{color:var(--sky);font-style:normal;}width:100%;overflow:hidden;position:relative;height:50vh;}
+  .cloud-scene-wrapper{width:100%;overflow:hidden;position:relative;height:50vh;}
   .cloud-layer{position:absolute;width:140%;left:-20%;pointer-events:none;}
   .cloud-bg{top:0;z-index:1;}
   .cloud-fg{bottom:0;z-index:3;}
@@ -78,7 +74,7 @@
   .form-success h4{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--green);margin-bottom:8px;}
   .form-success p{color:var(--muted);font-size:.9rem;}
   footer{background:#080808;border-top:3px solid var(--red2);padding:54px 5% 30px;}
-  .footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:40px;margin-bottom:40px;}
+  .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px;margin-bottom:40px;}
   .footer-brand .logo{font-size:2.4rem;}
   .footer-brand p{color:var(--muted);font-size:.84rem;margin-top:10px;line-height:1.7;}
   .footer-col h5{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:var(--red);margin-bottom:14px;letter-spacing:2px;}
@@ -94,7 +90,7 @@
   @media(max-width:700px){
     .hamburger{display:flex;}
     .nav-brand img{height:42px;}
-    nav{padding:10px 4%;}
+     nav{padding:10px 4%;}
     .nav-links{display:none;flex-direction:column;position:absolute;top:100%;left:0;width:100%;background:rgba(12,12,12,0.98);border-bottom:2px solid var(--red2);padding:20px 5%;gap:18px;}
     .nav-links.open{display:flex;}
     .nav-links li{width:100%;}
@@ -113,7 +109,7 @@
 
 <nav>
   <div class="nav-brand">
-    <img src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/Moon_logo.png" alt="Ball Out Logo" style="height:90px;width:auto;filter:drop-shadow(0 2px 6px rgba(192,57,43,0.4));"/>
+    <img src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/BallOutText+Ball_1.png" alt="Ball Out Logo" style="height:clamp(36px,8vw,90px);width:auto;filter:drop-shadow(0 2px 6px rgba(192,57,43,0.4));"/>
   </div>
   <button class="hamburger" id="hamburger" onclick="toggleMenu()">
     <span></span><span></span><span></span>
@@ -123,34 +119,26 @@
     <li><a href="#registration" onclick="closeMenu()">Register</a></li>
     <li><a href="#experience" onclick="closeMenu()">The Vibe</a></li>
     <li><a href="#other" onclick="closeMenu()">Get Involved</a></li>
-    <li><a href="outside.html" class="nav-outside">Ball Out-side</a></li>
+    <li><a href="outside.html" class="nav-outside">Weekly Pickup</a></li>
   </ul>
 </nav>
 
 <section class="hero" id="home">
   <div class="hero-bg-img"></div>
   <div class="hero-content">
-    <img class="hero-logo" src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/Moon.png" alt="Ball Out Logo"/>
-    <div class="badge">Queer 3v3 Basketball Party — Portland, OR</div>
-    <h1>BALLER<br><span>PARTY</span></h1>
+    <img class="hero-logo" src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/Ball.png" alt="Ball Out Logo"/>
+    <div class="badge">A 3v3 Basketball Party — Portland, OR</div>
+    <img src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/RIB-LOGO.png" alt="Run It Back" style="width:clamp(280px,60vw,700px);margin-bottom:10px;filter:drop-shadow(0 8px 32px rgba(192,57,43,0.4));"/>
     <h2>May 2nd, 2026, 3-6PM</h2>
     <div class="hero-meta">
       <span><em>Date</em>Saturday, May 2nd 2026</span>
-      <span><em>Format</em>3-on-3 Basketball + DJs</span>
-      <span><em>Location</em>WAREHOUSE Inner SE Portland OR</span>
+      <span><em>Format</em>3-on-3 Tournament + DJs</span>
+      <span><em>Location</em>Warehouse, 330 SE 6th Ave</span>
     </div>
     <div class="btn-row">
       <a href="#registration" class="btn">Sign Up Your Team</a>
       <a href="#about" class="btn btn-outline">Learn More</a>
     </div>
-  </div>
-</section>
-
-<!-- About -->
-<section class="about-intro">
-  <div class="about-intro-inner">
-    <div class="section-label">About</div>
-    <p><strong>Ball Out</strong> is a queer community-run basketball group that centers queer women, trans, non-binary, and gender expansive players. We play with a size 6 ball. <strong>Run It Back</strong> is our <em>3v3 tournament and party</em>, brought to you by Ball Out Portland and the <em>Let Her Cook DJ collective</em>. Come for the basketball. Stay for everything else.</p>
   </div>
 </section>
 
@@ -164,12 +152,12 @@
 <div class="divider"></div>
 
 <section class="about" id="about">
-  <div class="section-label">The Event</div>
+  <div class="section-label">Run It Back</div>
   <div class="section-title">What You Need<br>To <span>Know</span></div>
   <div class="about-grid">
-    <div class="info-card"><h3>Date & Time</h3><p>Saturday, May 2nd, 2026<br>Check-in: 2PM<br>Tip-off: 3PM</p></div>
+    <div class="info-card"><h3>Date & Time</h3><p>Saturday, May 2nd, 2026<br>Check-in: 2:30PM<br>Tip-off: 3PM</p></div>
     <div class="info-card"><h3>Location</h3><p>WAREHOUSE<br>330 SE 6th Ave<br>Portland, Oregon</p></div>
-    <div class="info-card"><h3>Format</h3><p>3-on-3 runs all day. Pool play followed by semis and final games. Each squad needs 3 players. No solo players this time.</p></div>
+    <div class="info-card"><h3>The Event</h3><p> Run It Back is a 3v3 tournament and party brought to you by Ball Out Portland and Let Her Cook DJ collective. 3-on-3 runs all day. Pool play followed by semis and final games. Each squad needs 3 players. No solo players this time. All teams must pre-register.</p></div>
     <div class="info-card"><h3>Prizes</h3><p>1st and 2nd place prizes. MVP & Baller Outfit awards. Details dropping soon.</p></div>
     <div class="info-card"><h3>Rules</h3><p>Standard 3v3 rules. If you like a call, tip your ref. Full rules sheet provided upon registration. Good vibes strictly enforced.</p></div>
     <div class="info-card"><h3>Team Entry Fee</h3><p>$60 per team.<br>Payment details in registration form.</p></div>
@@ -183,15 +171,15 @@
   <div class="section-title">Secure<br><span>Your Spot</span></div>
   <div class="form-container">
     <div class="form-header">
-      <h3>Team Sign-Up — Ball Out 2026</h3>
-      <p>Fill out the form and lock in your team. Spots are limited.</p>
+      <h3>Team Sign-Up — RUN IT BACK 2026</h3>
+      <p>Fill out the form and lock in your team. <b>8 teams max</b>, so sign up quickly to get a spot.</p>
       <div style="margin-top:14px;padding:12px 16px;background:rgba(232,200,74,0.08);border-left:3px solid var(--sky);border-radius:2px;">
         <span style="color:var(--sky);font-weight:700;font-size:.78rem;letter-spacing:2px;text-transform:uppercase;">Who Can Play</span>
-        <p style="color:var(--cream);font-size:.87rem;margin-top:4px;line-height:1.6;">Queer, gay, lesbian, trans, NB & ally ballers. This is a queer event for Size 6 Ballers and their friends.</p>
+        <p style="color:var(--cream);font-size:.87rem;margin-top:4px;line-height:1.6;">Queer women, trans, non-binary, gender expansive ballers and allies. Run It Back is organized by Ball Out Portland, a queer league for Size 6 Ballers and their friends.</p>
       </div>
       <div style="margin-top:10px;padding:12px 16px;background:rgba(217,78,31,0.08);border-left:3px solid var(--red);border-radius:2px;">
         <span style="color:var(--red);font-weight:700;font-size:.78rem;letter-spacing:2px;text-transform:uppercase;">Who Can Come</span>
-        <p style="color:var(--cream);font-size:.87rem;margin-top:4px;line-height:1.6;">Everyone (21+). This event is extremely spectator-friendly. Come cheer, grab a drink, and enjoy the vibe. $5-$10 donation suggested at the door, but no one will be turned away.</p>
+        <p style="color:var(--cream);font-size:.87rem;margin-top:4px;line-height:1.6;">Everyone (21+). Run It Back is an extremely spectator-friendly event. Come cheer, grab a drink, and enjoy the DJs. $5-$10 donation suggested at the door, but no one will be turned away.</p>
       </div>
     </div>
     <div class="form-placeholder">
@@ -209,7 +197,7 @@
 <!-- Cloud scene 2 — ball moves RIGHT to LEFT -->
 <div class="cloud-scene-wrapper" id="cloud-wrapper-2">
   <img class="cloud-layer cloud-bg" src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/Background_clouds.png" alt=""/>
-  <img class="cloud-moon" id="anim-hotdog" src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/hotdog_long.png" alt=""/>
+  <img class="cloud-moon" id="anim-hotdog" src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/Hotdog_shiny.png" alt=""/>
   <img class="cloud-layer cloud-fg" src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/Foreground_clouds.png" alt=""/>
 </div>
 
@@ -273,24 +261,24 @@
   <div class="footer-grid">
     <div class="footer-brand">
       <div class="logo">BALL OUT</div>
-      <p>A queer basketball party in the heart of Portland. May 2nd, 2026.</p>
+      <p>Portland Queer Basketball - Run It Back Event May 2nd, 2026.</p>
     </div>
     <div class="footer-col">
       <h5>Quick Links</h5>
-      <a href="#about">The Event</a>
+      <a href="#about">Run It Back</a>
       <a href="#registration">Team Sign-Up</a>
       <a href="#experience">The Vibe</a>
       <a href="#other">Get Involved</a>
-      <a href="outside.html">Ball Out-side</a>
+      <a href="outside.html">Weekly Pickup</a>
     </div>
     <div class="footer-col">
       <h5>Follow Us</h5>
-      <a href="https://www.instagram.com/balloutportand" target="_blank">Instagram</a>
+      <a href="https://www.instagram.com/balloutportland" target="_blank">Instagram</a>
     </div>
   </div>
   <div class="footer-bottom">
     <p>© 2026 Ball Out. All rights reserved.</p>
-    <p>Size 6 Ballers</p>
+    <p>Size 6 Ballers.</p>
   </div>
 </footer>
 
@@ -303,7 +291,7 @@
     if(!type || !name || !email){alert('Please fill out all required fields.');return;}
     const subject = encodeURIComponent(`Ball Out 2026 — ${type} Inquiry from ${name}`);
     const body = encodeURIComponent(`Inquiry Type: ${type}\nName: ${name}\nEmail: ${email}\n\nMessage:\n${msg}`);
-    window.location.href = `mailto:Lrsciaky@gmail.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:balloutportland@gmail.com?subject=${subject}&body=${body}`;
     document.getElementById('contact-form-body').style.display = 'none';
     document.getElementById('contact-success').style.display = 'block';
   }
