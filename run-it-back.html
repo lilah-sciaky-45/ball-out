@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Run It Back — Ball Out Portland</title>
+<style>
+  :root {
+    --red:#D94E1F;--deep-red:#A8330D;--purple:#7B5EA7;--deep-purple:#5A3E85;
+    --gold:#E8C84A;--cream:#F5E6C8;--bg:#0a0a0a;--card:#161410;--muted:#998877;--radius:8px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--cream);font-family:system-ui,sans-serif;padding:24px 16px 48px;max-width:780px;margin:0 auto;}
+  .hero{text-align:center;margin-bottom:40px;padding-bottom:32px;border-bottom:1px solid #222;}
+  .hero h1{color:var(--red);font-size:32px;font-weight:500;margin-bottom:6px;}
+  .hero .tagline{color:var(--gold);font-size:15px;margin-bottom:20px;}
+  .badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+  .badge{background:var(--card);border:1px solid #333;border-radius:20px;padding:6px 16px;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px;}
+  .badge-dot{width:7px;height:7px;border-radius:50%;background:var(--red);flex-shrink:0;}
+  .badge-dot.gold{background:var(--gold);}
+  .badge-dot.purple{background:var(--purple);}
+  .section-title{color:var(--gold);font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;margin:36px 0 14px;display:flex;align-items:center;gap:10px;}
+  .section-title::after{content:'';flex:1;height:1px;background:#222;}
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;}
+  .step{background:var(--card);border:1px solid #333;border-radius:var(--radius);padding:16px;}
+  .step-num{color:var(--red);font-size:22px;font-weight:500;margin-bottom:6px;}
+  .step-title{color:var(--cream);font-size:14px;font-weight:500;margin-bottom:4px;}
+  .step-desc{color:var(--muted);font-size:12px;line-height:1.6;}
+  .timeline{display:flex;flex-direction:column;}
+  .tl-row{display:flex;align-items:stretch;gap:16px;}
+  .tl-time{color:var(--gold);font-size:13px;font-weight:500;min-width:68px;padding-top:14px;text-align:right;flex-shrink:0;}
+  .tl-line{display:flex;flex-direction:column;align-items:center;flex-shrink:0;}
+  .tl-dot{width:10px;height:10px;border-radius:50%;background:var(--red);margin-top:18px;flex-shrink:0;}
+  .tl-dot.gold{background:var(--gold);}
+  .tl-dot.purple{background:var(--purple);}
+  .tl-stem{width:1px;flex:1;background:#2a2a2a;}
+  .tl-row:last-child .tl-stem{display:none;}
+  .tl-content{background:var(--card);border:1px solid #333;border-radius:var(--radius);padding:12px 16px;margin:8px 0;flex:1;}
+  .tl-label{font-size:14px;font-weight:500;color:var(--cream);margin-bottom:2px;}
+  .tl-sub{font-size:12px;color:var(--muted);line-height:1.5;}
+  .pools-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media(max-width:480px){.pools-row{grid-template-columns:1fr;}}
+  .pool-card{background:var(--card);border:1px solid #333;border-radius:var(--radius);overflow:hidden;}
+  .pool-head{background:var(--deep-purple);padding:8px 14px;font-size:14px;font-weight:500;color:var(--cream);}
+  .pool-teams{padding:10px 14px;display:flex;flex-direction:column;gap:6px;}
+  .pool-team{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);}
+  .pool-team .dot{width:6px;height:6px;border-radius:50%;background:var(--purple);flex-shrink:0;}
+  .pool-note{font-size:11px;color:var(--muted);padding:8px 14px;border-top:1px solid #1e1e1e;}
+  .pool-note span{color:var(--gold);}
+  .pool-games{padding:8px 14px 12px;border-top:1px solid #1e1e1e;}
+  .pool-games-title{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;}
+  .pool-game-row{font-size:12px;color:var(--muted);padding:3px 0;display:flex;gap:6px;align-items:center;}
+  .pool-game-row .g-num{color:var(--purple);min-width:20px;font-size:11px;}
+  .bracket-info{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media(max-width:480px){.bracket-info{grid-template-columns:1fr;}}
+  .bracket-card{background:var(--card);border:1px solid #333;border-radius:var(--radius);padding:14px 16px;}
+  .bracket-card-title{font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px;}
+  .bracket-card-title.red{color:var(--red);}
+  .bracket-card-title.gold{color:var(--gold);}
+  .matchup{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);margin-bottom:7px;}
+  .seed{background:var(--deep-purple);color:var(--cream);border-radius:4px;padding:2px 7px;font-size:11px;font-weight:500;flex-shrink:0;}
+  .seed.gold{background:#3a2e00;color:var(--gold);}
+  .vs-sm{color:var(--red);font-size:11px;}
+  .faqs{display:flex;flex-direction:column;gap:10px;}
+  .faq{background:var(--card);border:1px solid #333;border-radius:var(--radius);}
+  .faq summary{padding:14px 16px;font-size:14px;color:var(--cream);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;}
+  .faq summary::after{content:'+';color:var(--red);font-size:18px;font-weight:300;}
+  .faq[open] summary::after{content:'−';}
+  .faq-body{padding:12px 16px 14px;font-size:13px;color:var(--muted);line-height:1.7;border-top:1px solid #1e1e1e;}
+  .cta{background:var(--card);border:1px solid var(--red);border-radius:var(--radius);padding:24px;text-align:center;margin-top:40px;}
+  .cta h2{color:var(--red);font-size:20px;font-weight:500;margin-bottom:8px;}
+  .cta p{color:var(--muted);font-size:14px;line-height:1.6;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>3v3 Tournament</h1>
+  <p class="tagline">Pool Play &rarr; Knockout Bracket &bull; One Day Event</p>
+  <div class="badges">
+    <div class="badge"><span class="badge-dot"></span>8 teams</div>
+    <div class="badge"><span class="badge-dot gold"></span>10-min games</div>
+    <div class="badge"><span class="badge-dot purple"></span>~3 hours total</div>
+    <div class="badge"><span class="badge-dot"></span>Every team plays 2+ games</div>
+  </div>
+</div>
+
+<div class="section-title">How it works</div>
+<div class="steps">
+  <div class="step">
+    <div class="step-num">01</div>
+    <div class="step-title">Pool play</div>
+    <div class="step-desc">8 teams split into 2 pools of 4. Each team plays 2 games. Win your games to top the pool.</div>
+  </div>
+  <div class="step">
+    <div class="step-num">02</div>
+    <div class="step-title">Standings</div>
+    <div class="step-desc">Most wins advances. Tied on wins? Head-to-head decides it. Top 2 from each pool go through.</div>
+  </div>
+  <div class="step">
+    <div class="step-num">03</div>
+    <div class="step-title">Semifinals</div>
+    <div class="step-desc">A1 vs B2 and B1 vs A2. Win your semi to reach the championship final.</div>
+  </div>
+  <div class="step">
+    <div class="step-num">04</div>
+    <div class="step-title">Final</div>
+    <div class="step-desc">The two semi winners battle it out for the title. Champion crowned by 5:45 pm.</div>
+  </div>
+</div>
+
+<div class="section-title">Day-of schedule</div>
+<div class="timeline">
+  <div class="tl-row">
+    <div class="tl-time">2:30 pm</div>
+    <div class="tl-line"><div class="tl-dot"></div><div class="tl-stem"></div></div>
+    <div class="tl-content"><div class="tl-label">Arrive &amp; check-in</div><div class="tl-sub">Teams arrive, confirm rosters, warmup window</div></div>
+  </div>
+  <div class="tl-row">
+    <div class="tl-time">3:00 pm</div>
+    <div class="tl-line"><div class="tl-dot"></div><div class="tl-stem"></div></div>
+    <div class="tl-content"><div class="tl-label">Pool play begins — sharp</div><div class="tl-sub">8 games &bull; 10 min each &bull; 5 min between games &bull; 1 court</div></div>
+  </div>
+  <div class="tl-row">
+    <div class="tl-time">5:00 pm</div>
+    <div class="tl-line"><div class="tl-dot purple"></div><div class="tl-stem"></div></div>
+    <div class="tl-content"><div class="tl-label">Pool play ends &bull; bracket seeded</div><div class="tl-sub">Brief break while semifinal matchups are confirmed</div></div>
+  </div>
+  <div class="tl-row">
+    <div class="tl-time">5:15 pm</div>
+    <div class="tl-line"><div class="tl-dot purple"></div><div class="tl-stem"></div></div>
+    <div class="tl-content"><div class="tl-label">Semifinals</div><div class="tl-sub">SF1 then SF2 &bull; 10 min each &bull; sudden death if tied</div></div>
+  </div>
+  <div class="tl-row">
+    <div class="tl-time">5:35 pm</div>
+    <div class="tl-line"><div class="tl-dot gold"></div><div class="tl-stem"></div></div>
+    <div class="tl-content"><div class="tl-label">Championship final</div><div class="tl-sub">The top two teams go head to head &bull; sudden death if tied</div></div>
+  </div>
+  <div class="tl-row">
+    <div class="tl-time">5:45 pm</div>
+    <div class="tl-line"><div class="tl-dot gold"></div><div class="tl-stem"></div></div>
+    <div class="tl-content"><div class="tl-label">Champion crowned</div><div class="tl-sub">Awards &amp; wrap-up</div></div>
+  </div>
+</div>
+
+<div class="section-title">The pools</div>
+<div class="pools-row">
+  <div class="pool-card">
+    <div class="pool-head">Pool A</div>
+    <div class="pool-teams">
+      <div class="pool-team"><span class="dot"></span>Team 1</div>
+      <div class="pool-team"><span class="dot"></span>Team 2</div>
+      <div class="pool-team"><span class="dot"></span>Team 3</div>
+      <div class="pool-team"><span class="dot"></span>Team 4</div>
+    </div>
+    <div class="pool-games">
+      <div class="pool-games-title">Pool games</div>
+      <div class="pool-game-row"><span class="g-num">G1</span>Team 1 vs Team 2</div>
+      <div class="pool-game-row"><span class="g-num">G2</span>Team 3 vs Team 4</div>
+      <div class="pool-game-row"><span class="g-num">G3</span>Team 1 vs Team 3</div>
+      <div class="pool-game-row"><span class="g-num">G4</span>Team 2 vs Team 4</div>
+    </div>
+    <div class="pool-note"><span>Top 2 advance</span> &rarr; Semifinals</div>
+  </div>
+  <div class="pool-card">
+    <div class="pool-head">Pool B</div>
+    <div class="pool-teams">
+      <div class="pool-team"><span class="dot"></span>Team 5</div>
+      <div class="pool-team"><span class="dot"></span>Team 6</div>
+      <div class="pool-team"><span class="dot"></span>Team 7</div>
+      <div class="pool-team"><span class="dot"></span>Team 8</div>
+    </div>
+    <div class="pool-games">
+      <div class="pool-games-title">Pool games</div>
+      <div class="pool-game-row"><span class="g-num">G5</span>Team 5 vs Team 6</div>
+      <div class="pool-game-row"><span class="g-num">G6</span>Team 7 vs Team 8</div>
+      <div class="pool-game-row"><span class="g-num">G7</span>Team 5 vs Team 7</div>
+      <div class="pool-game-row"><span class="g-num">G8</span>Team 6 vs Team 8</div>
+    </div>
+    <div class="pool-note"><span>Top 2 advance</span> &rarr; Semifinals</div>
+  </div>
+</div>
+
+<div class="section-title">Bracket structure</div>
+<div class="bracket-info">
+  <div class="bracket-card">
+    <div class="bracket-card-title red">Semifinal 1 — 5:15 pm</div>
+    <div class="matchup"><span class="seed gold">A1</span><span class="vs-sm">vs</span><span class="seed">B2</span></div>
+    <div class="bracket-card-title red" style="margin-top:14px">Semifinal 2 — 5:25 pm</div>
+    <div class="matchup"><span class="seed gold">B1</span><span class="vs-sm">vs</span><span class="seed">A2</span></div>
+  </div>
+  <div class="bracket-card">
+    <div class="bracket-card-title gold">Championship final — 5:35 pm</div>
+    <div class="matchup" style="color:var(--cream)">SF1 winner <span class="vs-sm" style="margin:0 6px">vs</span> SF2 winner</div>
+    <div style="margin-top:14px;font-size:12px;color:var(--muted);line-height:1.6;">Tied at full time? Sudden death — next score wins. Champion crowned by 5:45 pm.</div>
+  </div>
+</div>
+
+<div class="section-title">Questions</div>
+<div class="faqs">
+  <details class="faq">
+    <summary>How many games will my team play?</summary>
+    <div class="faq-body">Every team is guaranteed at least 2 pool games. Teams that advance play 3 or 4 games total — 2 in pool play, then semis, and the final if you make it.</div>
+  </details>
+  <details class="faq">
+    <summary>How do teams advance from pool play?</summary>
+    <div class="faq-body">Simple — most wins advance. Each team plays 2 pool games. Win both and you're through. Tied on wins? The team that won by more points combined across their games advances. For example, winning 10–2 and losing 5–6 gives you a +7 differential. Still exactly tied? Coin flip.</div>
+  </details>
+  <details class="faq">
+    <summary>What happens if a game is tied at full time?</summary>
+    <div class="faq-body">In pool play, ties count as a loss for both teams in terms of advancement — you need a win to advance. In the bracket (semis and final), if the game is tied at 10 minutes, play continues in sudden death — next score wins.</div>
+  </details>
+  <details class="faq">
+    <summary>How long are the games?</summary>
+    <div class="faq-body">Each game is 10 minutes with a 5-minute break between games. The clock runs continuously with no timeouts. Games start on time to keep the schedule moving.</div>
+  </details>
+  <details class="faq">
+    <summary>How many players per team?</summary>
+    <div class="faq-body">3 players on court at a time. You can bring subs — just confirm your full roster at check-in by 2:30 pm.</div>
+  </details>
+  <details class="faq">
+    <summary>What if a team doesn't show up?</summary>
+    <div class="faq-body">Teams that forfeit receive a loss. Their opponents take the win. Please arrive by 2:30 pm so we can start on time.</div>
+  </details>
+</div>
+
+<div class="cta">
+  <h2>Ready to compete?</h2>
+  <p>Sign up below to secure your team's spot.<br>Registration closes once all 8 spots are filled.</p>
+</div>
+
+</body>
+</html>
