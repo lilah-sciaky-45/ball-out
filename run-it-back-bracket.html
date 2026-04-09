@@ -87,7 +87,7 @@
 </head>
 <body>
 
-<img src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/RIB-LOGO.png" alt="Run It Back" style="height:70px;display:block;margin:16px auto 10px;">
+<img src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/RIB-LOGO.png" alt="Run It Back" style="height:80px;display:block;margin:16px auto 10px;">
 <p class="subtitle">Bracket &bull; Admin Only</p>
 
 <div class="tabs">
@@ -160,8 +160,11 @@ function recalc(){
   const sort=pool=>pool.map(i=>({i,...st[i]})).sort((a,b)=>b.w-a.w||b.diff-a.diff);
   standings.A=sort(POOL_A); standings.B=sort(POOL_B);
   const A=standings.A, B=standings.B;
-  bracketGames[0].t1=A[0]?.i??null; bracketGames[0].t2=B[1]?.i??null;
-  bracketGames[1].t1=B[0]?.i??null; bracketGames[1].t2=A[1]?.i??null;
+  const poolDone=poolGames.every(g=>g.done);
+  if(poolDone){
+    bracketGames[0].t1=A[0]?.i??null; bracketGames[0].t2=B[1]?.i??null;
+    bracketGames[1].t1=B[0]?.i??null; bracketGames[1].t2=A[1]?.i??null;
+  }
   if(bracketGames[0].done&&bracketGames[1].done){
     bracketGames[2].t1=winner(bracketGames[0]); bracketGames[2].t2=winner(bracketGames[1]);
   }
@@ -257,8 +260,9 @@ function renderBracket(){
   const champ=winner(fin);
 
   // Pool teams in seeding order (or original order if pool play not done)
-  const A=standings.A.length?standings.A.map(s=>s.i):POOL_A;
-  const B=standings.B.length?standings.B.map(s=>s.i):POOL_B;
+  const poolDone=poolGames.every(g=>g.done);
+  const A=poolDone&&standings.A.length?standings.A.map(s=>s.i):POOL_A;
+  const B=poolDone&&standings.B.length?standings.B.map(s=>s.i):POOL_B;
 
   // layout: [Pool A col] [connector] [Semis col] [connector] [Final col] [arrow] [Champ]
   // grid: 150px 50px 170px 50px 170px 40px 155px
