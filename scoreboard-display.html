@@ -21,15 +21,22 @@ body {
   width:min(98vw,174vh);
   aspect-ratio:16/9;
   display:grid;
-  grid-template-rows:18% 18% 46% 18%;
+  grid-template-rows:18% 46% 18%;
   padding:1.5% 3%;
 }
 
-/* ROW 1: logo center */
-.row-logo {
-  display:flex; align-items:center; justify-content:center;
+/* watermark logo */
+.watermark {
+  position:absolute;
+  top:50%; left:50%;
+  transform:translate(-50%, -50%);
+  width:min(40vh, 38vw);
+  height:min(40vh, 38vw);
+  object-fit:contain;
+  opacity:0.10;
+  pointer-events:none;
+  z-index:0;
 }
-.row-logo img { height:9vh; max-height:72px; object-fit:contain; filter:drop-shadow(0 0 8px #f905); }
 
 /* ROW 2: clock center */
 .row-clock {
@@ -129,10 +136,7 @@ body {
 <body>
 <div class="panel">
 
-  <!-- Logo -->
-  <div class="row-logo">
-    <img src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/RIB-LOGO.png" alt="Run It Back">
-  </div>
+<img class="watermark" src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/RIB-LOGO.png" alt="">
 
   <!-- Clock -->
   <div class="row-clock">
