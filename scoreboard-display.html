@@ -21,33 +21,15 @@ body {
   width:min(98vw,174vh);
   aspect-ratio:16/9;
   position:relative;
-  display:flex;
-  flex-direction:column;
-  padding:2% 3% 1.5%;
-  gap:0;
+  grid-template-rows:10% 28% 46% 10% 6%;
 }
 
-/* Logo — absolutely positioned right, large */
-.logo-right {
-  position:absolute;
-  top:2%;
-  right:2%;
-  height:min(28vh, 25vw);
-  max-height:220px;
-  object-fit:contain;
-  opacity:0.85;
-  z-index:10;
-}
-
-/* Label only top-left, no logo */
+/* Label centered above clock */
 .top-left {
-  position:absolute;
-  top:2%;
-  left:3%;
   display:flex;
   align-items:center;
-  gap:1vw;
-  z-index:10;
+  justify-content:center;
+  flex:0 0 10%;
 }
 .game-label {
   font-family:'Oswald',sans-serif;
@@ -153,10 +135,7 @@ body {
 <body>
 <div class="panel">
 
-  <!-- Logo: large on the right -->
-  <img class="logo-right" src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/RIB-LOGO.png" alt="">
-
-  <!-- Game label: top left -->
+  <!-- Game label: centered above clock -->
   <div class="top-left">
     <div class="game-label" id="gameLabel"></div>
   </div>
