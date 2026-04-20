@@ -14,10 +14,10 @@ body {
   overflow:hidden;
 }
 .panel {
-  background:#0d0d0d;
-  border:6px solid #1a1a1a;
+  background:#161410;
+  border:6px solid #1e1a16;
   border-radius:18px;
-  box-shadow:inset 0 0 60px #000, 0 0 0 2px #222;
+  box-shadow:inset 0 0 60px #000, 0 0 0 2px #2a2018;
   width:min(98vw,174vh);
   aspect-ratio:16/9;
   display:grid;
@@ -28,21 +28,23 @@ body {
 
 /* ROW 1: title bar */
 .row-title {
-  display:flex; align-items:center; justify-content:center; gap:2vw;
+  display:flex; align-items:center; justify-content:flex-start; gap:1.5vw;
+  border-bottom:1px solid #2a2018;
+  padding-bottom:1%;
 }
 .logo-small {
-  height:6vh; max-height:48px;
+  height:7vh; max-height:56px;
   object-fit:contain;
-  filter:drop-shadow(0 0 6px #f904);
+  filter:drop-shadow(0 0 6px #D94E1F88);
 }
 .game-label {
   font-family:'Oswald',sans-serif;
   font-size:clamp(12px,2.2vw,30px);
   font-weight:700;
-  color:#f90;
+  color:#E8C84A;
   letter-spacing:4px;
   text-transform:uppercase;
-  text-shadow:0 0 10px #f905;
+  text-shadow:0 0 10px #E8C84A55;
 }
 
 /* ROW 2: clock */
@@ -52,13 +54,13 @@ body {
 .clock {
   font-family:'Share Tech Mono',monospace;
   font-size:clamp(60px,13.5vw,185px);
-  color:#f90;
+  color:#D94E1F;
   letter-spacing:6px;
   line-height:1;
-  text-shadow:0 0 12px #f908, 0 0 35px #f904, 0 0 70px #f902;
+  text-shadow:0 0 12px #D94E1F88, 0 0 35px #D94E1F55, 0 0 70px #D94E1F33;
   font-variant-numeric:tabular-nums;
 }
-.clock.urgent { color:#e33; text-shadow:0 0 10px #e337, 0 0 28px #e334; }
+.clock.urgent { color:#E8C84A; text-shadow:0 0 12px #E8C84A88, 0 0 35px #E8C84A55; }
 
 /* ROW 3: scores */
 .row-scores {
@@ -73,18 +75,17 @@ body {
   font-family:'Oswald',sans-serif;
   font-size:clamp(14px,3vw,42px);
   font-weight:700;
-  color:#fff;
+  color:#F5E6C8;
   text-transform:uppercase;
   letter-spacing:3px;
-  text-shadow:0 0 10px rgba(255,255,255,0.1);
   line-height:1.1;
 }
 .score {
   font-family:'Share Tech Mono',monospace;
   font-size:clamp(60px,13.5vw,185px);
-  color:#f90;
+  color:#D94E1F;
   line-height:1;
-  text-shadow:0 0 12px #f908, 0 0 35px #f904, 0 0 70px #f902;
+  text-shadow:0 0 12px #D94E1F88, 0 0 35px #D94E1F55, 0 0 70px #D94E1F33;
   font-variant-numeric:tabular-nums;
 }
 .center-divider {
@@ -94,7 +95,7 @@ body {
 .dash {
   font-family:'Share Tech Mono',monospace;
   font-size:clamp(40px,8vw,110px);
-  color:#333; line-height:1;
+  color:#2a2018; line-height:1;
 }
 
 /* ROW 4: fouls + possession */
@@ -102,45 +103,48 @@ body {
   display:grid;
   grid-template-columns:1fr auto 1fr;
   align-items:center;
-  border-top:1px solid #1c1c1c;
+  border-top:1px solid #2a2018;
   padding-top:1%;
 }
 .foul-block { display:flex; align-items:center; gap:8px; }
 .foul-block.right { justify-content:flex-end; }
-.foul-label { font-family:'Oswald',sans-serif; font-size:clamp(8px,1vw,13px); color:#444; letter-spacing:2px; }
+.foul-label {
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(8px,1vw,13px);
+  color:#998877; letter-spacing:2px;
+}
 .foul-val {
   font-family:'Share Tech Mono',monospace;
   font-size:clamp(18px,2.8vw,40px);
-  color:#e33;
-  text-shadow:0 0 8px #e336, 0 0 16px #e333;
+  color:#7B5EA7;
+  text-shadow:0 0 8px #7B5EA788, 0 0 16px #7B5EA755;
   font-variant-numeric:tabular-nums;
 }
 .possession-wrap { display:flex; align-items:center; justify-content:center; gap:1.5vw; }
 .arrow { width:0; height:0; border-top:clamp(10px,1.8vw,26px) solid transparent; border-bottom:clamp(10px,1.8vw,26px) solid transparent; opacity:0.15; transition:opacity 0.2s; }
-.arrow.left  { border-right:clamp(16px,3vw,42px) solid #f90; }
-.arrow.right { border-left:clamp(16px,3vw,42px) solid #f90; }
-.arrow.active { opacity:1; filter:drop-shadow(0 0 6px #f908); }
-.poss-label { font-family:'Oswald',sans-serif; font-size:clamp(7px,.9vw,12px); color:#444; letter-spacing:2px; }
+.arrow.left  { border-right:clamp(16px,3vw,42px) solid #D94E1F; }
+.arrow.right { border-left:clamp(16px,3vw,42px) solid #D94E1F; }
+.arrow.active { opacity:1; filter:drop-shadow(0 0 6px #D94E1F); }
+.poss-label { font-family:'Oswald',sans-serif; font-size:clamp(7px,.9vw,12px); color:#998877; letter-spacing:2px; }
 
 /* ROW 5: next up */
 .row-nextup {
   display:flex; align-items:center; justify-content:center; gap:1vw;
-  border-top:1px solid #1a1a1a;
+  border-top:1px solid #1e1a16;
 }
 .nextup-label {
   font-family:'Oswald',sans-serif;
   font-size:clamp(8px,1vw,13px);
-  color:#555;
-  letter-spacing:3px;
-  white-space:nowrap;
+  color:#998877; letter-spacing:3px; white-space:nowrap;
 }
 .nextup-teams {
   font-family:'Oswald',sans-serif;
   font-size:clamp(10px,1.4vw,18px);
   font-weight:700;
-  color:#aaa;
+  color:#E8C84A;
   letter-spacing:2px;
   text-transform:uppercase;
+  text-shadow:0 0 8px #E8C84A55;
 }
 </style>
 </head>
