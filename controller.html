@@ -128,7 +128,21 @@
 </div>
 
 <div class="section">
-  <div class="section-title">POSSESSION ARROW</div>
+  <div class="section-title">GAME LABEL</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;flex-wrap:wrap;">
+    <button class="btn" style="background:#222;color:#f90;border:1px solid #444;" onclick="setLabel('')">NONE</button>
+    <button class="btn" style="background:#222;color:#f90;border:1px solid #444;" onclick="setLabel('POOL PLAY')">POOL PLAY</button>
+    <button class="btn" style="background:#222;color:#f90;border:1px solid #444;" onclick="setLabel('SEMI FINALS')">SEMI FINALS</button>
+    <button class="btn" style="background:#222;color:#f90;border:1px solid #444;" onclick="setLabel('FINALS')">FINALS</button>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">NEXT UP</div>
+  <input type="text" id="nextUpInput" placeholder="e.g. HAWKS vs BULLS" maxlength="40" oninput="setNextUp()">
+</div>
+
+
   <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:4px;">
     <button class="btn" style="background:#1a3a1a;color:#8f8;border:1px solid #2a5a2a;" onclick="setPoss('home')" id="possHome">◀ HOME</button>
     <button class="btn" style="background:#222;color:#666;border:1px solid #333;" onclick="setPoss('none')" id="possNone">NONE</button>
@@ -202,6 +216,19 @@ function addScore(team, pts) {
 function addFouls(team, n) {
   const key = team + 'Fouls';
   state[key] = Math.max(0, state[key] + n);
+  save();
+}
+
+function setLabel(val) {
+  state.gameLabel = val;
+  document.querySelectorAll('.btn[onclick^="setLabel"]').forEach(b => {
+    b.style.background = b.getAttribute('onclick').includes(`'${val}'`) ? '#3a3000' : '#222';
+  });
+  save();
+}
+
+function setNextUp() {
+  state.nextUp = document.getElementById('nextUpInput').value;
   save();
 }
 
