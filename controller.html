@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RIB Controller</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#111; color:#fff; font-family:'Orbitron',monospace; min-height:100vh; padding:16px; }
+  h1 { font-size:14px; color:#f90; letter-spacing:3px; text-align:center; margin-bottom:16px; }
+  .section { background:#1a1a1a; border:1px solid #333; border-radius:8px; padding:12px; margin-bottom:12px; }
+  .section-title { font-size:10px; color:#666; letter-spacing:2px; margin-bottom:10px; }
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  label { font-size:10px; color:#888; letter-spacing:1px; display:block; margin-bottom:4px; }
+  input[type=text] { width:100%; background:#222; border:1px solid #444; color:#fff; padding:8px; border-radius:4px; font-family:'Orbitron',monospace; font-size:13px; }
+  .score-display { font-size:48px; font-weight:900; color:#f90; text-align:center; font-variant-numeric:tabular-nums; margin:4px 0; }
+  .btn-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-top:4px; }
+  .btn { padding:10px 4px; border:none; border-radius:6px; font-family:'Orbitron',monospace; font-weight:700; font-size:12px; cursor:pointer; transition:transform 0.1s, background 0.1s; }
+  .btn:active { transform:scale(0.95); }
+  .btn-score { background:#f90; color:#000; }
+  .btn-score:hover { background:#ffaa22; }
+  .btn-minus { background:#333; color:#fff; }
+  .btn-minus:hover { background:#444; }
+  .foul-row { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:4px; }
+  .foul-val { font-size:32px; font-weight:900; color:#e44; font-variant-numeric:tabular-nums; min-width:40px; text-align:center; }
+  .foul-btns { display:flex; gap:6px; }
+  .btn-foul { padding:8px 14px; background:#333; color:#fff; border:none; border-radius:6px; font-family:'Orbitron',monospace; font-size:14px; font-weight:700; cursor:pointer; }
+  .btn-foul:active { transform:scale(0.95); }
+  .btn-foul.plus { background:#552222; color:#f88; }
+  .clock-display { font-size:52px; font-weight:900; color:#f90; text-align:center; letter-spacing:4px; font-variant-numeric:tabular-nums; }
+  .clock-display.urgent { color:#e44; }
+  .clock-controls { display:flex; gap:8px; margin-top:8px; }
+  .btn-clock { flex:1; padding:12px; border:none; border-radius:6px; font-family:'Orbitron',monospace; font-size:11px; font-weight:700; cursor:pointer; }
+  .btn-start { background:#1a6e1a; color:#8f8; }
+  .btn-stop { background:#6e1a1a; color:#f88; }
+  .btn-reset-clock { background:#333; color:#fff; }
+  .clock-set { display:flex; align-items:center; gap:6px; margin-top:8px; }
+  .clock-set input { width:60px; background:#222; border:1px solid #444; color:#fff; padding:6px; border-radius:4px; font-family:'Orbitron',monospace; font-size:13px; text-align:center; }
+  .clock-set button { background:#333; color:#fff; border:none; border-radius:4px; padding:6px 10px; font-family:'Orbitron',monospace; font-size:11px; cursor:pointer; }
+  .period-row { display:flex; align-items:center; justify-content:center; gap:16px; }
+  .period-val { font-size:42px; font-weight:900; color:#fff; min-width:50px; text-align:center; }
+  .btn-period { padding:8px 18px; background:#333; color:#fff; border:none; border-radius:6px; font-family:'Orbitron',monospace; font-size:18px; font-weight:700; cursor:pointer; }
+  .btn-period:active { transform:scale(0.95); }
+  .btn-danger { width:100%; padding:12px; background:#3a1010; color:#f66; border:1px solid #662222; border-radius:6px; font-family:'Orbitron',monospace; font-size:11px; font-weight:700; cursor:pointer; letter-spacing:2px; }
+  .btn-danger:active { background:#550000; }
+  .undo-btn { width:100%; padding:10px; background:#222; color:#888; border:1px solid #333; border-radius:6px; font-family:'Orbitron',monospace; font-size:10px; font-weight:700; cursor:pointer; letter-spacing:2px; margin-bottom:8px; }
+  .logo-section { display:flex; flex-direction:column; gap:6px; }
+  .logo-preview { max-height:50px; border-radius:4px; display:none; }
+</style>
+</head>
+<body>
+<h1>⚡ RUN IT BACK — CONTROLLER</h1>
+
+<div class="section">
+  <div class="section-title">TEAM NAMES</div>
+  <div class="two-col">
+    <div>
+      <label>HOME TEAM</label>
+      <input type="text" id="homeName" placeholder="HOME" maxlength="16" oninput="save()">
+    </div>
+    <div>
+      <label>GUEST TEAM</label>
+      <input type="text" id="guestName" placeholder="GUEST" maxlength="16" oninput="save()">
+    </div>
+  </div>
+</div>
+
+<div class="two-col">
+  <div class="section">
+    <div class="section-title">HOME SCORE</div>
+    <div class="score-display" id="homeScoreDisp">0</div>
+    <div class="btn-row">
+      <button class="btn btn-score" onclick="addScore('home',1)">+1</button>
+      <button class="btn btn-score" onclick="addScore('home',2)">+2</button>
+      <button class="btn btn-score" onclick="addScore('home',3)">+3</button>
+    </div>
+
+    <button class="btn btn-minus" style="width:100%;margin-top:6px;" onclick="addScore('home',-1)">−1</button>
+    <div class="foul-row" style="margin-top:10px;">
+      <div>
+        <div style="font-size:9px;color:#666;letter-spacing:1px;">FOULS</div>
+        <div class="foul-val" id="homeFoulsDisp">0</div>
+      </div>
+      <div class="foul-btns">
+        <button class="btn-foul" onclick="addFouls('home',-1)">−</button>
+        <button class="btn-foul plus" onclick="addFouls('home',1)">+</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">GUEST SCORE</div>
+    <div class="score-display" id="guestScoreDisp">0</div>
+    <div class="btn-row">
+      <button class="btn btn-score" onclick="addScore('guest',1)">+1</button>
+      <button class="btn btn-score" onclick="addScore('guest',2)">+2</button>
+      <button class="btn btn-score" onclick="addScore('guest',3)">+3</button>
+    </div>
+
+    <button class="btn btn-minus" style="width:100%;margin-top:6px;" onclick="addScore('guest',-1)">−1</button>
+    <div class="foul-row" style="margin-top:10px;">
+      <div>
+        <div style="font-size:9px;color:#666;letter-spacing:1px;">FOULS</div>
+        <div class="foul-val" id="guestFoulsDisp">0</div>
+      </div>
+      <div class="foul-btns">
+        <button class="btn-foul" onclick="addFouls('guest',-1)">−</button>
+        <button class="btn-foul plus" onclick="addFouls('guest',1)">+</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">GAME CLOCK</div>
+  <div class="clock-display" id="clockDisp">10:00</div>
+  <div class="clock-controls">
+    <button class="btn-clock btn-start" onclick="startClock()">START</button>
+    <button class="btn-clock btn-stop" onclick="stopClock()">PAUSE</button>
+    <button class="btn-clock btn-reset-clock" onclick="resetClock()">RESET</button>
+  </div>
+  <div class="clock-set" style="flex-wrap:wrap;gap:6px;margin-top:8px;">
+    <label style="margin:0;width:100%;">SET CLOCK (MM:SS):</label>
+    <input type="text" id="clockInput" placeholder="10:00" maxlength="5" style="width:80px;text-align:center;" onkeydown="if(event.key==='Enter')setClockFromInput()">
+    <button onclick="setClockFromInput()">SET</button>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">POSSESSION ARROW</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:4px;">
+    <button class="btn" style="background:#1a3a1a;color:#8f8;border:1px solid #2a5a2a;" onclick="setPoss('home')" id="possHome">◀ HOME</button>
+    <button class="btn" style="background:#222;color:#666;border:1px solid #333;" onclick="setPoss('none')" id="possNone">NONE</button>
+    <button class="btn" style="background:#1a3a1a;color:#8f8;border:1px solid #2a5a2a;" onclick="setPoss('guest')" id="possGuest">GUEST ▶</button>
+  </div>
+</div>
+
+
+
+<div class="section">
+  <button class="btn-danger" onclick="resetGame()">⚠ RESET ENTIRE GAME</button>
+</div>
+
+<script>
+let state = {
+  homeName:'', guestName:'',
+  homeScore:0, guestScore:0,
+  homeFouls:0, guestFouls:0,
+  clockSecs:600, clockRunning:false,
+  period:1, logoUrl:''
+};
+let history = [];
+let ticker = null;
+
+function load() {
+  try {
+    const d = JSON.parse(localStorage.getItem('rib_scoreboard') || '{}');
+    if (Object.keys(d).length) state = { ...state, ...d };
+  } catch(e) {}
+  render();
+}
+
+function save() {
+  state.homeName = document.getElementById('homeName').value;
+  state.guestName = document.getElementById('guestName').value;
+  localStorage.setItem('rib_scoreboard', JSON.stringify(state));
+  render();
+}
+
+function render() {
+  document.getElementById('homeName').value = state.homeName;
+  document.getElementById('guestName').value = state.guestName;
+  document.getElementById('homeScoreDisp').textContent = state.homeScore;
+  document.getElementById('guestScoreDisp').textContent = state.guestScore;
+  document.getElementById('homeFoulsDisp').textContent = state.homeFouls;
+  document.getElementById('guestFoulsDisp').textContent = state.guestFouls;
+
+
+  updateClockDisplay();
+}
+
+function fmt(s) {
+  const m = Math.floor(s/60), sec = s%60;
+  return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+}
+
+function updateClockDisplay() {
+  const el = document.getElementById('clockDisp');
+  el.textContent = fmt(state.clockSecs);
+  el.className = 'clock-display' + (state.clockSecs <= 30 && state.clockRunning ? ' urgent' : '');
+}
+
+function addScore(team, pts) {
+  history.push(JSON.parse(JSON.stringify(state)));
+  if (history.length > 20) history.shift();
+  const key = team + 'Score';
+  state[key] = Math.max(0, state[key] + pts);
+  save();
+}
+
+function addFouls(team, n) {
+  const key = team + 'Fouls';
+  state[key] = Math.max(0, state[key] + n);
+  save();
+}
+
+function setPoss(val) {
+  state.possession = val;
+  save();
+  ['home','none','guest'].forEach(v => {
+    const el = document.getElementById('poss'+v.charAt(0).toUpperCase()+v.slice(1));
+    if(el) el.style.background = v===val ? '#2a5a2a' : '#222';
+  });
+}
+
+function startClock() {
+  if (ticker) return;
+  state.clockRunning = true;
+  save();
+  ticker = setInterval(() => {
+    if (state.clockSecs <= 0) { stopClock(); return; }
+    state.clockSecs--;
+    localStorage.setItem('rib_scoreboard', JSON.stringify(state));
+    updateClockDisplay();
+  }, 1000);
+}
+
+function stopClock() {
+  clearInterval(ticker);
+  ticker = null;
+  state.clockRunning = false;
+  save();
+}
+
+function resetClock() {
+  stopClock();
+  state.clockSecs = 600;
+  save();
+}
+
+function setClockFromInput() {
+  stopClock();
+  const val = document.getElementById('clockInput').value.trim();
+  const parts = val.split(':');
+  let secs = 0;
+  if (parts.length === 2) {
+    secs = (parseInt(parts[0])||0) * 60 + (parseInt(parts[1])||0);
+  } else {
+    secs = parseInt(parts[0])||0;
+  }
+  state.clockSecs = Math.max(0, secs);
+  save();
+}
+
+
+
+function undo() {
+  if (!history.length) return;
+  state = history.pop();
+  localStorage.setItem('rib_scoreboard', JSON.stringify(state));
+  render();
+}
+
+function resetGame() {
+  if (!confirm('Reset entire game? This cannot be undone.')) return;
+  stopClock();
+  history = [];
+  state = { homeName: state.homeName, guestName: state.guestName,
+    homeScore:0, guestScore:0, homeFouls:0, guestFouls:0,
+    clockSecs:600, clockRunning:false, period:1, logoUrl: state.logoUrl };
+  save();
+}
+
+load();
+</script>
+</body>
+</html>
