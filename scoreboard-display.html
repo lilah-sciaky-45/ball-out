@@ -21,24 +21,31 @@ body {
   width:min(98vw,174vh);
   aspect-ratio:16/9;
   display:grid;
-  grid-template-rows:18% 46% 18%;
+  grid-template-rows:12% 18% 46% 14% 10%;
   padding:1.5% 3%;
+  position:relative;
 }
 
-/* watermark logo */
-.watermark {
-  position:absolute;
-  top:50%; left:50%;
-  transform:translate(-50%, -50%);
-  width:min(40vh, 38vw);
-  height:min(40vh, 38vw);
+/* ROW 1: title bar */
+.row-title {
+  display:flex; align-items:center; justify-content:center; gap:2vw;
+}
+.logo-small {
+  height:6vh; max-height:48px;
   object-fit:contain;
-  opacity:0.10;
-  pointer-events:none;
-  z-index:0;
+  filter:drop-shadow(0 0 6px #f904);
+}
+.game-label {
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(12px,2.2vw,30px);
+  font-weight:700;
+  color:#f90;
+  letter-spacing:4px;
+  text-transform:uppercase;
+  text-shadow:0 0 10px #f905;
 }
 
-/* ROW 2: clock center */
+/* ROW 2: clock */
 .row-clock {
   display:flex; align-items:center; justify-content:center;
 }
@@ -62,7 +69,6 @@ body {
 }
 .team-block { display:flex; flex-direction:column; }
 .team-block.right { align-items:flex-end; }
-
 .team-name {
   font-family:'Oswald',sans-serif;
   font-size:clamp(14px,3vw,42px);
@@ -81,20 +87,14 @@ body {
   text-shadow:0 0 12px #f908, 0 0 35px #f904, 0 0 70px #f902;
   font-variant-numeric:tabular-nums;
 }
-
 .center-divider {
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:1vh;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
   height:100%;
 }
 .dash {
   font-family:'Share Tech Mono',monospace;
   font-size:clamp(40px,8vw,110px);
-  color:#333;
-  line-height:1;
+  color:#333; line-height:1;
 }
 
 /* ROW 4: fouls + possession */
@@ -115,28 +115,43 @@ body {
   text-shadow:0 0 8px #e336, 0 0 16px #e333;
   font-variant-numeric:tabular-nums;
 }
-
-/* POSSESSION ARROW */
-.possession-wrap {
-  display:flex; align-items:center; justify-content:center; gap:1.5vw;
-}
-.arrow {
-  width:0; height:0;
-  border-top: clamp(10px,1.8vw,26px) solid transparent;
-  border-bottom: clamp(10px,1.8vw,26px) solid transparent;
-  opacity:0.15;
-  transition:opacity 0.2s;
-}
-.arrow.left  { border-right: clamp(16px,3vw,42px) solid #f90; }
-.arrow.right { border-left:  clamp(16px,3vw,42px) solid #f90; }
+.possession-wrap { display:flex; align-items:center; justify-content:center; gap:1.5vw; }
+.arrow { width:0; height:0; border-top:clamp(10px,1.8vw,26px) solid transparent; border-bottom:clamp(10px,1.8vw,26px) solid transparent; opacity:0.15; transition:opacity 0.2s; }
+.arrow.left  { border-right:clamp(16px,3vw,42px) solid #f90; }
+.arrow.right { border-left:clamp(16px,3vw,42px) solid #f90; }
 .arrow.active { opacity:1; filter:drop-shadow(0 0 6px #f908); }
 .poss-label { font-family:'Oswald',sans-serif; font-size:clamp(7px,.9vw,12px); color:#444; letter-spacing:2px; }
+
+/* ROW 5: next up */
+.row-nextup {
+  display:flex; align-items:center; justify-content:center; gap:1vw;
+  border-top:1px solid #1a1a1a;
+}
+.nextup-label {
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(8px,1vw,13px);
+  color:#555;
+  letter-spacing:3px;
+  white-space:nowrap;
+}
+.nextup-teams {
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(10px,1.4vw,18px);
+  font-weight:700;
+  color:#aaa;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
 </style>
 </head>
 <body>
 <div class="panel">
 
-<img class="watermark" src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/RIB-LOGO.png" alt="">
+  <!-- Title -->
+  <div class="row-title">
+    <img class="logo-small" src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/RIB-LOGO.png" alt="">
+    <div class="game-label" id="gameLabel"></div>
+  </div>
 
   <!-- Clock -->
   <div class="row-clock">
@@ -149,9 +164,7 @@ body {
       <div class="team-name" id="homeName">HOME</div>
       <div class="score" id="homeScore">0</div>
     </div>
-    <div class="center-divider">
-      <div class="dash">—</div>
-    </div>
+    <div class="center-divider"><div class="dash">—</div></div>
     <div class="team-block right">
       <div class="team-name" id="guestName">GUEST</div>
       <div class="score" id="guestScore">0</div>
@@ -175,6 +188,13 @@ body {
     </div>
   </div>
 
+  <!-- Next Up -->
+  <div class="row-nextup" id="nextupRow" style="display:none;">
+    <span class="nextup-label">NEXT UP —</span>
+    <span class="nextup-teams" id="nextupTeams"></span>
+  </div>
+  <div class="row-nextup" id="nextupEmpty" style="display:flex;"></div>
+
 </div>
 <script>
 const E = id => document.getElementById(id);
@@ -189,11 +209,15 @@ function update(){
     E('homeFouls').textContent  = d.homeFouls??0;
     E('guestFouls').textContent = d.guestFouls??0;
     const s = d.clockSecs??600;
-    E('clock').textContent  = fmt(s);
+    E('clock').textContent = fmt(s);
     E('clock').className = 'clock'+(s<=30&&d.clockRunning?' urgent':'');
     const poss = d.possession||'none';
     E('arrowLeft').className  = 'arrow left'  + (poss==='home'?' active':'');
     E('arrowRight').className = 'arrow right' + (poss==='guest'?' active':'');
+    E('gameLabel').textContent = d.gameLabel||'';
+    const nxt = d.nextUp||'';
+    if(nxt){ E('nextupTeams').textContent=nxt; E('nextupRow').style.display='flex'; E('nextupEmpty').style.display='none'; }
+    else   { E('nextupRow').style.display='none'; E('nextupEmpty').style.display='flex'; }
   } catch(e){}
 }
 window.addEventListener('storage', update);
