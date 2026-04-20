@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Run It Back Scoreboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Oswald:wght@700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:#0a0a0a;
+  width:100vw; height:100vh;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden;
+}
+.panel {
+  background:#0d0d0d;
+  border:6px solid #1a1a1a;
+  border-radius:18px;
+  box-shadow:inset 0 0 60px #000, 0 0 0 2px #222;
+  width:min(98vw,174vh);
+  aspect-ratio:16/9;
+  display:grid;
+  grid-template-rows:18% 18% 46% 18%;
+  padding:1.5% 3%;
+}
+
+/* ROW 1: logo center */
+.row-logo {
+  display:flex; align-items:center; justify-content:center;
+}
+.row-logo img { height:9vh; max-height:72px; object-fit:contain; filter:drop-shadow(0 0 8px #f905); }
+
+/* ROW 2: clock center */
+.row-clock {
+  display:flex; align-items:center; justify-content:center;
+}
+.clock {
+  font-family:'Share Tech Mono',monospace;
+  font-size:clamp(60px,13.5vw,185px);
+  color:#f90;
+  letter-spacing:6px;
+  line-height:1;
+  text-shadow:0 0 12px #f908, 0 0 35px #f904, 0 0 70px #f902;
+  font-variant-numeric:tabular-nums;
+}
+.clock.urgent { color:#e33; text-shadow:0 0 10px #e337, 0 0 28px #e334; }
+
+/* ROW 3: scores */
+.row-scores {
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  gap:1vw;
+}
+.team-block { display:flex; flex-direction:column; }
+.team-block.right { align-items:flex-end; }
+
+.team-name {
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(14px,3vw,42px);
+  font-weight:700;
+  color:#fff;
+  text-transform:uppercase;
+  letter-spacing:3px;
+  text-shadow:0 0 10px rgba(255,255,255,0.1);
+  line-height:1.1;
+}
+.score {
+  font-family:'Share Tech Mono',monospace;
+  font-size:clamp(60px,13.5vw,185px);
+  color:#f90;
+  line-height:1;
+  text-shadow:0 0 12px #f908, 0 0 35px #f904, 0 0 70px #f902;
+  font-variant-numeric:tabular-nums;
+}
+
+.center-divider {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:1vh;
+  height:100%;
+}
+.dash {
+  font-family:'Share Tech Mono',monospace;
+  font-size:clamp(40px,8vw,110px);
+  color:#333;
+  line-height:1;
+}
+
+/* ROW 4: fouls + possession */
+.row-bottom {
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  border-top:1px solid #1c1c1c;
+  padding-top:1%;
+}
+.foul-block { display:flex; align-items:center; gap:8px; }
+.foul-block.right { justify-content:flex-end; }
+.foul-label { font-family:'Oswald',sans-serif; font-size:clamp(8px,1vw,13px); color:#444; letter-spacing:2px; }
+.foul-val {
+  font-family:'Share Tech Mono',monospace;
+  font-size:clamp(18px,2.8vw,40px);
+  color:#e33;
+  text-shadow:0 0 8px #e336, 0 0 16px #e333;
+  font-variant-numeric:tabular-nums;
+}
+
+/* POSSESSION ARROW */
+.possession-wrap {
+  display:flex; align-items:center; justify-content:center; gap:1.5vw;
+}
+.arrow {
+  width:0; height:0;
+  border-top: clamp(10px,1.8vw,26px) solid transparent;
+  border-bottom: clamp(10px,1.8vw,26px) solid transparent;
+  opacity:0.15;
+  transition:opacity 0.2s;
+}
+.arrow.left  { border-right: clamp(16px,3vw,42px) solid #f90; }
+.arrow.right { border-left:  clamp(16px,3vw,42px) solid #f90; }
+.arrow.active { opacity:1; filter:drop-shadow(0 0 6px #f908); }
+.poss-label { font-family:'Oswald',sans-serif; font-size:clamp(7px,.9vw,12px); color:#444; letter-spacing:2px; }
+</style>
+</head>
+<body>
+<div class="panel">
+
+  <!-- Logo -->
+  <div class="row-logo">
+    <img src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/RIB-LOGO.png" alt="Run It Back">
+  </div>
+
+  <!-- Clock -->
+  <div class="row-clock">
+    <div class="clock" id="clock">10:00</div>
+  </div>
+
+  <!-- Scores -->
+  <div class="row-scores">
+    <div class="team-block">
+      <div class="team-name" id="homeName">HOME</div>
+      <div class="score" id="homeScore">0</div>
+    </div>
+    <div class="center-divider">
+      <div class="dash">—</div>
+    </div>
+    <div class="team-block right">
+      <div class="team-name" id="guestName">GUEST</div>
+      <div class="score" id="guestScore">0</div>
+    </div>
+  </div>
+
+  <!-- Fouls + Possession -->
+  <div class="row-bottom">
+    <div class="foul-block">
+      <span class="foul-label">FOULS</span>
+      <span class="foul-val" id="homeFouls">0</span>
+    </div>
+    <div class="possession-wrap">
+      <div class="arrow left" id="arrowLeft"></div>
+      <span class="poss-label">POSSESSION</span>
+      <div class="arrow right" id="arrowRight"></div>
+    </div>
+    <div class="foul-block right">
+      <span class="foul-val" id="guestFouls">0</span>
+      <span class="foul-label">FOULS</span>
+    </div>
+  </div>
+
+</div>
+<script>
+const E = id => document.getElementById(id);
+function fmt(s){ const m=Math.floor(s/60),sec=s%60; return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`; }
+function update(){
+  try {
+    const d = JSON.parse(localStorage.getItem('rib_scoreboard')||'{}');
+    E('homeName').textContent  = d.homeName||'HOME';
+    E('guestName').textContent = d.guestName||'GUEST';
+    E('homeScore').textContent  = d.homeScore??0;
+    E('guestScore').textContent = d.guestScore??0;
+    E('homeFouls').textContent  = d.homeFouls??0;
+    E('guestFouls').textContent = d.guestFouls??0;
+    const s = d.clockSecs??600;
+    E('clock').textContent  = fmt(s);
+    E('clock').className = 'clock'+(s<=30&&d.clockRunning?' urgent':'');
+    const poss = d.possession||'none';
+    E('arrowLeft').className  = 'arrow left'  + (poss==='home'?' active':'');
+    E('arrowRight').className = 'arrow right' + (poss==='guest'?' active':'');
+  } catch(e){}
+}
+window.addEventListener('storage', update);
+setInterval(update, 150);
+update();
+</script>
+</body>
+</html>
