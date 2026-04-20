@@ -27,7 +27,19 @@ body {
   gap:0;
 }
 
-/* Logo + label — absolutely positioned top-left, never disrupts layout */
+/* Logo — absolutely positioned right, large */
+.logo-right {
+  position:absolute;
+  top:2%;
+  right:2%;
+  height:min(28vh, 25vw);
+  max-height:220px;
+  object-fit:contain;
+  opacity:0.85;
+  z-index:10;
+}
+
+/* Label only top-left, no logo */
 .top-left {
   position:absolute;
   top:2%;
@@ -37,14 +49,9 @@ body {
   gap:1vw;
   z-index:10;
 }
-.logo-small {
-  height:min(8vh, 7vw);
-  max-height:64px;
-  object-fit:contain;
-}
 .game-label {
   font-family:'Oswald',sans-serif;
-  font-size:clamp(11px,1.8vw,26px);
+  font-size:clamp(18px,3vw,46px);
   font-weight:700;
   color:#E8C84A;
   letter-spacing:4px;
@@ -139,16 +146,18 @@ body {
   padding-top:0.5%;
   min-height:0;
 }
-.nextup-label { font-family:'Oswald',sans-serif; font-size:clamp(8px,.9vw,12px); color:#998877; letter-spacing:3px; white-space:nowrap; }
-.nextup-teams { font-family:'Oswald',sans-serif; font-size:clamp(9px,1.3vw,17px); font-weight:700; color:#E8C84A; letter-spacing:2px; text-transform:uppercase; }
+.nextup-label { font-family:'Oswald',sans-serif; font-size:clamp(12px,1.6vw,22px); color:#998877; letter-spacing:3px; white-space:nowrap; }
+.nextup-teams { font-family:'Oswald',sans-serif; font-size:clamp(14px,2.2vw,30px); font-weight:700; color:#E8C84A; letter-spacing:2px; text-transform:uppercase; }
 </style>
 </head>
 <body>
 <div class="panel">
 
-  <!-- Logo + label: absolutely positioned, never interferes with layout -->
+  <!-- Logo: large on the right -->
+  <img class="logo-right" src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/RIB-LOGO.png" alt="">
+
+  <!-- Game label: top left -->
   <div class="top-left">
-    <img class="logo-small" src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/RIB-LOGO.png" alt="">
     <div class="game-label" id="gameLabel"></div>
   </div>
 
