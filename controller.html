@@ -4,49 +4,57 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RIB Controller</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap" rel="stylesheet">
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
-  body { background:#111; color:#fff; font-family:'Orbitron',monospace; min-height:100vh; padding:16px; }
-  h1 { font-size:14px; color:#f90; letter-spacing:3px; text-align:center; margin-bottom:16px; }
-  .section { background:#1a1a1a; border:1px solid #333; border-radius:8px; padding:12px; margin-bottom:12px; }
-  .section-title { font-size:10px; color:#666; letter-spacing:2px; margin-bottom:10px; }
+  body { background:#0a0a0a; color:#F5E6C8; font-family:'Oswald',sans-serif; min-height:100vh; padding:16px; }
+  h1 { font-size:14px; color:#D94E1F; letter-spacing:3px; text-align:center; margin-bottom:16px; }
+  .section { background:#161410; border:1px solid #2a2018; border-radius:8px; padding:12px; margin-bottom:12px; }
+  .section-title { font-size:10px; color:#998877; letter-spacing:2px; margin-bottom:10px; }
   .two-col { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-  label { font-size:10px; color:#888; letter-spacing:1px; display:block; margin-bottom:4px; }
-  input[type=text] { width:100%; background:#222; border:1px solid #444; color:#fff; padding:8px; border-radius:4px; font-family:'Orbitron',monospace; font-size:13px; }
-  .score-display { font-size:48px; font-weight:900; color:#f90; text-align:center; font-variant-numeric:tabular-nums; margin:4px 0; }
+  label { font-size:10px; color:#998877; letter-spacing:1px; display:block; margin-bottom:4px; }
+  input[type=text], input[type=number] {
+    width:100%; background:#0a0a0a; border:1px solid #2a2018;
+    color:#F5E6C8; padding:8px; border-radius:4px;
+    font-family:'Oswald',sans-serif; font-size:13px;
+  }
+  .score-display { font-size:48px; font-weight:700; color:#D94E1F; text-align:center; font-variant-numeric:tabular-nums; margin:4px 0; }
   .btn-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-top:4px; }
-  .btn { padding:10px 4px; border:none; border-radius:6px; font-family:'Orbitron',monospace; font-weight:700; font-size:12px; cursor:pointer; transition:transform 0.1s, background 0.1s; }
+  .btn { padding:10px 4px; border:none; border-radius:6px; font-family:'Oswald',sans-serif; font-weight:700; font-size:12px; cursor:pointer; transition:transform 0.1s, background 0.1s; color:#F5E6C8; background:#2a2018; border:1px solid #3a3020; }
   .btn:active { transform:scale(0.95); }
-  .btn-score { background:#f90; color:#000; }
-  .btn-score:hover { background:#ffaa22; }
-  .btn-minus { background:#333; color:#fff; }
-  .btn-minus:hover { background:#444; }
+  .btn-score { background:#D94E1F; color:#F5E6C8; border:none; }
+  .btn-score:hover { background:#A8330D; }
+  .btn-minus { background:#2a2018; color:#998877; border:1px solid #3a3020; }
+  .btn-minus:hover { background:#3a3020; }
   .foul-row { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:4px; }
-  .foul-val { font-size:32px; font-weight:900; color:#e44; font-variant-numeric:tabular-nums; min-width:40px; text-align:center; }
+  .foul-val { font-size:32px; font-weight:700; color:#7B5EA7; font-variant-numeric:tabular-nums; min-width:40px; text-align:center; }
   .foul-btns { display:flex; gap:6px; }
-  .btn-foul { padding:8px 14px; background:#333; color:#fff; border:none; border-radius:6px; font-family:'Orbitron',monospace; font-size:14px; font-weight:700; cursor:pointer; }
+  .btn-foul { padding:8px 14px; background:#2a2018; color:#F5E6C8; border:1px solid #3a3020; border-radius:6px; font-family:'Oswald',sans-serif; font-size:14px; font-weight:700; cursor:pointer; }
   .btn-foul:active { transform:scale(0.95); }
-  .btn-foul.plus { background:#552222; color:#f88; }
-  .clock-display { font-size:52px; font-weight:900; color:#f90; text-align:center; letter-spacing:4px; font-variant-numeric:tabular-nums; }
-  .clock-display.urgent { color:#e44; }
+  .btn-foul.plus { background:#5A3E85; color:#F5E6C8; border:none; }
+  .btn-foul.plus:hover { background:#7B5EA7; }
+  .clock-display { font-size:52px; font-weight:700; color:#D94E1F; text-align:center; letter-spacing:4px; font-variant-numeric:tabular-nums; }
+  .clock-display.urgent { color:#E8C84A; }
   .clock-controls { display:flex; gap:8px; margin-top:8px; }
-  .btn-clock { flex:1; padding:12px; border:none; border-radius:6px; font-family:'Orbitron',monospace; font-size:11px; font-weight:700; cursor:pointer; }
-  .btn-start { background:#1a6e1a; color:#8f8; }
-  .btn-stop { background:#6e1a1a; color:#f88; }
-  .btn-reset-clock { background:#333; color:#fff; }
+  .btn-clock { flex:1; padding:12px; border:none; border-radius:6px; font-family:'Oswald',sans-serif; font-size:11px; font-weight:700; cursor:pointer; letter-spacing:1px; }
+  .btn-start { background:#D94E1F; color:#F5E6C8; }
+  .btn-start:hover { background:#A8330D; }
+  .btn-pause { background:#2a2018; color:#998877; border:1px solid #3a3020; }
+  .btn-pause:hover { background:#3a3020; }
+  .btn-reset-clock { background:#2a2018; color:#998877; border:1px solid #3a3020; }
+  .btn-reset-clock:hover { background:#3a3020; }
   .clock-set { display:flex; align-items:center; gap:6px; margin-top:8px; }
-  .clock-set input { width:60px; background:#222; border:1px solid #444; color:#fff; padding:6px; border-radius:4px; font-family:'Orbitron',monospace; font-size:13px; text-align:center; }
-  .clock-set button { background:#333; color:#fff; border:none; border-radius:4px; padding:6px 10px; font-family:'Orbitron',monospace; font-size:11px; cursor:pointer; }
-  .period-row { display:flex; align-items:center; justify-content:center; gap:16px; }
-  .period-val { font-size:42px; font-weight:900; color:#fff; min-width:50px; text-align:center; }
-  .btn-period { padding:8px 18px; background:#333; color:#fff; border:none; border-radius:6px; font-family:'Orbitron',monospace; font-size:18px; font-weight:700; cursor:pointer; }
-  .btn-period:active { transform:scale(0.95); }
-  .btn-danger { width:100%; padding:12px; background:#3a1010; color:#f66; border:1px solid #662222; border-radius:6px; font-family:'Orbitron',monospace; font-size:11px; font-weight:700; cursor:pointer; letter-spacing:2px; }
-  .btn-danger:active { background:#550000; }
-  .undo-btn { width:100%; padding:10px; background:#222; color:#888; border:1px solid #333; border-radius:6px; font-family:'Orbitron',monospace; font-size:10px; font-weight:700; cursor:pointer; letter-spacing:2px; margin-bottom:8px; }
-  .logo-section { display:flex; flex-direction:column; gap:6px; }
-  .logo-preview { max-height:50px; border-radius:4px; display:none; }
+  .clock-set input { width:80px; text-align:center; }
+  .clock-set button { background:#2a2018; color:#F5E6C8; border:1px solid #3a3020; border-radius:4px; padding:6px 10px; font-family:'Oswald',sans-serif; font-size:11px; cursor:pointer; }
+  .clock-set button:hover { background:#3a3020; }
+  .btn-label { background:#2a2018; color:#E8C84A; border:1px solid #3a3020; }
+  .btn-label:hover, .btn-label.active { background:#3a2800; border-color:#E8C84A55; }
+  .btn-poss { flex:1; padding:10px; border:none; border-radius:6px; font-family:'Oswald',sans-serif; font-size:11px; font-weight:700; cursor:pointer; background:#2a2018; color:#998877; border:1px solid #3a3020; }
+  .btn-poss:active { transform:scale(0.95); }
+  .btn-poss.active-home, .btn-poss.active-guest { background:#D94E1F; color:#F5E6C8; }
+  .btn-poss.active-none { background:#3a3020; color:#F5E6C8; }
+  .btn-danger { width:100%; padding:12px; background:#1a0a0a; color:#D94E1F; border:1px solid #A8330D55; border-radius:6px; font-family:'Oswald',sans-serif; font-size:11px; font-weight:700; cursor:pointer; letter-spacing:2px; }
+  .btn-danger:hover { background:#2a0a0a; }
 </style>
 </head>
 <body>
@@ -75,11 +83,10 @@
       <button class="btn btn-score" onclick="addScore('home',2)">+2</button>
       <button class="btn btn-score" onclick="addScore('home',3)">+3</button>
     </div>
-
     <button class="btn btn-minus" style="width:100%;margin-top:6px;" onclick="addScore('home',-1)">−1</button>
     <div class="foul-row" style="margin-top:10px;">
       <div>
-        <div style="font-size:9px;color:#666;letter-spacing:1px;">FOULS</div>
+        <div style="font-size:9px;color:#998877;letter-spacing:1px;">FOULS</div>
         <div class="foul-val" id="homeFoulsDisp">0</div>
       </div>
       <div class="foul-btns">
@@ -97,11 +104,10 @@
       <button class="btn btn-score" onclick="addScore('guest',2)">+2</button>
       <button class="btn btn-score" onclick="addScore('guest',3)">+3</button>
     </div>
-
     <button class="btn btn-minus" style="width:100%;margin-top:6px;" onclick="addScore('guest',-1)">−1</button>
     <div class="foul-row" style="margin-top:10px;">
       <div>
-        <div style="font-size:9px;color:#666;letter-spacing:1px;">FOULS</div>
+        <div style="font-size:9px;color:#998877;letter-spacing:1px;">FOULS</div>
         <div class="foul-val" id="guestFoulsDisp">0</div>
       </div>
       <div class="foul-btns">
@@ -117,11 +123,11 @@
   <div class="clock-display" id="clockDisp">10:00</div>
   <div class="clock-controls">
     <button class="btn-clock btn-start" onclick="startClock()">START</button>
-    <button class="btn-clock btn-stop" onclick="stopClock()">PAUSE</button>
+    <button class="btn-clock btn-pause" onclick="stopClock()">PAUSE</button>
     <button class="btn-clock btn-reset-clock" onclick="resetClock()">RESET</button>
   </div>
-  <div class="clock-set" style="flex-wrap:wrap;gap:6px;margin-top:8px;">
-    <label style="margin:0;width:100%;">SET CLOCK (MM:SS):</label>
+  <div class="clock-set">
+    <label style="margin:0;color:#998877;">SET (MM:SS):</label>
     <input type="text" id="clockInput" placeholder="10:00" maxlength="5" style="width:80px;text-align:center;" onkeydown="if(event.key==='Enter')setClockFromInput()">
     <button onclick="setClockFromInput()">SET</button>
   </div>
@@ -129,11 +135,11 @@
 
 <div class="section">
   <div class="section-title">GAME LABEL</div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;flex-wrap:wrap;">
-    <button class="btn" style="background:#222;color:#f90;border:1px solid #444;" onclick="setLabel('')">NONE</button>
-    <button class="btn" style="background:#222;color:#f90;border:1px solid #444;" onclick="setLabel('POOL PLAY')">POOL PLAY</button>
-    <button class="btn" style="background:#222;color:#f90;border:1px solid #444;" onclick="setLabel('SEMI FINALS')">SEMI FINALS</button>
-    <button class="btn" style="background:#222;color:#f90;border:1px solid #444;" onclick="setLabel('FINALS')">FINALS</button>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+    <button class="btn btn-label" onclick="setLabel('')">NONE</button>
+    <button class="btn btn-label" onclick="setLabel('POOL PLAY')">POOL PLAY</button>
+    <button class="btn btn-label" onclick="setLabel('SEMI FINALS')">SEMI FINALS</button>
+    <button class="btn btn-label" onclick="setLabel('FINALS')">FINALS</button>
   </div>
 </div>
 
@@ -142,15 +148,14 @@
   <input type="text" id="nextUpInput" placeholder="e.g. HAWKS vs BULLS" maxlength="40" oninput="setNextUp()">
 </div>
 
-
-  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:4px;">
-    <button class="btn" style="background:#1a3a1a;color:#8f8;border:1px solid #2a5a2a;" onclick="setPoss('home')" id="possHome">◀ HOME</button>
-    <button class="btn" style="background:#222;color:#666;border:1px solid #333;" onclick="setPoss('none')" id="possNone">NONE</button>
-    <button class="btn" style="background:#1a3a1a;color:#8f8;border:1px solid #2a5a2a;" onclick="setPoss('guest')" id="possGuest">GUEST ▶</button>
+<div class="section">
+  <div class="section-title">POSSESSION ARROW</div>
+  <div style="display:flex;gap:8px;">
+    <button class="btn-poss" id="possHome" onclick="setPoss('home')">◀ HOME</button>
+    <button class="btn-poss" id="possNone" onclick="setPoss('none')">NONE</button>
+    <button class="btn-poss" id="possGuest" onclick="setPoss('guest')">GUEST ▶</button>
   </div>
 </div>
-
-
 
 <div class="section">
   <button class="btn-danger" onclick="resetGame()">⚠ RESET ENTIRE GAME</button>
@@ -162,14 +167,13 @@ let state = {
   homeScore:0, guestScore:0,
   homeFouls:0, guestFouls:0,
   clockSecs:600, clockRunning:false,
-  period:1, logoUrl:''
+  possession:'none', gameLabel:'', nextUp:''
 };
-let history = [];
 let ticker = null;
 
 function load() {
   try {
-    const d = JSON.parse(localStorage.getItem('rib_scoreboard') || '{}');
+    const d = JSON.parse(localStorage.getItem('rib_scoreboard')||'{}');
     if (Object.keys(d).length) state = { ...state, ...d };
   } catch(e) {}
   render();
@@ -189,56 +193,33 @@ function render() {
   document.getElementById('guestScoreDisp').textContent = state.guestScore;
   document.getElementById('homeFoulsDisp').textContent = state.homeFouls;
   document.getElementById('guestFoulsDisp').textContent = state.guestFouls;
-
-
+  document.getElementById('nextUpInput').value = state.nextUp||'';
   updateClockDisplay();
+  updatePossButtons();
+  updateLabelButtons();
 }
 
 function fmt(s) {
-  const m = Math.floor(s/60), sec = s%60;
+  const m=Math.floor(s/60), sec=s%60;
   return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
 }
 
 function updateClockDisplay() {
   const el = document.getElementById('clockDisp');
   el.textContent = fmt(state.clockSecs);
-  el.className = 'clock-display' + (state.clockSecs <= 30 && state.clockRunning ? ' urgent' : '');
+  el.className = 'clock-display'+(state.clockSecs<=30&&state.clockRunning?' urgent':'');
 }
 
 function addScore(team, pts) {
-  history.push(JSON.parse(JSON.stringify(state)));
-  if (history.length > 20) history.shift();
-  const key = team + 'Score';
-  state[key] = Math.max(0, state[key] + pts);
+  const key = team+'Score';
+  state[key] = Math.max(0, state[key]+pts);
   save();
 }
 
 function addFouls(team, n) {
-  const key = team + 'Fouls';
-  state[key] = Math.max(0, state[key] + n);
+  const key = team+'Fouls';
+  state[key] = Math.max(0, state[key]+n);
   save();
-}
-
-function setLabel(val) {
-  state.gameLabel = val;
-  document.querySelectorAll('.btn[onclick^="setLabel"]').forEach(b => {
-    b.style.background = b.getAttribute('onclick').includes(`'${val}'`) ? '#3a3000' : '#222';
-  });
-  save();
-}
-
-function setNextUp() {
-  state.nextUp = document.getElementById('nextUpInput').value;
-  save();
-}
-
-function setPoss(val) {
-  state.possession = val;
-  save();
-  ['home','none','guest'].forEach(v => {
-    const el = document.getElementById('poss'+v.charAt(0).toUpperCase()+v.slice(1));
-    if(el) el.style.background = v===val ? '#2a5a2a' : '#222';
-  });
 }
 
 function startClock() {
@@ -254,8 +235,7 @@ function startClock() {
 }
 
 function stopClock() {
-  clearInterval(ticker);
-  ticker = null;
+  clearInterval(ticker); ticker=null;
   state.clockRunning = false;
   save();
 }
@@ -271,31 +251,46 @@ function setClockFromInput() {
   const val = document.getElementById('clockInput').value.trim();
   const parts = val.split(':');
   let secs = 0;
-  if (parts.length === 2) {
-    secs = (parseInt(parts[0])||0) * 60 + (parseInt(parts[1])||0);
-  } else {
-    secs = parseInt(parts[0])||0;
-  }
+  if (parts.length===2) secs=(parseInt(parts[0])||0)*60+(parseInt(parts[1])||0);
+  else secs=parseInt(parts[0])||0;
   state.clockSecs = Math.max(0, secs);
   save();
 }
 
+function setLabel(val) {
+  state.gameLabel = val;
+  save();
+}
 
+function updateLabelButtons() {
+  document.querySelectorAll('.btn-label').forEach(b => {
+    const v = b.getAttribute('onclick').match(/'([^']*)'/)?.[1]??'';
+    b.classList.toggle('active', v===state.gameLabel);
+  });
+}
 
-function undo() {
-  if (!history.length) return;
-  state = history.pop();
-  localStorage.setItem('rib_scoreboard', JSON.stringify(state));
-  render();
+function setNextUp() {
+  state.nextUp = document.getElementById('nextUpInput').value;
+  save();
+}
+
+function setPoss(val) {
+  state.possession = val;
+  save();
+}
+
+function updatePossButtons() {
+  ['home','none','guest'].forEach(v => {
+    const el = document.getElementById('poss'+v.charAt(0).toUpperCase()+v.slice(1));
+    if(el) el.className = 'btn-poss'+(state.possession===v?' active-'+v:'');
+  });
 }
 
 function resetGame() {
   if (!confirm('Reset entire game? This cannot be undone.')) return;
   stopClock();
-  history = [];
-  state = { homeName: state.homeName, guestName: state.guestName,
-    homeScore:0, guestScore:0, homeFouls:0, guestFouls:0,
-    clockSecs:600, clockRunning:false, period:1, logoUrl: state.logoUrl };
+  state = { ...state, homeScore:0, guestScore:0, homeFouls:0, guestFouls:0,
+    clockSecs:600, clockRunning:false, possession:'none' };
   save();
 }
 
