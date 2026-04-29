@@ -5,94 +5,139 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Run It Back — Bracket</title>
 <style>
-  :root {
-    --red:#D94E1F;--deep-red:#A8330D;--purple:#7B5EA7;--deep-purple:#5A3E85;
-    --gold:#E8C84A;--cream:#F5E6C8;--bg:#0a0a0a;--card:#161410;--muted:#998877;--radius:8px;
-  }
-  *{box-sizing:border-box;margin:0;padding:0;}
-  body{background:var(--bg);color:var(--cream);font-family:system-ui,sans-serif;padding:16px;min-height:100vh;}
-  .subtitle{color:var(--gold);font-size:13px;text-align:center;margin-bottom:20px;}
-  .tabs{display:flex;gap:4px;justify-content:center;margin-bottom:20px;flex-wrap:wrap;}
-  .tab{background:var(--card);border:1px solid #333;color:var(--muted);padding:8px 18px;border-radius:var(--radius);cursor:pointer;font-size:14px;transition:all 0.15s;}
-  .tab.active{background:var(--red);color:var(--cream);border-color:var(--red);}
-  .tab:hover:not(.active){border-color:var(--purple);color:var(--cream);}
-  .section{display:none;} .section.active{display:block;}
-
-  .team-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:560px;margin:0 auto 20px;}
-  .team-input-wrap{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid #333;border-radius:var(--radius);padding:8px 12px;}
-  .team-num{color:var(--gold);font-size:12px;font-weight:500;min-width:22px;}
-  .team-input{background:transparent;border:none;color:var(--cream);font-size:14px;outline:none;width:100%;}
-  .team-input::placeholder{color:var(--muted);}
-  .pool-label{color:var(--purple);font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:0.05em;margin:12px 0 6px;grid-column:1/-1;border-top:1px solid #222;padding-top:12px;}
-  .action-btn{display:block;margin:0 auto;background:var(--red);color:var(--cream);border:none;padding:10px 32px;border-radius:var(--radius);font-size:15px;cursor:pointer;}
-  .action-btn:hover{background:var(--deep-red);}
-
-  .pools-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;}
-  @media(max-width:600px){.pools-grid{grid-template-columns:1fr;}.team-grid{grid-template-columns:1fr;}}
-  .pool-card{background:var(--card);border:1px solid #333;border-radius:var(--radius);overflow:hidden;}
-  .pool-header{background:var(--deep-purple);color:var(--cream);padding:8px 14px;font-size:14px;font-weight:500;display:flex;justify-content:space-between;align-items:center;}
-  .pool-header span{color:var(--gold);font-size:12px;}
-  .pool-table{width:100%;border-collapse:collapse;font-size:13px;}
-  .pool-table th{color:var(--muted);padding:6px 10px;text-align:center;border-bottom:1px solid #222;font-weight:400;font-size:11px;}
-  .pool-table th:first-child{text-align:left;}
-  .pool-table td{padding:7px 10px;text-align:center;border-bottom:1px solid #1a1a1a;}
-  .pool-table td:first-child{text-align:left;color:var(--cream);}
-  .pool-table tr.leader td:first-child{color:var(--gold);}
-  .pool-table tr:last-child td{border-bottom:none;}
-  .rank{color:var(--muted);font-size:11px;margin-right:4px;}
-
-  .games-container{max-width:680px;margin:0 auto;}
-  .stage-label{color:var(--gold);font-size:13px;font-weight:500;margin:20px 0 10px;text-transform:uppercase;letter-spacing:0.06em;}
-  .game-card{background:var(--card);border:1px solid #333;border-radius:var(--radius);margin-bottom:10px;overflow:hidden;}
-  .game-header{display:flex;justify-content:space-between;align-items:center;padding:7px 12px;background:#1c1916;font-size:11px;color:var(--muted);}
-  .game-header .gid{color:var(--purple);font-weight:500;}
-  .game-teams{display:flex;align-items:center;padding:10px 12px;gap:10px;}
-  .team-slot{flex:1;}
-  .team-name{font-size:14px;color:var(--cream);font-weight:500;}
-  .team-name.tbd{color:var(--muted);font-style:italic;font-weight:400;}
-  .team-name.winner{color:var(--gold);}
-  .vs{color:var(--red);font-weight:500;font-size:13px;flex-shrink:0;}
-  .score-inputs{display:flex;align-items:center;gap:6px;margin-left:10px;}
-  .score-in{width:46px;background:#0a0a0a;border:1px solid #444;color:var(--cream);font-size:16px;font-weight:500;text-align:center;padding:5px;border-radius:5px;outline:none;}
-  .score-in:focus{border-color:var(--red);}
-  .score-dash{color:var(--muted);}
-  .confirm-btn{background:var(--purple);color:var(--cream);border:none;padding:6px 14px;border-radius:5px;font-size:12px;cursor:pointer;}
-  .confirm-btn:hover{background:var(--deep-purple);}
-  .confirm-btn:disabled{background:#333;color:var(--muted);cursor:default;}
-
-  .bracket-wrap{overflow-x:auto;padding-bottom:10px;}
-  .b-round-label{color:var(--gold);font-size:11px;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;}
-  .b-match{background:var(--card);border:1px solid #333;border-radius:var(--radius);overflow:hidden;}
-  .b-team{padding:8px 12px;font-size:13px;display:flex;justify-content:space-between;align-items:center;}
-  .b-team:first-child{border-bottom:1px solid #222;}
-  .b-team-name{color:var(--cream);}
-  .b-team-name.tbd{color:var(--muted);font-style:italic;}
-  .b-team-name.winner{color:var(--gold);font-weight:500;}
-  .b-score{color:var(--muted);font-size:13px;min-width:20px;text-align:right;}
-  .b-score.winner{color:var(--gold);}
-  .champ-box{background:#0e0a04;border:1px solid var(--gold);border-radius:var(--radius);padding:16px;text-align:center;min-width:155px;}
-  .champ-label{color:var(--gold);font-size:11px;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;}
-  .champ-name{color:var(--cream);font-size:18px;font-weight:500;}
-  .champ-name.tbd{color:var(--muted);font-style:italic;font-size:14px;}
-
-  @media print{
-    body{background:white;color:black;}
-    .tabs,.action-btn,.confirm-btn,.score-in{display:none!important;}
-    .section{display:block!important;}
-    .pool-card,.game-card,.b-match{border:1px solid #ccc;}
-    .pool-header{background:#7B5EA7;}
-    *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  }
+:root{--red:#D94E1F;--deep-red:#A8330D;--purple:#7B5EA7;--deep-purple:#5A3E85;--gold:#E8C84A;--cream:#F5E6C8;--bg:#0a0a0a;--card:#161410;--muted:#998877;--radius:8px;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--cream);font-family:system-ui,sans-serif;padding:16px;min-height:100vh;}
+.subtitle{color:var(--gold);font-size:13px;text-align:center;margin-bottom:4px;}
+.save-indicator{text-align:center;font-size:11px;color:var(--muted);margin-bottom:16px;height:16px;}
+.save-indicator.saved{color:#5a9a5a;}
+.tabs{display:flex;gap:4px;justify-content:center;margin-bottom:20px;flex-wrap:wrap;}
+.tab{background:var(--card);border:1px solid #333;color:var(--muted);padding:8px 18px;border-radius:var(--radius);cursor:pointer;font-size:14px;transition:all 0.15s;}
+.tab.active{background:var(--red);color:var(--cream);border-color:var(--red);}
+.tab:hover:not(.active){border-color:var(--purple);color:var(--cream);}
+.section{display:none;}.section.active{display:block;}
+.team-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:560px;margin:0 auto 20px;}
+.team-input-wrap{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid #333;border-radius:var(--radius);padding:8px 12px;}
+.team-num{color:var(--gold);font-size:12px;font-weight:500;min-width:22px;}
+.team-input{background:transparent;border:none;color:var(--cream);font-size:14px;outline:none;width:100%;}
+.team-input::placeholder{color:var(--muted);}
+.pool-label{color:var(--purple);font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:0.05em;margin:12px 0 6px;grid-column:1/-1;border-top:1px solid #222;padding-top:12px;}
+.btn-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:4px;}
+.action-btn{background:var(--red);color:var(--cream);border:none;padding:10px 32px;border-radius:var(--radius);font-size:15px;cursor:pointer;}
+.action-btn:hover{background:var(--deep-red);}
+.action-btn.secondary{background:var(--deep-purple);font-size:13px;padding:10px 20px;}
+.action-btn.secondary:hover{background:#4a3070;}
+.action-btn.outline{background:transparent;border:1px solid #444;color:var(--muted);font-size:13px;padding:10px 20px;}
+.action-btn.outline:hover{border-color:var(--gold);color:var(--gold);}
+.action-btn.danger{background:transparent;border:1px solid var(--deep-red);color:#c04020;font-size:13px;padding:10px 20px;}
+.action-btn.danger:hover{background:#1a0500;color:var(--red);}
+.backup-box{background:var(--card);border:1px solid #333;border-radius:var(--radius);padding:16px;max-width:560px;margin:20px auto 0;}
+.backup-box h4{color:var(--gold);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;}
+.backup-textarea{width:100%;background:#0a0a0a;border:1px solid #333;color:var(--cream);font-size:11px;font-family:monospace;padding:10px;border-radius:6px;resize:vertical;min-height:80px;outline:none;}
+.backup-textarea:focus{border-color:var(--purple);}
+.pools-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;}
+@media(max-width:600px){.pools-grid{grid-template-columns:1fr;}.team-grid{grid-template-columns:1fr;}}
+.pool-card{background:var(--card);border:1px solid #333;border-radius:var(--radius);overflow:hidden;}
+.pool-header{background:var(--deep-purple);color:var(--cream);padding:8px 14px;font-size:14px;font-weight:500;display:flex;justify-content:space-between;align-items:center;}
+.pool-header span{color:var(--gold);font-size:12px;}
+.pool-table{width:100%;border-collapse:collapse;font-size:13px;}
+.pool-table th{color:var(--muted);padding:6px 10px;text-align:center;border-bottom:1px solid #222;font-weight:400;font-size:11px;}
+.pool-table th:first-child{text-align:left;}
+.pool-table td{padding:7px 10px;text-align:center;border-bottom:1px solid #1a1a1a;}
+.pool-table td:first-child{text-align:left;color:var(--cream);}
+.pool-table tr.leader td:first-child{color:var(--gold);}
+.pool-table tr:last-child td{border-bottom:none;}
+.rank{color:var(--muted);font-size:11px;margin-right:4px;}
+.games-container{max-width:720px;margin:0 auto;}
+.stage-label{color:var(--gold);font-size:13px;font-weight:500;margin:20px 0 10px;text-transform:uppercase;letter-spacing:0.06em;}
+.schedule-bar{background:var(--card);border:1px solid #333;border-radius:var(--radius);padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.schedule-bar label{color:var(--muted);font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:0.05em;}
+.time-input{background:#0a0a0a;border:1px solid #444;color:var(--cream);font-size:14px;padding:6px 10px;border-radius:6px;outline:none;width:110px;}
+.time-input:focus{border-color:var(--gold);}
+.schedule-note{color:var(--muted);font-size:12px;margin-left:auto;}
+.up-next{background:linear-gradient(135deg,#1a0e00,#0f0f0f);border:1px solid var(--gold);border-radius:var(--radius);padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;}
+.up-next-label{color:var(--gold);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;flex-shrink:0;}
+.up-next-text{color:var(--cream);font-size:14px;font-weight:500;}
+.up-next-time{color:var(--gold);font-size:13px;margin-left:auto;flex-shrink:0;}
+.sched-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:20px;}
+.sched-table th{color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid #222;font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:0.05em;}
+.sched-table td{padding:10px 12px;border-bottom:1px solid #1a1a1a;vertical-align:middle;}
+.sched-table tr:last-child td{border-bottom:none;}
+.sched-table tr.current-game td{background:#1a1206;}
+.sched-table tr.done-game td{opacity:0.5;}
+.sched-team-pair{font-size:14px;color:var(--cream);font-weight:500;}
+.sched-pool-tag{display:inline-block;background:var(--deep-purple);color:var(--cream);font-size:10px;padding:2px 7px;border-radius:3px;margin-left:6px;vertical-align:middle;}
+.sched-bracket-tag{display:inline-block;background:#1a0e00;border:1px solid var(--gold);color:var(--gold);font-size:10px;padding:2px 7px;border-radius:3px;margin-left:6px;vertical-align:middle;}
+.sched-score{color:var(--gold);font-weight:500;font-size:13px;}
+.sched-time{color:var(--gold);font-size:13px;font-weight:500;white-space:nowrap;}
+.sched-status-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px;}
+.dot-done{background:#3a5a3a;}.dot-next{background:var(--gold);}.dot-upcoming{background:#333;}
+.game-card{background:var(--card);border:1px solid #333;border-radius:var(--radius);margin-bottom:10px;overflow:hidden;}
+.game-card.up-next-card{border-color:var(--gold);}
+.game-header{display:flex;justify-content:space-between;align-items:center;padding:7px 12px;background:#1c1916;font-size:11px;color:var(--muted);}
+.game-header .gid{color:var(--purple);font-weight:500;}
+.game-time-badge{background:#222;border-radius:4px;padding:2px 8px;color:var(--gold);font-size:11px;font-weight:500;}
+.game-teams{display:flex;align-items:center;padding:10px 12px;gap:10px;}
+.team-slot{flex:1;}
+.team-name{font-size:14px;color:var(--cream);font-weight:500;}
+.team-name.tbd{color:var(--muted);font-style:italic;font-weight:400;}
+.team-name.winner{color:var(--gold);}
+.vs{color:var(--red);font-weight:500;font-size:13px;flex-shrink:0;}
+.score-inputs{display:flex;align-items:center;gap:6px;margin-left:10px;}
+.score-in{width:46px;background:#0a0a0a;border:1px solid #444;color:var(--cream);font-size:16px;font-weight:500;text-align:center;padding:5px;border-radius:5px;outline:none;}
+.score-in:focus{border-color:var(--red);}
+.score-dash{color:var(--muted);}
+.confirm-btn{background:var(--purple);color:var(--cream);border:none;padding:6px 14px;border-radius:5px;font-size:12px;cursor:pointer;}
+.confirm-btn:hover{background:var(--deep-purple);}
+.confirm-btn:disabled{background:#333;color:var(--muted);cursor:default;}
+.bracket-wrap{overflow-x:auto;padding-bottom:10px;}
+.b-round-label{color:var(--gold);font-size:11px;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;}
+.b-match{background:var(--card);border:1px solid #333;border-radius:var(--radius);overflow:hidden;}
+.b-team{padding:8px 12px;font-size:13px;display:flex;justify-content:space-between;align-items:center;}
+.b-team:first-child{border-bottom:1px solid #222;}
+.b-team-name{color:var(--cream);}
+.b-team-name.tbd{color:var(--muted);font-style:italic;}
+.b-team-name.winner{color:var(--gold);font-weight:500;}
+.b-score{color:var(--muted);font-size:13px;min-width:20px;text-align:right;}
+.b-score.winner{color:var(--gold);}
+.champ-box{background:#0e0a04;border:1px solid var(--gold);border-radius:var(--radius);padding:16px;text-align:center;min-width:155px;}
+.champ-label{color:var(--gold);font-size:11px;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;}
+.champ-name{color:var(--cream);font-size:18px;font-weight:500;}
+.champ-name.tbd{color:var(--muted);font-style:italic;font-size:14px;}
+@media print{
+  body{background:#fff!important;color:#111!important;padding:12px;}
+  .tabs,.action-btn,.confirm-btn,.score-in,.schedule-bar,.backup-box,.save-indicator,.btn-row{display:none!important;}
+  .section{display:block!important;}
+  .subtitle,.stage-label{color:#333!important;}
+  .pool-card,.game-card,.b-match{border:1px solid #ccc!important;background:#fff!important;}
+  .pool-header{background:#7B5EA7!important;}
+  .game-header{background:#f5f5f5!important;color:#333!important;}
+  .game-header .gid{color:#7B5EA7!important;}
+  .game-time-badge{background:#eee!important;color:#333!important;}
+  .team-name,.b-team-name,.sched-team-pair{color:#111!important;}
+  .team-name.tbd,.b-team-name.tbd{color:#999!important;}
+  .team-name.winner,.b-team-name.winner,.sched-time,.sched-score,.b-score.winner,.pool-table tr.leader td:first-child,.champ-label,.champ-name{color:#b5860a!important;}
+  .pool-table td:first-child,.sched-table td{color:#111!important;}
+  .pool-table th,.pool-table td,.sched-table th,.sched-table td,.b-team:first-child{border-color:#ddd!important;}
+  .sched-pool-tag{background:#7B5EA7!important;}
+  .sched-bracket-tag{border-color:#b5860a!important;color:#b5860a!important;background:#fff!important;}
+  .champ-box{background:#fff!important;border-color:#b5860a!important;}
+  .rank{color:#999!important;}
+  .pools-grid{grid-template-columns:1fr 1fr!important;}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+}
 </style>
 </head>
 <body>
 
 <img src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/RIB-LOGO.png" alt="Run It Back" style="height:80px;display:block;margin:16px auto 10px;">
 <p class="subtitle">Bracket &bull; Admin Only</p>
+<p class="save-indicator" id="save-indicator">—</p>
 
 <div class="tabs">
   <button class="tab active" onclick="showTab('setup')">Teams</button>
   <button class="tab" onclick="showTab('pools')">Standings</button>
+  <button class="tab" onclick="showTab('schedule')">Schedule</button>
   <button class="tab" onclick="showTab('games')">Games</button>
   <button class="tab" onclick="showTab('bracket')">Bracket</button>
   <button class="tab" onclick="window.print()">Print</button>
@@ -100,11 +145,36 @@
 
 <div id="tab-setup" class="section active">
   <div class="team-grid" id="team-inputs"></div>
-  <button class="action-btn" onclick="startTournament()">Generate Schedule</button>
+  <div class="btn-row">
+    <button class="action-btn" onclick="startTournament()">Generate Schedule</button>
+    <button class="action-btn secondary" onclick="exportState()">Export Backup</button>
+    <button class="action-btn outline" onclick="toggleRestore()">Restore from Backup</button>
+    <button class="action-btn danger" onclick="resetTournament()">Reset Everything</button>
+  </div>
+  <div class="backup-box" id="restore-box" style="display:none;">
+    <h4>Restore from backup</h4>
+    <textarea class="backup-textarea" id="restore-input" placeholder="Paste your backup code here..."></textarea>
+    <div style="margin-top:10px;display:flex;gap:8px;">
+      <button class="action-btn secondary" onclick="importState()">Restore</button>
+      <button class="action-btn outline" onclick="toggleRestore()">Cancel</button>
+    </div>
+  </div>
 </div>
 
 <div id="tab-pools" class="section">
   <div class="pools-grid" id="pools-display"></div>
+</div>
+
+<div id="tab-schedule" class="section">
+  <div class="games-container">
+    <div class="schedule-bar">
+      <label>First game start</label>
+      <input type="time" class="time-input" id="start-time" value="15:00" oninput="renderSchedule();saveState();">
+      <span class="schedule-note">10 min game · 5 min break = 15 min/slot</span>
+    </div>
+    <div id="up-next-banner"></div>
+    <div id="schedule-display"></div>
+  </div>
 </div>
 
 <div id="tab-games" class="section">
@@ -118,246 +188,486 @@
 </div>
 
 <script>
-const POOL_A=[0,1,2,3], POOL_B=[4,5,6,7];
-const POOL_A_PAIRS=[[0,1],[2,3],[0,2],[1,3]];
-const POOL_B_PAIRS=[[4,5],[6,7],[4,6],[5,7]];
-let teams=Array.from({length:8},(_,i)=>`Team ${i+1}`);
-let poolGames=[], bracketGames=[], standings={A:[],B:[]}, started=false;
+var POOL_A = [0,1,2,3];
+var POOL_B = [4,5,6,7];
+var POOL_A_PAIRS = [[0,1],[2,3],[0,2],[1,3]];
+var POOL_B_PAIRS = [[4,5],[6,7],[4,6],[5,7]];
+var LS_KEY = 'rib_tournament_v1';
+var teams = ['Team 1','Team 2','Team 3','Team 4','Team 5','Team 6','Team 7','Team 8'];
+var poolGames = [];
+var bracketGames = [];
+var standings = {A:[],B:[]};
+var started = false;
 
-function buildTeamInputs(){
-  const el=document.getElementById('team-inputs'); el.innerHTML='';
-  [['Pool A',POOL_A],['Pool B',POOL_B]].forEach(([lbl,pool])=>{
-    const d=document.createElement('div'); d.className='pool-label'; d.textContent=lbl; el.appendChild(d);
-    pool.forEach(i=>{
-      const w=document.createElement('div'); w.className='team-input-wrap';
-      w.innerHTML=`<span class="team-num">${i+1}</span><input class="team-input" id="t${i}" value="${teams[i]}" placeholder="Team ${i+1}">`;
-      el.appendChild(w);
+function saveState() {
+  try {
+    var state = {
+      teams: teams,
+      started: started,
+      startTime: document.getElementById('start-time').value,
+      poolGames: poolGames.map(function(g){ return Object.assign({},g); }),
+      bracketGames: bracketGames.map(function(g){ return Object.assign({},g); })
+    };
+    localStorage.setItem(LS_KEY, JSON.stringify(state));
+    showSaved('Auto-saved');
+  } catch(e) {
+    showSaved('Save failed');
+  }
+}
+
+function loadState() {
+  try {
+    var raw = localStorage.getItem(LS_KEY);
+    if (!raw) return false;
+    var s = JSON.parse(raw);
+    teams = s.teams || teams;
+    started = s.started || false;
+    if (s.startTime) document.getElementById('start-time').value = s.startTime;
+    poolGames = s.poolGames || [];
+    bracketGames = s.bracketGames || [];
+    return started;
+  } catch(e) {
+    return false;
+  }
+}
+
+function showSaved(msg) {
+  var el = document.getElementById('save-indicator');
+  el.textContent = msg;
+  el.className = 'save-indicator saved';
+  setTimeout(function(){ el.textContent = '—'; el.className = 'save-indicator'; }, 2500);
+}
+
+function exportState() {
+  var state = {
+    teams: teams,
+    started: started,
+    startTime: document.getElementById('start-time').value,
+    poolGames: poolGames.map(function(g){ return Object.assign({},g); }),
+    bracketGames: bracketGames.map(function(g){ return Object.assign({},g); })
+  };
+  var str = btoa(JSON.stringify(state));
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(str).then(function(){
+      alert('Backup copied to clipboard!\n\nPaste it somewhere safe. To restore, click "Restore from Backup" and paste it in.');
+    }).catch(function(){
+      prompt('Copy this backup code:', str);
     });
-  });
+  } else {
+    prompt('Copy this backup code:', str);
+  }
 }
 
-function startTournament(){
-  for(let i=0;i<8;i++) teams[i]=document.getElementById('t'+i).value||`Team ${i+1}`;
-  poolGames=[...POOL_A_PAIRS,...POOL_B_PAIRS].map(([t1,t2],i)=>({id:`G${i+1}`,t1,t2,s1:null,s2:null,done:false}));
-  bracketGames=[
-    {id:'SF1',label:'Semifinal 1',t1:null,t2:null,s1:null,s2:null,done:false},
-    {id:'SF2',label:'Semifinal 2',t1:null,t2:null,s1:null,s2:null,done:false},
-    {id:'FIN',label:'Final',t1:null,t2:null,s1:null,s2:null,done:false},
+function toggleRestore() {
+  var box = document.getElementById('restore-box');
+  box.style.display = box.style.display === 'none' ? 'block' : 'none';
+}
+
+function importState() {
+  var raw = document.getElementById('restore-input').value.trim();
+  if (!raw) { alert('Please paste a backup code first.'); return; }
+  try {
+    var s = JSON.parse(atob(raw));
+    teams = s.teams || teams;
+    started = s.started || false;
+    if (s.startTime) document.getElementById('start-time').value = s.startTime;
+    poolGames = s.poolGames || [];
+    bracketGames = s.bracketGames || [];
+    recalc();
+    buildTeamInputs();
+    renderAll();
+    saveState();
+    toggleRestore();
+    if (started) showTab('schedule');
+    showSaved('Restored successfully');
+  } catch(e) {
+    alert('Invalid backup code. Please check and try again.');
+  }
+}
+
+function resetTournament() {
+  if (!confirm('Reset everything? This will clear all teams, scores, and standings. This cannot be undone.')) return;
+  localStorage.removeItem(LS_KEY);
+  teams = ['Team 1','Team 2','Team 3','Team 4','Team 5','Team 6','Team 7','Team 8'];
+  poolGames = [];
+  bracketGames = [];
+  standings = {A:[],B:[]};
+  started = false;
+  document.getElementById('start-time').value = '15:00';
+  buildTeamInputs();
+  showTab('setup');
+  showSaved('Reset complete');
+}
+
+function getStartMinutes() {
+  var v = document.getElementById('start-time').value || '15:00';
+  var parts = v.split(':');
+  return parseInt(parts[0]) * 60 + parseInt(parts[1]);
+}
+
+function minsToTime(mins) {
+  var h = Math.floor(mins / 60) % 24;
+  var m = mins % 60;
+  var ampm = h >= 12 ? 'pm' : 'am';
+  var h12 = h % 12 || 12;
+  return h12 + ':' + (m < 10 ? '0' : '') + m + ' ' + ampm;
+}
+
+function gameTime(idx) {
+  return minsToTime(getStartMinutes() + idx * 15);
+}
+
+function allGames() {
+  return poolGames.concat(bracketGames);
+}
+
+function buildTeamInputs() {
+  var el = document.getElementById('team-inputs');
+  el.innerHTML = '';
+  var pools = [['Pool A', POOL_A], ['Pool B', POOL_B]];
+  for (var pi = 0; pi < pools.length; pi++) {
+    var lbl = pools[pi][0];
+    var pool = pools[pi][1];
+    var d = document.createElement('div');
+    d.className = 'pool-label';
+    d.textContent = lbl;
+    el.appendChild(d);
+    for (var j = 0; j < pool.length; j++) {
+      var i = pool[j];
+      var w = document.createElement('div');
+      w.className = 'team-input-wrap';
+      w.innerHTML = '<span class="team-num">' + (i+1) + '</span><input class="team-input" id="t' + i + '" value="' + teams[i] + '" placeholder="Team ' + (i+1) + '">';
+      el.appendChild(w);
+    }
+  }
+}
+
+function startTournament() {
+  for (var i = 0; i < 8; i++) {
+    var inp = document.getElementById('t' + i);
+    teams[i] = inp && inp.value ? inp.value : 'Team ' + (i+1);
+  }
+  poolGames = POOL_A_PAIRS.concat(POOL_B_PAIRS).map(function(pair, i) {
+    return {id:'G'+(i+1), t1:pair[0], t2:pair[1], s1:null, s2:null, done:false};
+  });
+  bracketGames = [
+    {id:'SF1', label:'Semifinal 1', t1:null, t2:null, s1:null, s2:null, done:false},
+    {id:'SF2', label:'Semifinal 2', t1:null, t2:null, s1:null, s2:null, done:false},
+    {id:'FIN', label:'Final',       t1:null, t2:null, s1:null, s2:null, done:false}
   ];
-  recalc(); started=true; showTab('games'); renderAll();
+  started = true;
+  recalc();
+  saveState();
+  showTab('schedule');
+  renderAll();
 }
 
-function recalc(){
-  let st={};
-  for(let i=0;i<8;i++) st[i]={w:0,l:0,diff:0};
-  poolGames.forEach(g=>{
-    if(!g.done) return;
-    if(g.s1>g.s2){st[g.t1].w++;st[g.t2].l++;}
-    else if(g.s2>g.s1){st[g.t2].w++;st[g.t1].l++;}
-    st[g.t1].diff+=(g.s1-g.s2);
-    st[g.t2].diff+=(g.s2-g.s1);
-  });
-  const sort=pool=>pool.map(i=>({i,...st[i]})).sort((a,b)=>b.w-a.w||b.diff-a.diff);
-  standings.A=sort(POOL_A); standings.B=sort(POOL_B);
-  const A=standings.A, B=standings.B;
-  const poolDone=poolGames.every(g=>g.done);
-  if(poolDone){
-    bracketGames[0].t1=A[0]?.i??null; bracketGames[0].t2=B[1]?.i??null;
-    bracketGames[1].t1=B[0]?.i??null; bracketGames[1].t2=A[1]?.i??null;
+function recalc() {
+  var st = {};
+  for (var i = 0; i < 8; i++) st[i] = {w:0, l:0, diff:0};
+  for (var gi = 0; gi < poolGames.length; gi++) {
+    var g = poolGames[gi];
+    if (!g.done) continue;
+    if (g.s1 > g.s2) { st[g.t1].w++; st[g.t2].l++; }
+    else if (g.s2 > g.s1) { st[g.t2].w++; st[g.t1].l++; }
+    st[g.t1].diff += (g.s1 - g.s2);
+    st[g.t2].diff += (g.s2 - g.s1);
   }
-  if(bracketGames[0].done&&bracketGames[1].done){
-    bracketGames[2].t1=winner(bracketGames[0]); bracketGames[2].t2=winner(bracketGames[1]);
+  function sortPool(pool) {
+    return pool.map(function(i){ return Object.assign({i:i}, st[i]); })
+      .sort(function(a,b){ return (b.w - a.w) || (b.diff - a.diff); });
+  }
+  standings.A = sortPool(POOL_A);
+  standings.B = sortPool(POOL_B);
+  var poolDone = poolGames.length > 0 && poolGames.every(function(g){ return g.done; });
+  if (poolDone && bracketGames.length >= 2) {
+    bracketGames[0].t1 = standings.A[0] ? standings.A[0].i : null;
+    bracketGames[0].t2 = standings.B[1] ? standings.B[1].i : null;
+    bracketGames[1].t1 = standings.B[0] ? standings.B[0].i : null;
+    bracketGames[1].t2 = standings.A[1] ? standings.A[1].i : null;
+  }
+  if (bracketGames.length >= 3 && bracketGames[0].done && bracketGames[1].done) {
+    bracketGames[2].t1 = getWinner(bracketGames[0]);
+    bracketGames[2].t2 = getWinner(bracketGames[1]);
   }
 }
 
-function winner(g){return !g.done?null:g.s1>g.s2?g.t1:g.t2;}
-function tn(i){return i===null||i===undefined?'TBD':teams[i];}
-function renderAll(){renderPools();renderGames();renderBracket();}
+function getWinner(g) {
+  if (!g.done) return null;
+  return g.s1 > g.s2 ? g.t1 : g.t2;
+}
 
-function renderPools(){
-  const el=document.getElementById('pools-display'); el.innerHTML='';
-  ['A','B'].forEach(p=>{
-    const c=document.createElement('div'); c.className='pool-card';
-    c.innerHTML=`<div class="pool-header">Pool ${p}<span>W / L / +/-</span></div>
-    <table class="pool-table"><thead><tr><th>Team</th><th>W</th><th>L</th><th>+/-</th></tr></thead>
-    <tbody>${standings[p].map((s,ri)=>`<tr class="${ri<2?'leader':''}">
-      <td><span class="rank">${ri+1}</span>${tn(s.i)}</td>
-      <td style="color:var(--gold);font-weight:500">${s.w}</td><td>${s.l}</td>
-      <td style="color:${s.diff>=0?'var(--gold)':'var(--red)'}">${s.diff>0?'+':''}${s.diff}</td>
-    </tr>`).join('')}</tbody></table>`;
+function tn(i) {
+  return (i === null || i === undefined) ? 'TBD' : teams[i];
+}
+
+function renderAll() {
+  renderPools();
+  renderSchedule();
+  renderGames();
+  renderBracket();
+}
+
+function renderPools() {
+  var el = document.getElementById('pools-display');
+  el.innerHTML = '';
+  ['A','B'].forEach(function(p) {
+    var c = document.createElement('div');
+    c.className = 'pool-card';
+    var rows = standings[p].map(function(s, ri) {
+      var diff = s.diff > 0 ? '+' + s.diff : '' + s.diff;
+      var diffColor = s.diff >= 0 ? 'var(--gold)' : 'var(--red)';
+      return '<tr class="' + (ri < 2 ? 'leader' : '') + '">' +
+        '<td><span class="rank">' + (ri+1) + '</span>' + tn(s.i) + '</td>' +
+        '<td style="color:var(--gold);font-weight:500">' + s.w + '</td>' +
+        '<td>' + s.l + '</td>' +
+        '<td style="color:' + diffColor + '">' + diff + '</td></tr>';
+    }).join('');
+    c.innerHTML = '<div class="pool-header">Pool ' + p + '<span>W / L / +/-</span></div>' +
+      '<table class="pool-table"><thead><tr><th>Team</th><th>W</th><th>L</th><th>+/-</th></tr></thead>' +
+      '<tbody>' + rows + '</tbody></table>';
     el.appendChild(c);
   });
 }
 
-function renderGames(){
-  const el=document.getElementById('games-display'); el.innerHTML='';
-  let lbl=document.createElement('div'); lbl.className='stage-label'; lbl.textContent='Pool Play'; el.appendChild(lbl);
-  poolGames.forEach(g=>{
-    const pool=POOL_A.includes(g.t1)?'Pool A':'Pool B';
-    el.appendChild(makeCard(g.id,pool,g.t1,g.t2,g.s1,g.s2,g.done,winner(g),(s1,s2)=>{
-      g.s1=s1;g.s2=s2;g.done=true;recalc();renderAll();
-    }));
-  });
-  let lbl2=document.createElement('div'); lbl2.className='stage-label'; lbl2.style.marginTop='24px'; lbl2.textContent='Bracket'; el.appendChild(lbl2);
-  bracketGames.forEach(g=>{
-    el.appendChild(makeCard(g.id,g.label,g.t1,g.t2,g.s1,g.s2,g.done,winner(g),(s1,s2)=>{
-      g.s1=s1;g.s2=s2;g.done=true;
-      if(g.id==='SF1'||g.id==='SF2'){bracketGames[2].t1=winner(bracketGames[0]);bracketGames[2].t2=winner(bracketGames[1]);}
-      renderAll();
-    }));
-  });
+function renderSchedule() {
+  if (!started) return;
+  var all = allGames();
+  var nextIdx = -1;
+  for (var i = 0; i < all.length; i++) {
+    if (!all[i].done) { nextIdx = i; break; }
+  }
+  var banner = document.getElementById('up-next-banner');
+  if (nextIdx >= 0) {
+    var ng = all[nextIdx];
+    var isBracket = bracketGames.indexOf(ng) >= 0;
+    var label = isBracket ? ng.label : (POOL_A.indexOf(ng.t1) >= 0 ? 'Pool A' : 'Pool B');
+    banner.innerHTML = '<div class="up-next">' +
+      '<span class="up-next-label">&#9654; On deck</span>' +
+      '<span class="up-next-text">' + tn(ng.t1) + ' <span style="color:var(--red);margin:0 6px">vs</span> ' + tn(ng.t2) +
+      ' <span style="color:var(--muted);font-size:12px;margin-left:6px">' + label + '</span></span>' +
+      '<span class="up-next-time">' + gameTime(nextIdx) + '</span></div>';
+  } else {
+    banner.innerHTML = '<div class="up-next"><span class="up-next-label">&#127942;</span><span class="up-next-text">All games complete!</span></div>';
+  }
+  var el = document.getElementById('schedule-display');
+  el.innerHTML = '';
+  var ph = document.createElement('div'); ph.className = 'stage-label'; ph.textContent = 'Pool Play'; el.appendChild(ph);
+  el.appendChild(buildSchedTable(poolGames, 0, nextIdx));
+  var bh = document.createElement('div'); bh.className = 'stage-label'; bh.style.marginTop = '24px'; bh.textContent = 'Bracket'; el.appendChild(bh);
+  el.appendChild(buildSchedTable(bracketGames, poolGames.length, nextIdx));
 }
 
-function makeCard(id,lbl,t1,t2,s1,s2,done,win,onSave){
-  const wrap=document.createElement('div');
-  const isTbd=t1===null||t2===null;
-  wrap.innerHTML=`<div class="game-card">
-    <div class="game-header"><span class="gid">${id}</span><span>${lbl}</span>${done?'<span style="color:var(--gold)">Done</span>':''}</div>
-    <div class="game-teams">
-      <div class="team-slot"><div class="team-name ${isTbd?'tbd':''} ${done&&win===t1?'winner':''}">${tn(t1)}</div></div>
-      <span class="vs">VS</span>
-      <div class="team-slot" style="text-align:right"><div class="team-name ${isTbd?'tbd':''} ${done&&win===t2?'winner':''}">${tn(t2)}</div></div>
-      <div class="score-inputs">
-        <input class="score-in" type="number" min="0" id="s1-${id}" value="${s1!==null?s1:''}" ${done||isTbd?'disabled':''}>
-        <span class="score-dash">–</span>
-        <input class="score-in" type="number" min="0" id="s2-${id}" value="${s2!==null?s2:''}" ${done||isTbd?'disabled':''}>
-        <button class="confirm-btn" ${done||isTbd?'disabled':''} onclick="saveGame('${id}')" id="btn-${id}">${done?'Saved':'Save'}</button>
-        ${done&&!isTbd?`<button class="confirm-btn" style="background:var(--muted);margin-left:4px" onclick="editGame('${id}')">Edit</button>`:''}
-      </div>
-    </div>
-  </div>`;
-  window['_gs_'+id]=onSave;
+function buildSchedTable(games, offset, nextIdx) {
+  var tbl = document.createElement('table');
+  tbl.className = 'sched-table';
+  tbl.innerHTML = '<thead><tr><th></th><th>Time</th><th>Game</th><th>Teams</th><th>Score</th></tr></thead>';
+  var tb = document.createElement('tbody');
+  for (var i = 0; i < games.length; i++) {
+    var g = games[i];
+    var absIdx = offset + i;
+    var isDone = g.done;
+    var isNext = absIdx === nextIdx;
+    var isBracket = bracketGames.indexOf(g) >= 0;
+    var poolTag = isBracket
+      ? '<span class="sched-bracket-tag">' + g.label + '</span>'
+      : (POOL_A.indexOf(g.t1) >= 0 ? '<span class="sched-pool-tag">Pool A</span>' : '<span class="sched-pool-tag">Pool B</span>');
+    var scoreCell = isDone
+      ? '<span class="sched-score">' + g.s1 + ' &ndash; ' + g.s2 + '</span>'
+      : '<span style="color:var(--muted)">&ndash;</span>';
+    var dot = isDone ? 'dot-done' : (isNext ? 'dot-next' : 'dot-upcoming');
+    var tr = document.createElement('tr');
+    if (isNext) tr.className = 'current-game';
+    else if (isDone) tr.className = 'done-game';
+    tr.innerHTML = '<td><span class="sched-status-dot ' + dot + '"></span></td>' +
+      '<td class="sched-time">' + gameTime(absIdx) + '</td>' +
+      '<td style="color:var(--muted);font-size:12px">' + g.id + '</td>' +
+      '<td><span class="sched-team-pair">' + tn(g.t1) + ' vs ' + tn(g.t2) + '</span>' + poolTag + '</td>' +
+      '<td>' + scoreCell + '</td>';
+    tb.appendChild(tr);
+  }
+  tbl.appendChild(tb);
+  return tbl;
+}
+
+function renderGames() {
+  var el = document.getElementById('games-display');
+  el.innerHTML = '';
+  var all = allGames();
+  var nextIdx = -1;
+  for (var i = 0; i < all.length; i++) {
+    if (!all[i].done) { nextIdx = i; break; }
+  }
+  var lbl = document.createElement('div'); lbl.className = 'stage-label'; lbl.textContent = 'Pool Play'; el.appendChild(lbl);
+  for (var i = 0; i < poolGames.length; i++) {
+    var g = poolGames[i];
+    var pool = POOL_A.indexOf(g.t1) >= 0 ? 'Pool A' : 'Pool B';
+    el.appendChild(makeCard(g.id, pool, g.t1, g.t2, g.s1, g.s2, g.done, getWinner(g), i === nextIdx, gameTime(i), makePoolSaver(i)));
+  }
+  var lbl2 = document.createElement('div'); lbl2.className = 'stage-label'; lbl2.style.marginTop = '24px'; lbl2.textContent = 'Bracket'; el.appendChild(lbl2);
+  for (var i = 0; i < bracketGames.length; i++) {
+    var g = bracketGames[i];
+    var absIdx = poolGames.length + i;
+    el.appendChild(makeCard(g.id, g.label, g.t1, g.t2, g.s1, g.s2, g.done, getWinner(g), absIdx === nextIdx, gameTime(absIdx), makeBracketSaver(i)));
+  }
+}
+
+function makePoolSaver(idx) {
+  return function(s1, s2) {
+    poolGames[idx].s1 = s1; poolGames[idx].s2 = s2; poolGames[idx].done = true;
+    recalc(); saveState(); renderAll();
+  };
+}
+
+function makeBracketSaver(idx) {
+  return function(s1, s2) {
+    bracketGames[idx].s1 = s1; bracketGames[idx].s2 = s2; bracketGames[idx].done = true;
+    if (idx === 0 || idx === 1) {
+      bracketGames[2].t1 = getWinner(bracketGames[0]);
+      bracketGames[2].t2 = getWinner(bracketGames[1]);
+    }
+    recalc(); saveState(); renderAll();
+  };
+}
+
+function makeCard(id, lbl, t1, t2, s1, s2, done, win, isNext, timeStr, onSave) {
+  var wrap = document.createElement('div');
+  var isTbd = t1 === null || t2 === null;
+  var t1cls = 'team-name' + (isTbd ? ' tbd' : '') + (done && win === t1 ? ' winner' : '');
+  var t2cls = 'team-name' + (isTbd ? ' tbd' : '') + (done && win === t2 ? ' winner' : '');
+  var editBtn = (done && !isTbd) ? '<button class="confirm-btn" style="background:var(--muted);margin-left:4px" onclick="editGame(\'' + id + '\')">Edit</button>' : '';
+  wrap.innerHTML = '<div class="game-card' + (isNext ? ' up-next-card' : '') + '">' +
+    '<div class="game-header"><span class="gid">' + id + '</span><span>' + lbl + '</span>' +
+    '<span class="game-time-badge">' + timeStr + '</span>' +
+    (done ? '<span style="color:var(--gold)">Done</span>' : '') + '</div>' +
+    '<div class="game-teams">' +
+    '<div class="team-slot"><div class="' + t1cls + '">' + tn(t1) + '</div></div>' +
+    '<span class="vs">VS</span>' +
+    '<div class="team-slot" style="text-align:right"><div class="' + t2cls + '">' + tn(t2) + '</div></div>' +
+    '<div class="score-inputs">' +
+    '<input class="score-in" type="number" min="0" id="s1-' + id + '" value="' + (s1 !== null ? s1 : '') + '" ' + (done || isTbd ? 'disabled' : '') + '>' +
+    '<span class="score-dash">&ndash;</span>' +
+    '<input class="score-in" type="number" min="0" id="s2-' + id + '" value="' + (s2 !== null ? s2 : '') + '" ' + (done || isTbd ? 'disabled' : '') + '>' +
+    '<button class="confirm-btn" ' + (done || isTbd ? 'disabled' : '') + ' onclick="saveGame(\'' + id + '\')" id="btn-' + id + '">' + (done ? 'Saved' : 'Save') + '</button>' +
+    editBtn + '</div></div></div>';
+  window['_gs_' + id] = onSave;
   return wrap;
 }
 
-function editGame(id){
-  const all=[...poolGames,...bracketGames];
-  const g=all.find(g=>g.id===id);
-  if(!g) return;
-  g.done=false; g.s1=null; g.s2=null;
-  recalc(); renderAll();
+function editGame(id) {
+  var all = allGames();
+  for (var i = 0; i < all.length; i++) {
+    if (all[i].id === id) {
+      all[i].done = false; all[i].s1 = null; all[i].s2 = null;
+      break;
+    }
+  }
+  recalc(); saveState(); renderAll();
 }
 
-function saveGame(id){
-  const s1=parseInt(document.getElementById('s1-'+id).value);
-  const s2=parseInt(document.getElementById('s2-'+id).value);
-  if(isNaN(s1)||isNaN(s2)) return;
-  window['_gs_'+id](s1,s2);
+function saveGame(id) {
+  var s1 = parseInt(document.getElementById('s1-' + id).value);
+  var s2 = parseInt(document.getElementById('s2-' + id).value);
+  if (isNaN(s1) || isNaN(s2)) return;
+  window['_gs_' + id](s1, s2);
 }
 
-function poolTeamSlot(idx, seedLabel){
-  // show actual team name if known, else seed label
-  const name = teams[idx] || seedLabel;
-  return `<div class="b-team" style="gap:8px">
-    <span style="color:var(--purple);font-size:10px;min-width:22px">${seedLabel}</span>
-    <span class="b-team-name">${name}</span>
-  </div>`;
+function poolTeamSlot(idx, sl) {
+  return '<div class="b-team" style="gap:8px"><span style="color:var(--purple);font-size:10px;min-width:22px">' + sl + '</span><span class="b-team-name">' + (teams[idx] || sl) + '</span></div>';
 }
 
-function renderBracket(){
-  const el=document.getElementById('bracket-display'); el.innerHTML='';
-  const sf1=bracketGames[0],sf2=bracketGames[1],fin=bracketGames[2];
-  const champ=winner(fin);
+function renderBracket() {
+  var el = document.getElementById('bracket-display');
+  el.innerHTML = '';
+  var sf1 = bracketGames[0], sf2 = bracketGames[1], fin = bracketGames[2];
+  var champ = getWinner(fin);
+  var poolDone = poolGames.length > 0 && poolGames.every(function(g){ return g.done; });
+  var A = (poolDone && standings.A.length) ? standings.A.map(function(s){ return s.i; }) : POOL_A;
+  var B = (poolDone && standings.B.length) ? standings.B.map(function(s){ return s.i; }) : POOL_B;
 
-  // Pool teams in seeding order (or original order if pool play not done)
-  const poolDone=poolGames.every(g=>g.done);
-  const A=poolDone&&standings.A.length?standings.A.map(s=>s.i):POOL_A;
-  const B=poolDone&&standings.B.length?standings.B.map(s=>s.i):POOL_B;
+  el.style.cssText = 'display:grid;grid-template-columns:150px 50px 170px 50px 170px 36px 155px;align-items:center;gap:0;min-width:640px;padding:10px 0;';
 
-  // layout: [Pool A col] [connector] [Semis col] [connector] [Final col] [arrow] [Champ]
-  // grid: 150px 50px 170px 50px 170px 40px 155px
-  el.style.cssText='display:grid;grid-template-columns:150px 50px 170px 50px 170px 36px 155px;align-items:center;gap:0;min-width:640px;padding:10px 0;';
-
-  // ── Pool A (rows 1–8, teams stacked) ──
-  const poolAel=document.createElement('div');
-  poolAel.style.cssText='grid-column:1;grid-row:1/5;display:flex;flex-direction:column;gap:4px;';
-  poolAel.innerHTML=`<div class="b-round-label" style="margin-bottom:4px">Pool A</div>
-  <div class="b-match">${A.map((i,ri)=>poolTeamSlot(i,`A${ri+1}`)).join('')}</div>`;
+  var poolAel = document.createElement('div');
+  poolAel.style.cssText = 'grid-column:1;grid-row:1/5;display:flex;flex-direction:column;gap:4px;';
+  poolAel.innerHTML = '<div class="b-round-label" style="margin-bottom:4px">Pool A</div><div class="b-match">' + A.map(function(i,ri){ return poolTeamSlot(i,'A'+(ri+1)); }).join('') + '</div>';
   el.appendChild(poolAel);
 
-  // ── Pool B (rows 5–8) ──
-  const poolBel=document.createElement('div');
-  poolBel.style.cssText='grid-column:1;grid-row:5/9;display:flex;flex-direction:column;gap:4px;margin-top:16px;';
-  poolBel.innerHTML=`<div class="b-round-label" style="margin-bottom:4px">Pool B</div>
-  <div class="b-match">${B.map((i,ri)=>poolTeamSlot(i,`B${ri+1}`)).join('')}</div>`;
+  var poolBel = document.createElement('div');
+  poolBel.style.cssText = 'grid-column:1;grid-row:5/9;display:flex;flex-direction:column;gap:4px;margin-top:16px;';
+  poolBel.innerHTML = '<div class="b-round-label" style="margin-bottom:4px">Pool B</div><div class="b-match">' + B.map(function(i,ri){ return poolTeamSlot(i,'B'+(ri+1)); }).join('') + '</div>';
   el.appendChild(poolBel);
 
-  // ── SVG connectors: Pool → Semis ──
-  const svgCon=document.createElement('div');
-  svgCon.style.cssText='grid-column:2;grid-row:1/9;';
-  svgCon.innerHTML=`<svg width="50" height="300" viewBox="0 0 50 300" style="display:block">
-    <!-- A1 → SF1 top -->
-    <polyline points="0,28 25,28 25,95 50,95" fill="none" stroke="#444" stroke-width="1.5"/>
-    <!-- B2 → SF1 bottom -->
-    <polyline points="0,228 25,228 25,115 50,115" fill="none" stroke="#444" stroke-width="1.5"/>
-    <!-- B1 → SF2 top -->
-    <polyline points="0,188 25,188 25,185 50,185" fill="none" stroke="#555" stroke-width="1.5"/>
-    <!-- A2 → SF2 bottom -->
-    <polyline points="0,68 25,68 25,205 50,205" fill="none" stroke="#555" stroke-width="1.5"/>
-  </svg>`;
+  var svgCon = document.createElement('div');
+  svgCon.style.cssText = 'grid-column:2;grid-row:1/9;';
+  svgCon.innerHTML = '<svg width="50" height="300" viewBox="0 0 50 300" style="display:block">' +
+    '<polyline points="0,28 25,28 25,95 50,95" fill="none" stroke="#444" stroke-width="1.5"/>' +
+    '<polyline points="0,228 25,228 25,115 50,115" fill="none" stroke="#444" stroke-width="1.5"/>' +
+    '<polyline points="0,188 25,188 25,185 50,185" fill="none" stroke="#555" stroke-width="1.5"/>' +
+    '<polyline points="0,68 25,68 25,205 50,205" fill="none" stroke="#555" stroke-width="1.5"/></svg>';
   el.appendChild(svgCon);
 
-  // ── Semis ──
-  const semiel=document.createElement('div');
-  semiel.style.cssText='grid-column:3;grid-row:1/9;display:flex;flex-direction:column;justify-content:space-around;padding:8px 0;gap:20px;';
-  semiel.innerHTML=`
-    <div>
-      <div class="b-round-label" style="margin-bottom:6px">Semifinal 1 · A1 vs B2</div>
-      ${bMatch(sf1)}
-    </div>
-    <div>
-      <div class="b-round-label" style="margin-bottom:6px">Semifinal 2 · B1 vs A2</div>
-      ${bMatch(sf2)}
-    </div>`;
+  var semiel = document.createElement('div');
+  semiel.style.cssText = 'grid-column:3;grid-row:1/9;display:flex;flex-direction:column;justify-content:space-around;padding:8px 0;gap:20px;';
+  semiel.innerHTML = '<div><div class="b-round-label" style="margin-bottom:6px">Semifinal 1 &middot; A1 vs B2</div>' + bMatch(sf1) + '</div>' +
+    '<div><div class="b-round-label" style="margin-bottom:6px">Semifinal 2 &middot; B1 vs A2</div>' + bMatch(sf2) + '</div>';
   el.appendChild(semiel);
 
-  // ── SVG connector: Semis → Final ──
-  const svgCon2=document.createElement('div');
-  svgCon2.style.cssText='grid-column:4;grid-row:1/9;';
-  svgCon2.innerHTML=`<svg width="50" height="300" viewBox="0 0 50 300" style="display:block">
-    <polyline points="0,80 25,80 25,150 50,150" fill="none" stroke="#444" stroke-width="1.5"/>
-    <polyline points="0,210 25,210 25,150 50,150" fill="none" stroke="#444" stroke-width="1.5"/>
-  </svg>`;
+  var svgCon2 = document.createElement('div');
+  svgCon2.style.cssText = 'grid-column:4;grid-row:1/9;';
+  svgCon2.innerHTML = '<svg width="50" height="300" viewBox="0 0 50 300" style="display:block">' +
+    '<polyline points="0,80 25,80 25,150 50,150" fill="none" stroke="#444" stroke-width="1.5"/>' +
+    '<polyline points="0,210 25,210 25,150 50,150" fill="none" stroke="#444" stroke-width="1.5"/></svg>';
   el.appendChild(svgCon2);
 
-  // ── Final ──
-  const finel=document.createElement('div');
-  finel.style.cssText='grid-column:5;grid-row:1/9;display:flex;flex-direction:column;justify-content:center;';
-  finel.innerHTML=`<div class="b-round-label" style="margin-bottom:6px">Final</div>${bMatch(fin)}`;
+  var finel = document.createElement('div');
+  finel.style.cssText = 'grid-column:5;grid-row:1/9;display:flex;flex-direction:column;justify-content:center;';
+  finel.innerHTML = '<div class="b-round-label" style="margin-bottom:6px">Final</div>' + bMatch(fin);
   el.appendChild(finel);
 
-  // ── Arrow ──
-  const arrel=document.createElement('div');
-  arrel.style.cssText='grid-column:6;grid-row:1/9;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:22px;';
-  arrel.textContent='›';
+  var arrel = document.createElement('div');
+  arrel.style.cssText = 'grid-column:6;grid-row:1/9;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:22px;';
+  arrel.textContent = '›';
   el.appendChild(arrel);
 
-  // ── Champion ──
-  const champel=document.createElement('div');
-  champel.style.cssText='grid-column:7;grid-row:1/9;display:flex;flex-direction:column;align-items:center;justify-content:center;';
-  champel.innerHTML=`<div class="b-round-label" style="margin-bottom:8px">Champion</div>
-  <div class="champ-box"><div class="champ-label">Winner</div>
-  <div class="champ-name ${champ===null?'tbd':''}">${champ===null?'TBD':tn(champ)}</div></div>`;
+  var champel = document.createElement('div');
+  champel.style.cssText = 'grid-column:7;grid-row:1/9;display:flex;flex-direction:column;align-items:center;justify-content:center;';
+  champel.innerHTML = '<div class="b-round-label" style="margin-bottom:8px">Champion</div>' +
+    '<div class="champ-box"><div class="champ-label">Winner</div>' +
+    '<div class="champ-name' + (champ === null ? ' tbd' : '') + '">' + (champ === null ? 'TBD' : tn(champ)) + '</div></div>';
   el.appendChild(champel);
 }
 
-function bMatch(g){
-  const w=winner(g);
-  return `<div class="b-match">
-    <div class="b-team"><span class="b-team-name ${g.t1===null?'tbd':''} ${g.t1!==null&&w===g.t1?'winner':''}">${tn(g.t1)}</span><span class="b-score ${g.t1!==null&&w===g.t1?'winner':''}">${g.s1!==null?g.s1:''}</span></div>
-    <div class="b-team"><span class="b-team-name ${g.t2===null?'tbd':''} ${g.t2!==null&&w===g.t2?'winner':''}">${tn(g.t2)}</span><span class="b-score ${g.t2!==null&&w===g.t2?'winner':''}">${g.s2!==null?g.s2:''}</span></div>
-  </div>`;
+function bMatch(g) {
+  var w = getWinner(g);
+  var t1tbd = g.t1 === null; var t2tbd = g.t2 === null;
+  var t1win = !t1tbd && w === g.t1; var t2win = !t2tbd && w === g.t2;
+  return '<div class="b-match">' +
+    '<div class="b-team"><span class="b-team-name' + (t1tbd?' tbd':'') + (t1win?' winner':'') + '">' + tn(g.t1) + '</span>' +
+    '<span class="b-score' + (t1win?' winner':'') + '">' + (g.s1 !== null ? g.s1 : '') + '</span></div>' +
+    '<div class="b-team"><span class="b-team-name' + (t2tbd?' tbd':'') + (t2win?' winner':'') + '">' + tn(g.t2) + '</span>' +
+    '<span class="b-score' + (t2win?' winner':'') + '">' + (g.s2 !== null ? g.s2 : '') + '</span></div></div>';
 }
 
-function showTab(name){
-  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('tab-'+name).classList.add('active');
-  ['setup','pools','games','bracket'].forEach((n,i)=>{if(n===name)document.querySelectorAll('.tab')[i].classList.add('active');});
-  if(started) renderAll();
+function showTab(name) {
+  document.querySelectorAll('.section').forEach(function(s){ s.classList.remove('active'); });
+  document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+  document.getElementById('tab-' + name).classList.add('active');
+  var tabs = ['setup','pools','schedule','games','bracket'];
+  for (var i = 0; i < tabs.length; i++) {
+    if (tabs[i] === name) document.querySelectorAll('.tab')[i].classList.add('active');
+  }
+  if (started) renderAll();
 }
 
 buildTeamInputs();
+var restored = loadState();
+if (restored) {
+  recalc();
+  buildTeamInputs();
+  renderAll();
+  showTab('schedule');
+  showSaved('Restored from last session');
+}
 </script>
 </body>
 </html>
