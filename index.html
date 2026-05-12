@@ -32,13 +32,15 @@
   .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
 
   /* HERO */
-  .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:120px 5% 80px;position:relative;overflow:hidden;background:#0a0a0a;}
+  .hero{display:flex;flex-direction:column;align-items:center;text-align:center;background:#0a0a0a;padding-top:70px;}
   .hero-bg-img{display:none;}
-  .hero-bg-sticker{position:absolute;inset:0;background:url('https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/sticker_hero.png') center center/cover no-repeat;opacity:0.9;pointer-events:none;}
-  .hero-bg-overlay{position:absolute;inset:0;background:linear-gradient(to right, rgba(10,10,10,0.7) 0%, rgba(10,10,10,0.2) 60%, rgba(10,10,10,0) 100%);pointer-events:none;}
+  .hero-img-wrap{width:100%;overflow:hidden;line-height:0;}
+  .hero-img-wrap img{width:100%;display:block;object-fit:cover;object-position:center center;max-height:80vh;}
+  .hero-content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;padding:48px 5% 80px;}
+  .hero-bg-sticker{display:none;}
+  .hero-bg-overlay{display:none;}
   @media(max-width:700px){
-    .hero-bg-sticker{background-position:80% center;background-size:cover;}
-    .hero-bg-overlay{background:linear-gradient(to bottom, rgba(10,10,10,0.5) 0%, rgba(10,10,10,0.15) 100%);}
+    .hero-img-wrap img{object-position:80% center;max-height:60vw;}
   }
   .hero-content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;}
   .hero-sticker{display:none;}
@@ -170,8 +172,9 @@
 
 <!-- HERO -->
 <section class="hero" id="home">
-  <div class="hero-bg-sticker"></div>
-  <div class="hero-bg-overlay"></div>
+  <div class="hero-img-wrap">
+    <img src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/sticker_hero.png" alt="Ball Out Portland stickers"/>
+  </div>
   <div class="hero-content">
     <!-- swap to your sticker photo URL when ready -->
     <img class="hero-sticker" src="https://raw.githubusercontent.com/lilah-sciaky-45/ball-out/main/Moon.png" alt="Ball Out Portland"/>
